@@ -149,6 +149,129 @@ const AboutUs = () => {
           </div>
         </section>
 
+        {/* Nuestro Equipo y Almacén */}
+        <section className="py-16 bg-secondary/30">
+          <div className="container mx-auto px-4">
+            <div className="max-w-6xl mx-auto">
+              <h2 className="text-3xl font-bold text-center mb-4 text-foreground">
+                Nuestro Equipo y Almacén
+              </h2>
+              <p className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
+                Contamos con un equipo profesional y modernas instalaciones para
+                atenderte mejor
+              </p>
+              <div className="grid md:grid-cols-3 gap-6">
+                {[
+                  {
+                    image:
+                      "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=600&h=400&fit=crop",
+                    title: "Almacén Central",
+                    description: "Más de 5,000 m² de inventario organizado",
+                  },
+                  {
+                    image:
+                      "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=600&h=400&fit=crop",
+                    title: "Equipo Especializado",
+                    description:
+                      "Profesionales con más de 10 años de experiencia",
+                  },
+                  {
+                    image:
+                      "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&h=400&fit=crop",
+                    title: "Área de Atención",
+                    description: "Servicio personalizado y asesoría técnica",
+                  },
+                ].map((item, index) => (
+                  <Card
+                    key={index}
+                    className="overflow-hidden hover:shadow-lg transition-shadow"
+                  >
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-full h-48 object-cover"
+                    />
+                    <CardContent className="p-6">
+                      <h3 className="text-xl font-semibold mb-2 text-foreground">
+                        {item.title}
+                      </h3>
+                      <p className="text-muted-foreground">
+                        {item.description}
+                      </p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Certificaciones y Alianzas */}
+        <section className="py-16 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="max-w-6xl mx-auto">
+              <h2 className="text-3xl font-bold text-center mb-4 text-foreground">
+                Certificaciones y Alianzas
+              </h2>
+              <p className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
+                Trabajamos con las mejores marcas y contamos con certificaciones
+                que avalan nuestra calidad
+              </p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                {[
+                  {
+                    name: "ISO 9001",
+                    description: "Calidad certificada",
+                  },
+                  {
+                    name: "Bosch",
+                    description: "Distribuidor autorizado",
+                  },
+                  {
+                    name: "Continental",
+                    description: "Partner comercial",
+                  },
+                  {
+                    name: "ACDelco",
+                    description: "Proveedor oficial",
+                  },
+                  {
+                    name: "Gates",
+                    description: "Distribuidor certificado",
+                  },
+                  {
+                    name: "Mann-Filter",
+                    description: "Socio estratégico",
+                  },
+                  {
+                    name: "Mobil",
+                    description: "Partner autorizado",
+                  },
+                  {
+                    name: "NGK",
+                    description: "Distribuidor oficial",
+                  },
+                ].map((cert, index) => (
+                  <div
+                    key={index}
+                    className="flex flex-col items-center justify-center p-6 bg-card border border-border rounded-lg hover:shadow-md transition-shadow"
+                  >
+                    <div className="w-20 h-20 bg-accent/10 rounded-full flex items-center justify-center mb-3">
+                      <Award className="h-10 w-10 text-accent" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-center mb-1 text-foreground">
+                      {cert.name}
+                    </h3>
+                    <p className="text-xs text-muted-foreground text-center">
+                      {cert.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* CTA Section */}
         <section className="py-16 bg-primary text-primary-foreground">
           <div className="container mx-auto px-4">

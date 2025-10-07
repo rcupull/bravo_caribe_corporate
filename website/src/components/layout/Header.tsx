@@ -1,17 +1,19 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu, X, Phone, LogIn, LogOut, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logo from "@/assets/bravo-caribe-logo.png";
+import { useAuth } from "@/contexts/AuthContext";
+import CartSheet from "@/components/cart/CartSheet";
+import logo from "@/assets/logo-h.png";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isAuthenticated, isAdmin, user, logout } = useAuth();
 
   const navLinks = [
     { name: "Inicio", path: "/" },
     { name: "Nosotros", path: "/nosotros" },
     { name: "Productos", path: "/productos" },
-    { name: "Servicios", path: "/servicios" },
     { name: "Blog", path: "/blog" },
     { name: "Contacto", path: "/contacto" },
   ];
@@ -40,11 +42,52 @@ const Header = () => {
 
           {/* CTA Button */}
           <div className="hidden lg:flex items-center space-x-4">
-            <a href="tel:+1234567890" className="flex items-center text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+            <a
+              href="tel:+1234567890"
+              className="flex items-center text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+            >
               <Phone className="h-4 w-4 mr-2" />
               <span>(123) 456-7890</span>
             </a>
-            <Button 
+            <CartSheet />
+
+            {isAuthenticated ? (
+              <>
+                {isAdmin && (
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10"
+                  >
+                    <Link to="/admin">
+                      <Shield className="h-4 w-4 mr-2" />
+                      Admin
+                    </Link>
+                  </Button>
+                )}
+                <Button
+                  variant="outline"
+                  onClick={logout}
+                  className="border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10"
+                >
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Salir
+                </Button>
+              </>
+            ) : (
+              <Button
+                asChild
+                variant="outline"
+                className="border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10"
+              >
+                <Link to="/auth">
+                  <LogIn className="h-4 w-4 mr-2" />
+                  Iniciar Sesión
+                </Link>
+              </Button>
+            )}
+
+            <Button
               asChild
               className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold"
             >
@@ -58,7 +101,11 @@ const Header = () => {
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
           >
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {isMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
           </button>
         </div>
 
@@ -76,8 +123,38 @@ const Header = () => {
                   {link.name}
                 </Link>
               ))}
-              <div className="px-4 pt-4 border-t border-border/40">
-                <Button 
+              <div className="px-4 pt-4 border-t border-border/40 space-y-2">
+                {isAuthenticated ? (
+                  <>
+                    {isAdmin && (
+                      <Button asChild variant="outline" className="w-full">
+                        <Link to="/admin" onClick={() => setIsMenuOpen(false)}>
+                          <Shield className="h-4 w-4 mr-2" />
+                          Admin
+                        </Link>
+                      </Button>
+                    )}
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        logout();
+                        setIsMenuOpen(false);
+                      }}
+                      className="w-full"
+                    >
+                      <LogOut className="h-4 w-4 mr-2" />
+                      Salir
+                    </Button>
+                  </>
+                ) : (
+                  <Button asChild variant="outline" className="w-full">
+                    <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
+                      <LogIn className="h-4 w-4 mr-2" />
+                      Iniciar Sesión
+                    </Link>
+                  </Button>
+                )}
+                <Button
                   asChild
                   className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold"
                 >

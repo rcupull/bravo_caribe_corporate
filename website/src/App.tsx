@@ -8,24 +8,35 @@ import NotFound from "./pages/NotFound";
 import Products from "./pages/Products";
 import { CartProvider } from "./contexts/CartContext";
 import AboutUs from "./pages/AboutUs";
+import { AuthProvider } from "./contexts/AuthContext";
+import Auth from "./pages/Auth";
+import Admin from "./pages/Admin";
+import Contact from "./pages/Contact";
+import Blog from "./pages/Blog";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <CartProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/productos" element={<Products />} />
-            <Route path="/nosotros" element={<AboutUs />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </CartProvider>
+      <AuthProvider>
+        <CartProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/productos" element={<Products />} />
+              <Route path="/nosotros" element={<AboutUs />} />
+              <Route path="/contacto" element={<Contact />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </CartProvider>
+      </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

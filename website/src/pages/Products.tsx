@@ -85,7 +85,7 @@ const allProducts: Product[] = [
     description:
       "Par de amortiguadores de gas para mejor manejo y confort. Diseño deportivo con ajuste de dureza.",
     image:
-      "https://images.unsplash.com/photo-1449130015084-2dc7c9e50a3a?w=800&h=600&fit=crop",
+      "https://media.istockphoto.com/id/1349965953/es/foto/suspensi%C3%B3n-de-motocicleta.webp?a=1&b=1&s=612x612&w=0&k=20&c=d36fE3ZaKsw8nw-5JwXvFbS6gCl_Rf56M1-mytgAmWY=",
     price: 289.0,
     inStock: true,
     category: "Autos",
