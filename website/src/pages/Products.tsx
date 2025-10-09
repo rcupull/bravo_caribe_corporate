@@ -8,6 +8,8 @@ import QuickQuoteCTA from "@/components/products/QuickQuoteCTA";
 import { useCart } from "@/contexts/CartContext";
 import { Product } from "@/components/products/ProductCard";
 import { toast } from "@/hooks/use-toast";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 import {
   Pagination,
   PaginationContent,
@@ -85,7 +87,7 @@ const allProducts: Product[] = [
     description:
       "Par de amortiguadores de gas para mejor manejo y confort. Diseño deportivo con ajuste de dureza.",
     image:
-      "https://media.istockphoto.com/id/1349965953/es/foto/suspensi%C3%B3n-de-motocicleta.webp?a=1&b=1&s=612x612&w=0&k=20&c=d36fE3ZaKsw8nw-5JwXvFbS6gCl_Rf56M1-mytgAmWY=",
+      "https://images.unsplash.com/photo-1449130015084-2dc7c9e50a3a?w=800&h=600&fit=crop",
     price: 289.0,
     inStock: true,
     category: "Autos",
@@ -173,6 +175,7 @@ const Products = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const { addToCart } = useCart();
 
   // Get unique categories
@@ -184,6 +187,17 @@ const Products = () => {
   const filteredProducts = allProducts.filter((product) => {
     if (selectedCategory && product.category !== selectedCategory) return false;
     if (inStockOnly && !product.inStock) return false;
+
+    // Search filter
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      const matchesName = product.name.toLowerCase().includes(query);
+      const matchesDescription = product.description
+        .toLowerCase()
+        .includes(query);
+      if (!matchesName && !matchesDescription) return false;
+    }
+
     return true;
   });
 
@@ -243,6 +257,23 @@ const Products = () => {
 
               {/* Products Grid */}
               <div className="lg:col-span-3">
+                {/* Search Bar */}
+                <div className="mb-6">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                    <Input
+                      type="text"
+                      placeholder="Buscar productos por nombre o descripción..."
+                      value={searchQuery}
+                      onChange={(e) => {
+                        setSearchQuery(e.target.value);
+                        setCurrentPage(1);
+                      }}
+                      className="pl-10"
+                    />
+                  </div>
+                </div>
+
                 <div className="mb-6">
                   <p className="text-muted-foreground">
                     Mostrando {paginatedProducts.length} de{" "}

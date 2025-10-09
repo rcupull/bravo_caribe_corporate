@@ -32,9 +32,11 @@ const Blog = () => {
         {
           id: "1",
           title: "Guía Completa de Mantenimiento Preventivo",
-          excerpt: "Descubre cómo el mantenimiento preventivo puede extender la vida útil de tu vehículo y ahorrarte dinero.",
+          excerpt:
+            "Descubre cómo el mantenimiento preventivo puede extender la vida útil de tu vehículo y ahorrarte dinero.",
           content: "El mantenimiento preventivo es clave...",
-          image: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=800&h=600&fit=crop",
+          image:
+            "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=800&h=600&fit=crop",
           author: "Carlos Mendoza",
           date: "2024-01-15",
           category: "Mantenimiento",
@@ -43,9 +45,11 @@ const Blog = () => {
         {
           id: "2",
           title: "Cómo Elegir las Pastillas de Freno Correctas",
-          excerpt: "Todo lo que necesitas saber para seleccionar las pastillas de freno ideales para tu vehículo.",
+          excerpt:
+            "Todo lo que necesitas saber para seleccionar las pastillas de freno ideales para tu vehículo.",
           content: "Las pastillas de freno son fundamentales...",
-          image: "https://images.unsplash.com/photo-1625047509248-ec889cbff17f?w=800&h=600&fit=crop",
+          image:
+            "https://images.unsplash.com/photo-1625047509248-ec889cbff17f?w=800&h=600&fit=crop",
           author: "María González",
           date: "2024-01-10",
           category: "Frenos",
@@ -54,9 +58,11 @@ const Blog = () => {
         {
           id: "3",
           title: "Filtros de Aceite: Cuándo y Por Qué Cambiarlos",
-          excerpt: "Aprende la importancia de cambiar el filtro de aceite regularmente y sus beneficios.",
+          excerpt:
+            "Aprende la importancia de cambiar el filtro de aceite regularmente y sus beneficios.",
           content: "Los filtros de aceite juegan un papel crucial...",
-          image: "https://images.unsplash.com/photo-1487754180451-c456f719a1fc?w=800&h=600&fit=crop",
+          image:
+            "https://images.unsplash.com/photo-1487754180451-c456f719a1fc?w=800&h=600&fit=crop",
           author: "Juan Pérez",
           date: "2024-01-05",
           category: "Lubricación",
@@ -68,14 +74,20 @@ const Blog = () => {
     }
   }, []);
 
-  const categories = ["Todos", ...Array.from(new Set(posts.map(p => p.category)))];
-  
-  const filteredPosts = selectedCategory === "Todos" 
-    ? posts 
-    : posts.filter(p => p.category === selectedCategory);
+  const categories = [
+    "Todos",
+    ...Array.from(new Set(posts.map((p) => p.category))),
+  ];
 
-  const featuredPost = posts.find(p => p.featured);
-  const regularPosts = filteredPosts.filter(p => !p.featured || selectedCategory !== "Todos");
+  const filteredPosts =
+    selectedCategory === "Todos"
+      ? posts
+      : posts.filter((p) => p.category === selectedCategory);
+
+  const featuredPost = posts.find((p) => p.featured);
+  const regularPosts = filteredPosts.filter(
+    (p) => !p.featured || selectedCategory !== "Todos"
+  );
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -102,7 +114,9 @@ const Blog = () => {
           <section className="py-16 bg-background">
             <div className="container mx-auto px-4">
               <div className="max-w-6xl mx-auto">
-                <h2 className="text-2xl font-bold mb-8 text-foreground">Destacado</h2>
+                <h2 className="text-2xl font-bold mb-8 text-foreground">
+                  Destacado
+                </h2>
                 <Card className="overflow-hidden hover:shadow-xl transition-shadow">
                   <div className="grid md:grid-cols-2 gap-6">
                     <img
@@ -111,7 +125,9 @@ const Blog = () => {
                       className="w-full h-full object-cover"
                     />
                     <CardContent className="p-8 flex flex-col justify-center">
-                      <Badge className="w-fit mb-4">{featuredPost.category}</Badge>
+                      <Badge className="w-fit mb-4">
+                        {featuredPost.category}
+                      </Badge>
                       <h3 className="text-3xl font-bold mb-4 text-foreground">
                         {featuredPost.title}
                       </h3>
@@ -125,14 +141,22 @@ const Blog = () => {
                         </div>
                         <div className="flex items-center gap-2">
                           <Calendar className="h-4 w-4" />
-                          {new Date(featuredPost.date).toLocaleDateString('es-ES', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric'
-                          })}
+                          {new Date(featuredPost.date).toLocaleDateString(
+                            "es-ES",
+                            {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            }
+                          )}
                         </div>
                       </div>
-                      <Button className="w-fit gap-2">
+                      <Button
+                        className="w-fit gap-2"
+                        onClick={() =>
+                          (window.location.href = `/blog/${featuredPost.id}`)
+                        }
+                      >
                         Leer más
                         <ArrowRight className="h-4 w-4" />
                       </Button>
@@ -152,7 +176,9 @@ const Blog = () => {
                 {categories.map((category) => (
                   <Button
                     key={category}
-                    variant={selectedCategory === category ? "default" : "outline"}
+                    variant={
+                      selectedCategory === category ? "default" : "outline"
+                    }
                     onClick={() => setSelectedCategory(category)}
                   >
                     {category}
@@ -174,7 +200,10 @@ const Blog = () => {
               ) : (
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {regularPosts.map((post) => (
-                    <Card key={post.id} className="overflow-hidden hover:shadow-lg transition-shadow flex flex-col">
+                    <Card
+                      key={post.id}
+                      className="overflow-hidden hover:shadow-lg transition-shadow flex flex-col"
+                    >
                       <img
                         src={post.image}
                         alt={post.title}
@@ -195,14 +224,20 @@ const Blog = () => {
                           </div>
                           <div className="flex items-center gap-2">
                             <Calendar className="h-4 w-4" />
-                            {new Date(post.date).toLocaleDateString('es-ES', {
-                              year: 'numeric',
-                              month: 'short',
-                              day: 'numeric'
+                            {new Date(post.date).toLocaleDateString("es-ES", {
+                              year: "numeric",
+                              month: "short",
+                              day: "numeric",
                             })}
                           </div>
                         </div>
-                        <Button variant="outline" className="w-full gap-2">
+                        <Button
+                          variant="outline"
+                          className="w-full gap-2"
+                          onClick={() =>
+                            (window.location.href = `/blog/${post.id}`)
+                          }
+                        >
                           Leer más
                           <ArrowRight className="h-4 w-4" />
                         </Button>

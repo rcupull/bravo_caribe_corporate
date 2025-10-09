@@ -57,10 +57,10 @@ const Header = () => {
                   <Button
                     asChild
                     variant="outline"
-                    className="border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10"
+                    className="hover:bg-primary-foreground/10"
                   >
                     <Link to="/admin">
-                      <Shield className="h-4 w-4 mr-2" />
+                      <Shield className="h-4 w-4" />
                       Admin
                     </Link>
                   </Button>
@@ -68,9 +68,9 @@ const Header = () => {
                 <Button
                   variant="outline"
                   onClick={logout}
-                  className="border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10"
+                  className="hover:bg-primary-foreground/10"
                 >
-                  <LogOut className="h-4 w-4 mr-2" />
+                  <LogOut className="h-4 w-4" />
                   Salir
                 </Button>
               </>
