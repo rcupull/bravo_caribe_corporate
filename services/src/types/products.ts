@@ -1,5 +1,6 @@
 import { FilterQuery, Schema } from 'mongoose';
 import { BaseIdentity, Currency, Image } from './general';
+import { CategorySpecsFields, CategoryType } from './category';
 
 export interface Product extends BaseIdentity {
   images?: Array<Image>;
@@ -11,6 +12,9 @@ export interface Product extends BaseIdentity {
   price: number;
   currency: Currency;
   hidden?: boolean;
+
+  categoryType?: CategoryType;
+  specs?: Record<CategorySpecsFields, string>;
 }
 
 export interface ProductDto extends Product {}

@@ -30,8 +30,8 @@ const ProductCard = ({ product, onQuoteRequest }: ProductCardProps) => {
   return (
     <Card className="group h-full flex flex-col hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-accent">
       <div className="relative overflow-hidden rounded-t-lg">
-        <img 
-          src={product.image} 
+        <img
+          src={product.image}
           alt={product.name}
           className="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-300"
         />
@@ -40,9 +40,11 @@ const ProductCard = ({ product, onQuoteRequest }: ProductCardProps) => {
             {product.category}
           </Badge>
         )}
-        <Badge 
+        <Badge
           variant={product.inStock ? "default" : "secondary"}
-          className={`absolute top-3 right-3 ${product.inStock ? 'bg-green-600' : 'bg-gray-500'}`}
+          className={`absolute top-3 right-3 ${
+            product.inStock ? "bg-green-600" : "bg-gray-500"
+          }`}
         >
           {product.inStock ? (
             <CheckCircle className="h-3 w-3 mr-1" />
@@ -73,7 +75,7 @@ const ProductCard = ({ product, onQuoteRequest }: ProductCardProps) => {
       </CardContent>
 
       <CardFooter className="p-6 pt-0">
-        <Button 
+        <Button
           onClick={handleQuoteClick}
           className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold"
           disabled={!product.inStock}

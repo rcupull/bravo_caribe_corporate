@@ -10,7 +10,7 @@ import { CartProvider } from "./contexts/CartContext";
 import AboutUs from "./pages/AboutUs";
 import { AuthProvider } from "./contexts/AuthContext";
 import Auth from "./pages/Auth";
-import Admin from "./pages/Admin";
+import Admin from "./pages/admin";
 import Contact from "./pages/Contact";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";

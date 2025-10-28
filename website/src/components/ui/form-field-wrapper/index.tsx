@@ -1,5 +1,6 @@
 import { Nullable, StyleProps } from "@/types/general";
 import { cn } from "@/utils/general";
+import { Label } from "../label";
 
 export interface FormFieldWrapperProps extends StyleProps {
   label?: React.ReactNode;
@@ -25,16 +26,13 @@ export const FormFieldWrapper = ({
       })}
     >
       {label && (
-        <label
-          className={cn(
-            "block text-md font-semibold leading-6 text-gray-900 w-fit",
-            {
-              "text-red-500": !!error,
-            }
-          )}
+        <Label
+          className={cn({
+            "text-red-500": !!error,
+          })}
         >
           {label}
-        </label>
+        </Label>
       )}
     </div>
   );

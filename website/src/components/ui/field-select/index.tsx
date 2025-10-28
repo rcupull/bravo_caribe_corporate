@@ -191,7 +191,7 @@ export const FieldSelect = <Option extends AnyRecord = AnyRecord>(
           </div>
 
           <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
-            <ChevronDown className="size-6" aria-hidden="true" />
+            <ChevronDown className="size-4" aria-hidden="true" />
           </span>
         </div>
       </Dropdown>

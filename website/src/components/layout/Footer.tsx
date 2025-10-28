@@ -8,6 +8,7 @@ import {
   Twitter,
 } from "lucide-react";
 import logo from "@/assets/logo-v.png";
+import { categories } from "@/utils/category";
 
 const Footer = () => {
   return (
@@ -86,38 +87,16 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold text-lg mb-4">Categorías</h3>
             <ul className="space-y-2">
-              <li>
-                <Link
-                  to="/productos?category=autos"
-                  className="text-sm text-primary-foreground/70 hover:text-accent transition-colors"
-                >
-                  Autos
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/productos?category=motos"
-                  className="text-sm text-primary-foreground/70 hover:text-accent transition-colors"
-                >
-                  Motos
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/productos?category=pesados"
-                  className="text-sm text-primary-foreground/70 hover:text-accent transition-colors"
-                >
-                  Vehículos Pesados
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/productos?category=accesorios"
-                  className="text-sm text-primary-foreground/70 hover:text-accent transition-colors"
-                >
-                  Accesorios
-                </Link>
-              </li>
+              {categories.map(({ name, type }, index) => (
+                <li key={index}>
+                  <Link
+                    to={`/productos?category=${type}`}
+                    className="text-sm text-primary-foreground/70 hover:text-accent transition-colors"
+                  >
+                    {name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
