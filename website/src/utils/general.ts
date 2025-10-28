@@ -1,5 +1,8 @@
 import classnames from "classnames";
 import { AnyRecord, EmptyObjectOf, Nullable } from "@/types/general";
+import { Path } from "@/types/paths";
+import dlv from "dlv";
+import { dset } from "dset";
 
 export const isNullOrUndefined = (
   value: unknown
@@ -277,4 +280,19 @@ export const mergeRefs = <T extends any>(
 export const toCurrencyFormat = (amount: number, currency: string): string => {
   const formattedAmount = amount?.toFixed(2);
   return `${formattedAmount} ${currency}`;
+};
+
+export const get = <T extends AnyRecord = AnyRecord>(
+  obj: T,
+  path: Path<T>
+): any => {
+  return dlv(obj, path);
+};
+
+export const set = <T extends AnyRecord = AnyRecord>(
+  obj: T,
+  path: Path<T>,
+  value: any
+): void => {
+  dset(obj, path, value);
 };
