@@ -18,8 +18,8 @@ const Footer = () => {
           <div>
             <img src={logo} alt="Bravo Caribe" className="h-28 w-auto mb-4" />
             <p className="text-sm text-primary-foreground/70 mb-4">
-              Tu proveedor confiable de partes para autos, motos y vehículos
-              pesados en el Caribe.
+              Tu proveedor confiable de partes y piezas para autos, motos y
+              vehículos pesados en Cuba.
             </p>
             <div className="flex space-x-4">
               <a

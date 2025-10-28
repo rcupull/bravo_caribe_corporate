@@ -11,8 +11,10 @@ const featuredProducts = [
   {
     id: "1",
     name: "Filtro de Aceite Premium",
-    description: "Filtro de aceite de alta calidad compatible con múltiples modelos de vehículos",
-    image: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=800&h=600&fit=crop",
+    description:
+      "Filtro de aceite de alta calidad compatible con múltiples modelos de vehículos",
+    image:
+      "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=800&h=600&fit=crop",
     price: 24.99,
     inStock: true,
     category: "Autos",
@@ -21,8 +23,10 @@ const featuredProducts = [
   {
     id: "2",
     name: "Pastillas de Freno Cerámicas",
-    description: "Pastillas de freno de alto rendimiento con tecnología cerámica",
-    image: "https://images.unsplash.com/photo-1625047509248-ec889cbff17f?w=800&h=600&fit=crop",
+    description:
+      "Pastillas de freno de alto rendimiento con tecnología cerámica",
+    image:
+      "https://images.unsplash.com/photo-1625047509248-ec889cbff17f?w=800&h=600&fit=crop",
     price: 89.99,
     inStock: true,
     category: "Autos",
@@ -31,9 +35,11 @@ const featuredProducts = [
   {
     id: "3",
     name: "Kit de Cadena para Moto",
-    description: "Kit completo de cadena y piñones para motocicletas deportivas",
-    image: "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=800&h=600&fit=crop",
-    price: 156.00,
+    description:
+      "Kit completo de cadena y piñones para motocicletas deportivas",
+    image:
+      "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=800&h=600&fit=crop",
+    price: 156.0,
     inStock: false,
     category: "Motos",
     brand: "ChainPro",
@@ -50,14 +56,21 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      
+
       <main className="flex-1">
-        <HeroBanner />
-        
+        <HeroBanner
+          backgroundImages={[
+            "https://firstlogisticsllc.com/wp-content/uploads/2024/11/parts-aftermarket-hero.png",
+            "https://shautoparts.com/wp-content/uploads/2024/09/history-capacity-hero-1920x1080-1.jpg",
+            "https://previews.123rf.com/images/tonaorh/tonaorh2305/tonaorh230501907/205400505-spare-parts-and-tools-for-car-mechanic-on-dark-background-close-up.jpg",
+            "https://article.images.consumerreports.org/image/upload/w_652%2Cf_auto%2Cq_auto%2Car_16%3A9%2Cc_lfill/v1724779978/prod/content/dam/CRO-Images-2024/Cars/CR-Cars-InlineHero-Get-Your-Car-Fixed-for-Almost-Free-0824",
+          ]}
+        />
+
         <CategoriesHighlight />
-        
+
         <BenefitsBlock />
-        
+
         {/* Featured Products Section */}
         <section className="py-20 bg-secondary">
           <div className="container mx-auto px-4">
@@ -84,7 +97,7 @@ const Index = () => {
 
         <QuickQuoteCTA />
       </main>
-      
+
       <Footer />
     </div>
   );

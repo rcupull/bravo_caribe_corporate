@@ -23,7 +23,7 @@ const defaultCategories: Category[] = [
   },
   {
     title: "Motos",
-    description: "Partes y accesorios para motocicletas de todas las marcas",
+    description: "Partes y piezas para motocicletas de todas las marcas",
     icon: <Bike className="h-12 w-12" />,
     link: "/productos?category=motos",
   },
@@ -41,7 +41,9 @@ const defaultCategories: Category[] = [
   },
 ];
 
-const CategoriesHighlight = ({ categories = defaultCategories }: CategoriesHighlightProps) => {
+const CategoriesHighlight = ({
+  categories = defaultCategories,
+}: CategoriesHighlightProps) => {
   return (
     <section className="py-20 bg-secondary">
       <div className="container mx-auto px-4">
@@ -50,7 +52,8 @@ const CategoriesHighlight = ({ categories = defaultCategories }: CategoriesHighl
             Nuestras Categorías
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Encuentra exactamente lo que necesitas en nuestro amplio catálogo de productos
+            Encuentra exactamente lo que necesitas en nuestro amplio catálogo de
+            productos
           </p>
         </div>
 

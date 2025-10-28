@@ -78,7 +78,7 @@ const Header = () => {
               <Button
                 asChild
                 variant="outline"
-                className="border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10"
+                className="border-primary-foreground/20 hover:bg-primary-foreground/10"
               >
                 <Link to="/auth">
                   <LogIn className="h-4 w-4 mr-2" />
