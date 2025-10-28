@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ProductCard from "@/components/products/ProductCard";
@@ -18,6 +18,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { useGetAllProducts } from "@/api/products/useGetAllProducts";
 
 // Datos dummy de productos automotrices
 const allProducts: Product[] = [
@@ -177,6 +178,12 @@ const Products = () => {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const { addToCart } = useCart();
+
+  const { getAllProducts } = useGetAllProducts();
+
+  useEffect(() => {
+    getAllProducts.fetch();
+  }, []);
 
   // Get unique categories
   const categories = Array.from(

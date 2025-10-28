@@ -16,10 +16,11 @@ import {
 } from "@/components/ui/card";
 import { toast } from "sonner";
 import { LogIn, UserPlus } from "lucide-react";
+import { useAuthSignUp } from "@/api/auth/useAuthSignUp";
 
 const Auth = () => {
   const navigate = useNavigate();
-  const { login, signup, isAuthenticated } = useAuth();
+  const { login, isAuthenticated } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
   // Login form state
@@ -31,6 +32,8 @@ const Auth = () => {
   const [signupEmail, setSignupEmail] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
   const [signupConfirmPassword, setSignupConfirmPassword] = useState("");
+
+  const { authSignUp } = useAuthSignUp();
 
   // Redirect if already authenticated
   if (isAuthenticated) {
@@ -67,18 +70,21 @@ const Auth = () => {
       return;
     }
 
-    setIsLoading(true);
-
-    const result = await signup(signupEmail, signupPassword, signupName);
-
-    setIsLoading(false);
-
-    if (result.success) {
-      toast.success("¡Cuenta creada exitosamente!");
-      navigate("/");
-    } else {
-      toast.error(result.error || "Error al crear la cuenta");
-    }
+    authSignUp.fetch(
+      {
+        email: signupEmail,
+        password: signupPassword,
+        name: signupName,
+      },
+      {
+        onAfterSuccess: () => {
+          toast.success("¡Cuenta creada exitosamente!");
+        },
+        onAfterFailed: () => {
+          toast.error("Error al crear la cuenta");
+        },
+      }
+    );
   };
 
   return (
@@ -214,7 +220,7 @@ const Auth = () => {
                       <Button
                         type="submit"
                         className="w-full"
-                        disabled={isLoading}
+                        disabled={authSignUp.isPending}
                       >
                         {isLoading ? "Creando cuenta..." : "Crear Cuenta"}
                       </Button>

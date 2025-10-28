@@ -13,6 +13,7 @@ export class EmailServices {
 
   constructor() {
     this.transporter = createTransport({
+      //@ts-expect-error ignore
       host: EMAIL_SMTP_HOST,
       port: EMAIL_SMTP_PORT,
       secure: EMAIL_SECURE,

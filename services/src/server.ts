@@ -19,6 +19,10 @@ import { AuthServices } from './features/auth/services';
 import { AuthSessionServices } from './features/auth-session/services';
 import { UserServices } from './features/user/services';
 import { ValidationCodeServices } from './features/validation-code/services';
+import { AuthRouter } from './features/auth/routes';
+import { AuthController } from './features/auth/controller';
+import { UserDtosServices } from './features/user-dtos/services';
+import { EmailServices } from './features/email/services';
 
 export const app = express();
 const router = Router();
@@ -30,9 +34,11 @@ const fileServices = new FileServices();
 const productServices = new ProductServices();
 const authSessionServices = new AuthSessionServices();
 const userServices = new UserServices();
+const userDtosServices = new UserDtosServices(authSessionServices);
 const validationCodeServices = new ValidationCodeServices();
 const authServices = new AuthServices(authSessionServices, userServices, validationCodeServices);
 const accessServices = new AccessServices(authServices);
+const emailServices = new EmailServices();
 
 const productDtosServices = new ProductDtosServices();
 
@@ -41,18 +47,27 @@ const productDtosServices = new ProductDtosServices();
 //////////////////////////////////////////////////////////////////////////////////////////
 
 const productController = new ProductController(productServices, productDtosServices);
+const authController = new AuthController(
+  authServices,
+  authSessionServices,
+  userServices,
+  validationCodeServices,
+  userDtosServices,
+  emailServices
+);
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
 
 const productRouter = new ProductRouter(productController, accessServices);
+const authRouter = new AuthRouter(authController, accessServices);
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
 
-router.use('/', productRouter.router);
+router.use('/', productRouter.router, authRouter.router);
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////

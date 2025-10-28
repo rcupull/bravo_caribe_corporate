@@ -25,7 +25,7 @@ export class AuthController {
     private readonly authServices: AuthServices,
     private readonly authSessionServices: AuthSessionServices,
     private readonly userServices: UserServices,
-    private readonly opsServices: ValidationCodeServices,
+    private readonly validationCodeServices: ValidationCodeServices,
     private readonly userDtosServices: UserDtosServices,
     private readonly emailServices: EmailServices
   ) {}
@@ -222,7 +222,7 @@ export class AuthController {
         password
       });
 
-      const newValidationCode = await this.opsServices.addValidationCode({
+      const newValidationCode = await this.validationCodeServices.addValidationCode({
         userId: newUser._id
       });
 
@@ -250,7 +250,7 @@ export class AuthController {
     async ({ req, res }) => {
       const { code } = req.body;
 
-      const validationCode = await this.opsServices.getValidationCode({
+      const validationCode = await this.validationCodeServices.getValidationCode({
         code
       });
 
@@ -326,7 +326,7 @@ export class AuthController {
     async ({ req, res }) => {
       const { code, newPassword } = req.body;
 
-      const validationCode = await this.opsServices.getValidationCode({
+      const validationCode = await this.validationCodeServices.getValidationCode({
         code
       });
 
@@ -362,7 +362,7 @@ export class AuthController {
 
       await user.save();
 
-      await this.opsServices.invalidateValidationCode({
+      await this.validationCodeServices.invalidateValidationCode({
         validationCodeId: validationCode._id
       });
 
@@ -393,7 +393,7 @@ export class AuthController {
 
       if (!user) return getUserNotFoundResponse({ res });
 
-      const newValidationCode = await this.opsServices.addValidationCode({
+      const newValidationCode = await this.validationCodeServices.addValidationCode({
         userId: user._id
       });
 
