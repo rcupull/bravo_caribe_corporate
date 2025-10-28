@@ -1,5 +1,6 @@
 import { MapPin, Clock, Phone, Mail } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { MapOl } from "../ui/map";
 
 interface MapAndHoursProps {
   address?: string;
@@ -30,7 +31,7 @@ const MapAndHours = ({
           <h3 className="text-2xl font-bold text-foreground mb-6">
             Información de Contacto
           </h3>
-          
+
           <div className="space-y-4">
             <Card>
               <CardContent className="flex items-start p-6">
@@ -40,7 +41,9 @@ const MapAndHours = ({
                   </div>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-foreground mb-1">Dirección</h4>
+                  <h4 className="font-semibold text-foreground mb-1">
+                    Dirección
+                  </h4>
                   <p className="text-muted-foreground">{address}</p>
                 </div>
               </CardContent>
@@ -54,9 +57,11 @@ const MapAndHours = ({
                   </div>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-foreground mb-1">Teléfono</h4>
-                  <a 
-                    href={`tel:${phone.replace(/\D/g, '')}`}
+                  <h4 className="font-semibold text-foreground mb-1">
+                    Teléfono
+                  </h4>
+                  <a
+                    href={`tel:${phone.replace(/\D/g, "")}`}
                     className="text-muted-foreground hover:text-accent transition-colors"
                   >
                     {phone}
@@ -74,7 +79,7 @@ const MapAndHours = ({
                 </div>
                 <div>
                   <h4 className="font-semibold text-foreground mb-1">Email</h4>
-                  <a 
+                  <a
                     href={`mailto:${email}`}
                     className="text-muted-foreground hover:text-accent transition-colors"
                   >
@@ -101,7 +106,7 @@ const MapAndHours = ({
               </div>
               <div className="space-y-3">
                 {hours.map((schedule, index) => (
-                  <div 
+                  <div
                     key={index}
                     className="flex justify-between items-center py-2 border-b border-border last:border-0"
                   >
@@ -121,31 +126,21 @@ const MapAndHours = ({
 
       {/* Map */}
       <div>
-        <h3 className="text-2xl font-bold text-foreground mb-6">
-          Ubicación
-        </h3>
-        <Card className="overflow-hidden h-[500px]">
-          {mapEmbedUrl ? (
-            <iframe
-              src={mapEmbedUrl}
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-          ) : (
-            <div className="w-full h-full bg-secondary flex items-center justify-center">
-              <div className="text-center p-8">
-                <MapPin className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground">
-                  Mapa disponible próximamente
-                </p>
-              </div>
-            </div>
-          )}
-        </Card>
+        <h3 className="text-2xl font-bold text-foreground mb-6">Ubicación</h3>
+
+        <MapOl
+          center={{
+            lat: 23.133455339265353,
+            lon: -82.37645038781906,
+          }}
+          markers={[
+            {
+              lat: 23.133455339265353,
+              lon: -82.37645038781906,
+            },
+          ]}
+          zoom={18}
+        />
       </div>
     </div>
   );
