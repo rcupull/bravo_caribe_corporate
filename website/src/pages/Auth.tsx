@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -17,11 +16,17 @@ import {
 import { toast } from "sonner";
 import { LogIn, UserPlus } from "lucide-react";
 import { useAuthSignUp } from "@/api/auth/useAuthSignUp";
+import { useAuth } from "@/hooks/useAuth";
+import { useAuthSignIn } from "@/api/auth/useAuthSignIn";
+import { useGlobalState } from "@/contexts/GlobalContext";
+import { useLocalStorage } from "@/features/local-storage";
 
 const Auth = () => {
   const navigate = useNavigate();
-  const { login, isAuthenticated } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
+  const { isAuthenticated } = useAuth();
+
+  const { setUser } = useGlobalState();
+  const { saveLS } = useLocalStorage();
 
   // Login form state
   const [loginEmail, setLoginEmail] = useState("");
@@ -34,6 +39,7 @@ const Auth = () => {
   const [signupConfirmPassword, setSignupConfirmPassword] = useState("");
 
   const { authSignUp } = useAuthSignUp();
+  const { authSignIn } = useAuthSignIn();
 
   // Redirect if already authenticated
   if (isAuthenticated) {
@@ -43,18 +49,25 @@ const Auth = () => {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
 
-    const result = await login(loginEmail, loginPassword);
+    authSignIn.fetch(
+      {
+        email: loginEmail,
+        password: loginPassword,
+      },
+      {
+        onAfterSuccess: (response) => {
+          setUser(response.user);
+          saveLS("user", response.user);
 
-    setIsLoading(false);
-
-    if (result.success) {
-      toast.success("¡Bienvenido!");
-      navigate("/");
-    } else {
-      toast.error(result.error || "Error al iniciar sesión");
-    }
+          toast.success("¡Bienvenido!");
+          navigate("/");
+        },
+        onAfterFailed: () => {
+          toast.error("Error al iniciar sesión");
+        },
+      }
+    );
   };
 
   const handleSignup = async (e: React.FormEvent) => {
@@ -147,9 +160,11 @@ const Auth = () => {
                       <Button
                         type="submit"
                         className="w-full"
-                        disabled={isLoading}
+                        disabled={authSignIn.isPending}
                       >
-                        {isLoading ? "Iniciando sesión..." : "Iniciar Sesión"}
+                        {authSignIn.isPending
+                          ? "Iniciando sesión..."
+                          : "Iniciar Sesión"}
                       </Button>
                     </form>
                   </CardContent>
@@ -222,7 +237,9 @@ const Auth = () => {
                         className="w-full"
                         disabled={authSignUp.isPending}
                       >
-                        {isLoading ? "Creando cuenta..." : "Crear Cuenta"}
+                        {authSignUp.isPending
+                          ? "Creando cuenta..."
+                          : "Crear Cuenta"}
                       </Button>
                     </form>
                   </CardContent>

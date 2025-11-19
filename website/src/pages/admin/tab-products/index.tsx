@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Table,
   TableBody,
@@ -28,6 +26,7 @@ import { FieldInput } from "@/components/ui/field-input";
 import { FieldSelect } from "@/components/ui/field-select";
 import { categories } from "@/utils/category";
 import { FieldTextArea } from "@/components/ui/field-text-area";
+import { useAuth } from "@/hooks/useAuth";
 
 interface Product {
   id: string;

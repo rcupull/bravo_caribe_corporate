@@ -1,4 +1,3 @@
-import { useAuth } from "@/contexts/AuthContext";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { TabsUI } from "@/components/ui/tabs-ui";
@@ -8,6 +7,7 @@ import { TabBlog } from "./tab-blog";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { useAuth } from "@/hooks/useAuth";
 
 const Admin = () => {
   const { isAuthenticated, isAdmin } = useAuth();

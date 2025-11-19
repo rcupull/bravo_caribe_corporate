@@ -2,13 +2,18 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X, Phone, LogIn, LogOut, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/contexts/AuthContext";
 import CartSheet from "@/components/cart/CartSheet";
 import logo from "@/assets/logo-h.png";
+import { useGlobalState } from "@/contexts/GlobalContext";
+import { useLocalStorage } from "@/features/local-storage";
+import { useAuth } from "@/hooks/useAuth";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { isAuthenticated, isAdmin, user, logout } = useAuth();
+  const { setUser } = useGlobalState();
+  const { removeLS } = useLocalStorage();
+
+  const { isAdmin, isAuthenticated } = useAuth();
 
   const navLinks = [
     { name: "Inicio", path: "/" },
@@ -17,6 +22,11 @@ const Header = () => {
     { name: "Blog", path: "/blog" },
     { name: "Contacto", path: "/contacto" },
   ];
+
+  const logout = () => {
+    setUser(undefined);
+    removeLS("user");
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full bg-primary border-b border-border/40 backdrop-blur-sm">
@@ -67,7 +77,10 @@ const Header = () => {
                 )}
                 <Button
                   variant="outline"
-                  onClick={logout}
+                  onClick={() => {
+                    setUser(undefined);
+                    removeLS("user");
+                  }}
                   className="hover:bg-primary-foreground/10"
                 >
                   <LogOut className="h-4 w-4" />
