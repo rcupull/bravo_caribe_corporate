@@ -1,12 +1,17 @@
-import { useGlobalState } from "@/contexts/GlobalContext";
+import { useGetOwnUser } from "@/api/user/useGetOwnUser";
+import { useApiPersistent } from "@/features/redux/slices/useApiPersistent";
 
 import { UserRole } from "@/types/auth";
 
 export const useAuth = () => {
-  const { user } = useGlobalState();
+  const { getOwnUser } = useGetOwnUser();
+
+  const { data, setData, resetData } = useApiPersistent("useAuth", getOwnUser);
 
   return {
-    isAuthenticated: !!user,
-    isAdmin: user?.role === UserRole.ADMIN,
+    isAuthenticated: !!data,
+    isAdmin: data?.role === UserRole.ADMIN,
+    setData,
+    resetData,
   };
 };

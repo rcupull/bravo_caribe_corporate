@@ -1,35 +1,9 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { toast } from "sonner";
-import { Plus, Edit, Trash2, RefreshCcw } from "lucide-react";
-import { Formux } from "@/components/ui/formux";
-import { FieldInput } from "@/components/ui/field-input";
-import { FieldSelect } from "@/components/ui/field-select";
-import { categories } from "@/utils/category";
-import { FieldTextArea } from "@/components/ui/field-text-area";
-import { useAuth } from "@/hooks/useAuth";
+
+import { Edit, Trash2 } from "lucide-react";
 import { DialogProductForm } from "./DialogProductForm";
 import { Product } from "@/types/products";
-import { useAdminGetAllProducts } from "@/api/products/useAdminGetAllProducts";
 
 interface RowActionsProps {
   rowData: Product;

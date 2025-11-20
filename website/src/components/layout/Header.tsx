@@ -4,14 +4,12 @@ import { Menu, X, Phone, LogIn, LogOut, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import CartSheet from "@/components/cart/CartSheet";
 import logo from "@/assets/logo-h.png";
-import { useGlobalState } from "@/contexts/GlobalContext";
-import { localStorageUtils } from "@/features/local-storage";
 import { useAuth } from "@/hooks/useAuth";
+import { resetPersistentAuthData } from "@/utils/persistent-auth";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { setUser } = useGlobalState();
-  const { removeLS } = localStorageUtils();
+  const { resetData } = useAuth();
 
   const { isAdmin, isAuthenticated } = useAuth();
 
@@ -24,8 +22,8 @@ const Header = () => {
   ];
 
   const logout = () => {
-    setUser(undefined);
-    removeLS("user");
+    resetData();
+    resetPersistentAuthData();
   };
 
   return (
@@ -83,10 +81,7 @@ const Header = () => {
                 )}
                 <Button
                   variant="outline"
-                  onClick={() => {
-                    setUser(undefined);
-                    removeLS("user");
-                  }}
+                  onClick={logout}
                   className="hover:bg-primary-foreground/10"
                 >
                   <LogOut className="h-4 w-4" />

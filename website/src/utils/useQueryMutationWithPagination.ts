@@ -5,6 +5,7 @@ import {
   FetchData,
   PaginatedData,
 } from "@/types/api";
+import { getPaginationResources } from "./pagination";
 
 export const useQueryMutationWithPagination = <
   FetchArgs extends any,
@@ -12,7 +13,7 @@ export const useQueryMutationWithPagination = <
 >(args: {
   fetch: (
     args: FetchArgs,
-    options?: FetchOptions<Array<Data>>
+    options?: FetchOptions<PaginatedData<Data>>
   ) => Promise<FetchData<PaginatedData<Data>>>;
 }): FetchResourceWithPagination<FetchArgs, Data> => {
   const { data, ...mutation } = useMutation<
@@ -20,13 +21,13 @@ export const useQueryMutationWithPagination = <
     any,
     {
       fetchArgs: FetchArgs;
-      options?: FetchOptions<Array<Data>>;
+      options?: FetchOptions<PaginatedData<Data>>;
     }
   >({
     mutationFn: ({ fetchArgs }) => args.fetch(fetchArgs),
     onSuccess: (data, { options }) => {
       const { onAfterSuccess } = options || {};
-      onAfterSuccess?.(data.data);
+      onAfterSuccess?.(data);
     },
     onError: (error, { options }) => {
       const { onAfterFailed } = options || {};
@@ -37,8 +38,7 @@ export const useQueryMutationWithPagination = <
   //@ts-expect-error ignore
   return {
     ...mutation,
-    data: data?.data || [],
-    paginator: data?.paginator || null,
+    ...getPaginationResources(data),
     fetch: (fetchArgs, options) => mutation.mutate({ fetchArgs, options }),
   };
 };

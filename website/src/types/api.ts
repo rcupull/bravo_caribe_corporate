@@ -1,6 +1,7 @@
 import { UseMutationResult } from "@tanstack/react-query";
 import { ParsedQuery } from "query-string";
 import { AnyRecord } from "./general";
+import { AxiosRequestConfig } from "axios";
 
 export type FetchData<Data = unknown> = Data | null;
 export interface ApiError {
@@ -12,6 +13,8 @@ export type OnAfterSuccess<Data = any> = (
 ) => void | Promise<void>;
 
 export type OnAfterFailed = (error: ApiError) => void;
+
+export type FetchFnCallArgsGetter<T = any> = (args: T) => AxiosRequestConfig;
 
 export type FetchOptions<Data = any> = {
   onAfterSuccess?: OnAfterSuccess<Data>;
@@ -64,8 +67,13 @@ export type FetchResourceWithPagination<
 > = UseMutationResult<
   PaginatedData<Data>["data"] | null,
   any,
-  { fetchArgs: Args; options?: FetchOptions<Array<Data>> }
+  { fetchArgs: Args; options?: FetchOptions<PaginatedData<Data>> }
 > & {
   paginator?: PaginatedData<Data>["paginator"] | null;
-  fetch: (args: Args, options?: FetchOptions<Array<Data>>) => void;
+  fetch: (args: Args, options?: FetchOptions<PaginatedData<Data>>) => void;
 };
+
+export type SliceApiPersistentState<D = any> = {
+  data: FetchData<D>;
+  isPending: boolean;
+} | null;

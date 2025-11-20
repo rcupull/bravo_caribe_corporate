@@ -1,4 +1,10 @@
-import { GetEndpoint, Query, UrlParams } from "@/types/api";
+import {
+  FetchStatus,
+  GetEndpoint,
+  Query,
+  SliceApiPersistentState,
+  UrlParams,
+} from "@/types/api";
 import { isEmpty, isNullOrUndefined, isNumber, isString } from "./general";
 import qs from "query-string";
 import { AxiosPromise, AxiosRequestConfig } from "axios";
@@ -229,3 +235,10 @@ export const axiosFetch = async (args: AxiosRequestConfig): AxiosPromise => {
 
   return axiosClient(args);
 };
+
+export const getApiPersisteState = <D>(
+  data: D
+): SliceApiPersistentState<D> => ({
+  data,
+  isPending: false,
+});

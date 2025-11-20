@@ -38,7 +38,6 @@ interface BlogPost {
 
 export const TabBlog = () => {
   const navigate = useNavigate();
-  const { isAuthenticated, isAdmin } = useAuth();
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [isBlogDialogOpen, setIsBlogDialogOpen] = useState(false);
   const [editingBlogPost, setEditingBlogPost] = useState<BlogPost | null>(null);

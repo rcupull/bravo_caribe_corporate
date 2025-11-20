@@ -1,14 +1,14 @@
-import { useGlobalState } from "@/contexts/GlobalContext";
 import { useEffect } from "react";
 import { getPersistentAuthData } from "@/utils/persistent-auth";
+import { useAuth } from "@/hooks/useAuth";
 
 export const InitService = () => {
-  const { setUser } = useGlobalState();
+  const { setData } = useAuth();
 
   useEffect(() => {
     getPersistentAuthData().then(({ user }) => {
       if (user) {
-        setUser(user);
+        setData(user);
       }
     });
   }, []);

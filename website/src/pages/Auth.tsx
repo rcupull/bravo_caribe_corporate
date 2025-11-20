@@ -18,16 +18,13 @@ import { LogIn, UserPlus } from "lucide-react";
 import { useAuthSignUp } from "@/api/auth/useAuthSignUp";
 import { useAuth } from "@/hooks/useAuth";
 import { useAuthSignIn } from "@/api/auth/useAuthSignIn";
-import { useGlobalState } from "@/contexts/GlobalContext";
-import { localStorageUtils } from "@/features/local-storage";
 import { setPersistentAuthData } from "@/utils/persistent-auth";
 
 const Auth = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
 
-  const { setUser } = useGlobalState();
-  const { saveLS } = localStorageUtils();
+  const { setData } = useAuth();
 
   // Login form state
   const [loginEmail, setLoginEmail] = useState("");
@@ -60,7 +57,7 @@ const Auth = () => {
         onAfterSuccess: (response) => {
           const { accessToken, refreshToken, steat, user } = response;
 
-          setUser(user);
+          setData(user);
           setPersistentAuthData({
             user,
             accessToken,
