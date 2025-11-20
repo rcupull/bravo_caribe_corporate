@@ -37,7 +37,7 @@ export const useQueryMutationWithPagination = <
   //@ts-expect-error ignore
   return {
     ...mutation,
-    data: [],
+    data: data?.data || [],
     paginator: data?.paginator || null,
     fetch: (fetchArgs, options) => mutation.mutate({ fetchArgs, options }),
   };

@@ -1,7 +1,6 @@
 import { FetchResource } from "@/types/api";
-import { getEndpoint } from "@/utils/api";
+import { axiosFetch, getEndpoint } from "@/utils/api";
 import { useQueryMutation } from "@/utils/useQueryMutation";
-import axios from "axios";
 
 export const useAuthSignOut = (): {
   authSignOut: FetchResource<void, void>;
@@ -13,7 +12,7 @@ export const useAuthSignOut = (): {
 
         const refreshToken = null;
 
-        const response = await axios({
+        const response = await axiosFetch({
           method: "get",
           url: getEndpoint({ path: "/auth/sign-out" }),
           data: { refreshToken },

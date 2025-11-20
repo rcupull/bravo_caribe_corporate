@@ -19,14 +19,15 @@ import { useAuthSignUp } from "@/api/auth/useAuthSignUp";
 import { useAuth } from "@/hooks/useAuth";
 import { useAuthSignIn } from "@/api/auth/useAuthSignIn";
 import { useGlobalState } from "@/contexts/GlobalContext";
-import { useLocalStorage } from "@/features/local-storage";
+import { localStorageUtils } from "@/features/local-storage";
+import { setPersistentAuthData } from "@/utils/persistent-auth";
 
 const Auth = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
 
   const { setUser } = useGlobalState();
-  const { saveLS } = useLocalStorage();
+  const { saveLS } = localStorageUtils();
 
   // Login form state
   const [loginEmail, setLoginEmail] = useState("");
@@ -57,8 +58,15 @@ const Auth = () => {
       },
       {
         onAfterSuccess: (response) => {
-          setUser(response.user);
-          saveLS("user", response.user);
+          const { accessToken, refreshToken, steat, user } = response;
+
+          setUser(user);
+          setPersistentAuthData({
+            user,
+            accessToken,
+            refreshToken,
+            steat,
+          });
 
           toast.success("¡Bienvenido!");
           navigate("/");

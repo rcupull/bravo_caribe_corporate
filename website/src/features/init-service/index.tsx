@@ -1,17 +1,16 @@
 import { useGlobalState } from "@/contexts/GlobalContext";
 import { useEffect } from "react";
-import { useLocalStorage } from "../local-storage";
+import { getPersistentAuthData } from "@/utils/persistent-auth";
 
 export const InitService = () => {
   const { setUser } = useGlobalState();
-  const { readLS } = useLocalStorage();
 
   useEffect(() => {
-    const user = readLS("user");
-
-    if (user) {
-      setUser(user);
-    }
+    getPersistentAuthData().then(({ user }) => {
+      if (user) {
+        setUser(user);
+      }
+    });
   }, []);
 
   return null;

@@ -5,13 +5,13 @@ import { Button } from "@/components/ui/button";
 import CartSheet from "@/components/cart/CartSheet";
 import logo from "@/assets/logo-h.png";
 import { useGlobalState } from "@/contexts/GlobalContext";
-import { useLocalStorage } from "@/features/local-storage";
+import { localStorageUtils } from "@/features/local-storage";
 import { useAuth } from "@/hooks/useAuth";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { setUser } = useGlobalState();
-  const { removeLS } = useLocalStorage();
+  const { removeLS } = localStorageUtils();
 
   const { isAdmin, isAuthenticated } = useAuth();
 

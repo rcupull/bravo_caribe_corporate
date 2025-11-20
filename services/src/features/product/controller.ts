@@ -94,9 +94,9 @@ export class ProductController {
       bodyShape: (z) => ({
         name: z.string().nonempty(),
         hidden: z.boolean().optional(),
-        description: z.string().nullish(),
-        details: z.string().nullish(),
-        images: z.array(ImageShape).nullish(),
+        description: z.string().optional(),
+        // details: z.string().nullish(),
+        images: z.array(ImageShape).optional(),
         price: z.number().nonnegative(),
         currency: z.enum(Currency)
       })

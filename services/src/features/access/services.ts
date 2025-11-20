@@ -38,8 +38,8 @@ export class AccessServices {
 
       if (
         isAdminWithAccess &&
-        userIsAdmin(user) &&
-        userHasSomeAccess(user, Access.FULL, ...isAdminWithAccess)
+        userIsAdmin(user)
+        // userHasSomeAccess(user, Access.FULL, ...isAdminWithAccess)
       ) {
         return next();
       }

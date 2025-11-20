@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 
 import { InputProps } from "./types";
-import { cn } from "@/utils/general";
+import { cn, isNumber } from "@/utils/general";
 
 export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const { type } = props;

@@ -15,7 +15,7 @@ const reset = () => {
   localStorage.clear();
 };
 
-export const useLocalStorage = () => {
+export const localStorageUtils = () => {
   const enabled = true;
 
   return {

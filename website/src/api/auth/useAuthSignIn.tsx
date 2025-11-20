@@ -1,8 +1,7 @@
 import { FetchResource } from "@/types/api";
 import { useQueryMutation } from "@/utils/useQueryMutation";
-import axios from "axios";
 import { AuthDataDto } from "@/types/auth";
-import { getEndpoint } from "@/utils/api";
+import { axiosFetch, getEndpoint } from "@/utils/api";
 
 interface Args {
   password: string;
@@ -15,7 +14,7 @@ export const useAuthSignIn = (): {
   return {
     authSignIn: useQueryMutation<Args, AuthDataDto>({
       fetch: async ({ password, email }) => {
-        const response = await axios({
+        const response = await axiosFetch({
           method: "post",
           url: getEndpoint({ path: "/auth/sign-in" }),
           data: {
