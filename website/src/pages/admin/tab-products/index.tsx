@@ -79,7 +79,6 @@ export const TabProducts = () => {
             <TableRow>
               <TableHead>Imagen</TableHead>
               <TableHead>Nombre</TableHead>
-              <TableHead>Marca</TableHead>
               <TableHead>Categoría</TableHead>
               <TableHead>Precio</TableHead>
               <TableHead>Stock</TableHead>
@@ -107,8 +106,7 @@ export const TabProducts = () => {
                     /> */}
                   </TableCell>
                   <TableCell className="font-medium">{rowData.name}</TableCell>
-                  <TableCell>{rowData.brand}</TableCell>
-                  <TableCell>{rowData.category}</TableCell>
+                  <TableCell>{rowData.categoryType}</TableCell>
                   <TableCell>${rowData.price.toFixed(2)}</TableCell>
                   <TableCell>
                     <span

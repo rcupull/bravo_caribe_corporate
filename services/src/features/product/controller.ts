@@ -4,6 +4,8 @@ import { controllerFactory } from '../../utils/controllers';
 import { ImageShape } from '../../utils/zod-shapes';
 import { getProductNotFoundResponse, getUserNotFoundResponse } from '../../utils/responses';
 import { Currency } from '../../types/general';
+import { CategoryType } from '../../types/category';
+import { GetAllProductArgs } from '../../types/products';
 
 export class ProductController {
   constructor(
@@ -15,20 +17,32 @@ export class ProductController {
     {
       withPagination: true,
       queryShape: (z) => ({
-        search: z.string().nullish()
+        search: z.string().nullish(),
+        categoryType: z.enum(CategoryType).nullish()
       })
     },
     async ({ req, res }) => {
       const { query, paginateOptions } = req;
 
-      const { search } = query;
+      const { search, categoryType } = query;
 
       const out = await this.productServices.getAllWithPagination({
         paginateOptions,
-        query: {
-          search,
-          hidden: false
-        }
+        query: (() => {
+          const out: GetAllProductArgs = {
+            hidden: false
+          };
+
+          if (search) {
+            out.search = search;
+          }
+
+          if (categoryType) {
+            out.categoryType = categoryType;
+          }
+
+          return out;
+        })()
       });
 
       res.send({
@@ -99,7 +113,9 @@ export class ProductController {
         // details: z.string().nullish(),
         images: z.array(ImageShape).optional(),
         price: z.number().nonnegative(),
-        currency: z.enum(Currency)
+        currency: z.enum(Currency),
+        categoryType: z.enum(CategoryType).nullish(),
+        specs: z.record(z.string(), z.any()).nullish()
       })
     },
     async ({ req, res }) => {
@@ -111,7 +127,18 @@ export class ProductController {
 
       const { body } = req;
 
-      const { name, hidden, description, details, images, price, currency, inStock } = body;
+      const {
+        name,
+        hidden,
+        description,
+        details,
+        images,
+        price,
+        currency,
+        inStock,
+        categoryType,
+        specs
+      } = body;
 
       const out = await this.productServices.addOne({
         name,
@@ -123,7 +150,9 @@ export class ProductController {
         images,
         inStock,
         price,
-        createdBy: user._id
+        createdBy: user._id,
+        categoryType,
+        specs
       });
 
       res.send(out);
@@ -169,39 +198,28 @@ export class ProductController {
         inStock: z.boolean().nullish(),
         currency: z.enum(Currency).nullish(),
         description: z.string().nullish(),
-        hidden: z.boolean().optional()
+        hidden: z.boolean().optional(),
+        categoryType: z.enum(CategoryType).nullish(),
+        specs: z.record(z.string(), z.any()).nullish()
       })
     },
     async ({ req, res, next }) => {
       const { params, body } = req;
       const { productSlug, routeName } = params;
 
-      const { details, highlights, images, name, price, currency, description, hidden, inStock } =
-        body;
-
-      // if (images) {
-      //   /**
-      //    * Delete unused images
-      //    * --it is important get the images before to update the products
-      //    */
-      //   const productWithImages: Pick<Product, 'images'> | null = await this.productServices.getOne(
-      //     {
-      //       query: {
-      //         productSlug
-      //       },
-      //       projection: {
-      //         images: 1
-      //       }
-      //     }
-      //   );
-
-      //   if (productWithImages?.images) {
-      //     await this.fileServices.removeOldImages({
-      //       newImages: images,
-      //       oldImages: productWithImages.images
-      //     });
-      //   }
-      // }
+      const {
+        details,
+        highlights,
+        images,
+        name,
+        price,
+        currency,
+        description,
+        hidden,
+        inStock,
+        categoryType,
+        specs
+      } = body;
 
       const out = await this.productServices.findOneAndUpdate({
         query: {
@@ -218,7 +236,9 @@ export class ProductController {
           price,
           currency,
           description,
-          hidden
+          hidden,
+          categoryType,
+          specs
         }
       });
 

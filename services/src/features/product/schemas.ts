@@ -2,6 +2,7 @@ import { model, Schema } from 'mongoose';
 import { Currency } from '../../types/general';
 import { Product } from '../../types/products';
 import { createdAtSchemaDefinition, getMongooseModel } from '../../utils/schemas';
+import { CategoryType } from '../../types/category';
 
 let ProductModel: ReturnType<typeof getMongooseModel<Product>>;
 
@@ -27,7 +28,10 @@ export const modelGetter = () => {
       //
       price: { type: Number, required: true },
       inStock: { type: Boolean },
-      currency: { type: String, enum: Object.values(Currency), required: true }
+      currency: { type: String, enum: Object.values(Currency), required: true },
+
+      categoryType: { type: String, enum: Object.values(CategoryType) },
+      specs: { type: Schema.Types.Mixed }
     });
 
     ProductModel = getMongooseModel<Product>(model, 'Product', ProductSchema, 'products');

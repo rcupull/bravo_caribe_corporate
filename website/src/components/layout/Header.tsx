@@ -19,7 +19,7 @@ const Header = () => {
     { name: "Inicio", path: "/" },
     { name: "Nosotros", path: "/nosotros" },
     { name: "Productos", path: "/productos" },
-    { name: "Blog", path: "/blog" },
+    // { name: "Blog", path: "/blog" },
     { name: "Contacto", path: "/contacto" },
   ];
 
@@ -61,6 +61,13 @@ const Header = () => {
             </a>
             <CartSheet />
 
+            <Button
+              asChild
+              className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold"
+            >
+              <Link to="/contacto">Cotizar Ahora</Link>
+            </Button>
+
             {isAuthenticated ? (
               <>
                 {isAdmin && (
@@ -71,7 +78,6 @@ const Header = () => {
                   >
                     <Link to="/admin">
                       <Shield className="h-4 w-4" />
-                      Admin
                     </Link>
                   </Button>
                 )}
@@ -84,7 +90,6 @@ const Header = () => {
                   className="hover:bg-primary-foreground/10"
                 >
                   <LogOut className="h-4 w-4" />
-                  Salir
                 </Button>
               </>
             ) : (
@@ -94,18 +99,10 @@ const Header = () => {
                 className="border-primary-foreground/20 hover:bg-primary-foreground/10"
               >
                 <Link to="/auth">
-                  <LogIn className="h-4 w-4 mr-2" />
-                  Iniciar Sesión
+                  <LogIn className="h-4 w-4" />
                 </Link>
               </Button>
             )}
-
-            <Button
-              asChild
-              className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold"
-            >
-              <Link to="/contacto">Cotizar Ahora</Link>
-            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -143,7 +140,6 @@ const Header = () => {
                       <Button asChild variant="outline" className="w-full">
                         <Link to="/admin" onClick={() => setIsMenuOpen(false)}>
                           <Shield className="h-4 w-4 mr-2" />
-                          Admin
                         </Link>
                       </Button>
                     )}
@@ -156,14 +152,12 @@ const Header = () => {
                       className="w-full"
                     >
                       <LogOut className="h-4 w-4 mr-2" />
-                      Salir
                     </Button>
                   </>
                 ) : (
                   <Button asChild variant="outline" className="w-full">
                     <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
                       <LogIn className="h-4 w-4 mr-2" />
-                      Iniciar Sesión
                     </Link>
                   </Button>
                 )}

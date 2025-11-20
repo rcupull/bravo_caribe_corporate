@@ -1,19 +1,8 @@
-import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ShoppingCart, CheckCircle, XCircle } from "lucide-react";
-
-export interface Product {
-  id: string;
-  name: string;
-  description: string;
-  image: string;
-  price?: number;
-  inStock: boolean;
-  category?: string;
-  brand?: string;
-}
+import { Product } from "@/types/products";
 
 interface ProductCardProps {
   product: Product;
@@ -23,21 +12,24 @@ interface ProductCardProps {
 const ProductCard = ({ product, onQuoteRequest }: ProductCardProps) => {
   const handleQuoteClick = () => {
     if (onQuoteRequest) {
-      onQuoteRequest(product.id);
+      onQuoteRequest(product.productSlug);
     }
   };
 
   return (
     <Card className="group h-full flex flex-col hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-accent">
       <div className="relative overflow-hidden rounded-t-lg">
-        <img
+        <div className="flex items-center justify-center w-full h-56 object-cover group-hover:scale-110 transition-transform duration-300 bg-gray-200">
+          Imagen faltante
+        </div>
+        {/* <img
           src={product.image}
           alt={product.name}
           className="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-300"
-        />
-        {product.category && (
+        /> */}
+        {product.categoryType && (
           <Badge className="absolute top-3 left-3 bg-accent text-accent-foreground">
-            {product.category}
+            {product.categoryType}
           </Badge>
         )}
         <Badge
@@ -56,11 +48,11 @@ const ProductCard = ({ product, onQuoteRequest }: ProductCardProps) => {
       </div>
 
       <CardContent className="flex-1 p-6">
-        {product.brand && (
+        {/* {product.brand && (
           <p className="text-xs text-muted-foreground mb-2 uppercase tracking-wider">
             {product.brand}
           </p>
-        )}
+        )} */}
         <h3 className="font-bold text-lg mb-2 text-foreground group-hover:text-accent transition-colors line-clamp-2">
           {product.name}
         </h3>

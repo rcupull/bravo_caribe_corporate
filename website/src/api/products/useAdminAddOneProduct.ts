@@ -13,6 +13,8 @@ interface Args
     | "details"
     | "images"
     | "inStock"
+    | "categoryType"
+    | "specs"
   > {}
 
 export const useAdminAddOneProduct = (): {

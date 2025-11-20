@@ -5,46 +5,8 @@ import CategoriesHighlight from "@/components/home/CategoriesHighlight";
 import BenefitsBlock from "@/components/home/BenefitsBlock";
 import QuickQuoteCTA from "@/components/products/QuickQuoteCTA";
 import ProductCard from "@/components/products/ProductCard";
-
-// Sample products for demonstration
-const featuredProducts = [
-  {
-    id: "1",
-    name: "Filtro de Aceite Premium",
-    description:
-      "Filtro de aceite de alta calidad compatible con múltiples modelos de vehículos",
-    image:
-      "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=800&h=600&fit=crop",
-    price: 24.99,
-    inStock: true,
-    category: "Autos",
-    brand: "OEM Premium",
-  },
-  {
-    id: "2",
-    name: "Pastillas de Freno Cerámicas",
-    description:
-      "Pastillas de freno de alto rendimiento con tecnología cerámica",
-    image:
-      "https://images.unsplash.com/photo-1625047509248-ec889cbff17f?w=800&h=600&fit=crop",
-    price: 89.99,
-    inStock: true,
-    category: "Autos",
-    brand: "BrakeTech",
-  },
-  {
-    id: "3",
-    name: "Kit de Cadena para Moto",
-    description:
-      "Kit completo de cadena y piñones para motocicletas deportivas",
-    image:
-      "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=800&h=600&fit=crop",
-    price: 156.0,
-    inStock: false,
-    category: "Motos",
-    brand: "ChainPro",
-  },
-];
+import { useGetAllProducts } from "@/api/products/useGetAllProducts";
+import { useEffect } from "react";
 
 const Index = () => {
   const handleQuoteRequest = (productId: string) => {
@@ -52,6 +14,12 @@ const Index = () => {
     // Here you would typically navigate to contact form or open a modal
     window.location.href = "/contacto";
   };
+
+  const { getAllProducts } = useGetAllProducts();
+
+  useEffect(() => {
+    getAllProducts.fetch();
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -84,9 +52,9 @@ const Index = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {featuredProducts.map((product) => (
+              {getAllProducts.data.map((product, index) => (
                 <ProductCard
-                  key={product.id}
+                  key={index}
                   product={product}
                   onQuoteRequest={handleQuoteRequest}
                 />

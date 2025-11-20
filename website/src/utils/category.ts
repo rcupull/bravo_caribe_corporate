@@ -9,13 +9,13 @@ export const categories: Array<Category> = [
     description:
       "Herramientas eléctricas y manuales diseñadas para ofrecer precisión, potencia y durabilidad en todo tipo de trabajos técnicos y de mantenimiento.",
     specsFields: [
-      CategorySpecsFields.voltage,
-      CategorySpecsFields.power,
-      CategorySpecsFields.speed,
-      CategorySpecsFields.clampSize,
-      CategorySpecsFields.baseDiameter,
-      CategorySpecsFields.strokeLength,
-      CategorySpecsFields.accessories,
+      { field: CategorySpecsFields.voltage, label: "Voltaje" },
+      { field: CategorySpecsFields.power, label: "Potencia" },
+      { field: CategorySpecsFields.speed, label: "Velocidad" },
+      { field: CategorySpecsFields.clampSize, label: "Tamaño del sujetador" },
+      { field: CategorySpecsFields.baseDiameter, label: "Diámetro de la base" },
+      { field: CategorySpecsFields.strokeLength, label: "Longitud de carrera" },
+      { field: CategorySpecsFields.accessories, label: "Accesorios incluidos" },
     ],
   },
   {
@@ -25,11 +25,14 @@ export const categories: Array<Category> = [
     description:
       "Filtros y repuestos automotrices de alta calidad que garantizan un óptimo rendimiento del motor y una mayor vida útil del vehículo.",
     specsFields: [
-      CategorySpecsFields.material,
-      CategorySpecsFields.guarantee,
-      CategorySpecsFields.filtrationEfficiency,
-      CategorySpecsFields.features,
-      CategorySpecsFields.compatibleWith,
+      { field: CategorySpecsFields.material, label: "Material" },
+      { field: CategorySpecsFields.guarantee, label: "Garantía" },
+      {
+        field: CategorySpecsFields.filtrationEfficiency,
+        label: "Eficiencia de filtración",
+      },
+      { field: CategorySpecsFields.features, label: "Características" },
+      { field: CategorySpecsFields.compatibleWith, label: "Compatible con" },
     ],
   },
   {
@@ -39,11 +42,11 @@ export const categories: Array<Category> = [
     description:
       "Neumáticos confiables, duraderos y seguros, fabricados con tecnología avanzada para ofrecer el mejor agarre y confort en cualquier terreno.",
     specsFields: [
-      CategorySpecsFields.type,
-      CategorySpecsFields.size,
-      CategorySpecsFields.loadIndex,
-      CategorySpecsFields.speedIndex,
-      CategorySpecsFields.features,
+      { field: CategorySpecsFields.type, label: "Tipo de neumático" },
+      { field: CategorySpecsFields.size, label: "Tamaño" },
+      { field: CategorySpecsFields.loadIndex, label: "Índice de carga" },
+      { field: CategorySpecsFields.speedIndex, label: "Índice de velocidad" },
+      { field: CategorySpecsFields.features, label: "Características" },
     ],
   },
   {
@@ -53,11 +56,14 @@ export const categories: Array<Category> = [
     description:
       "Lubricantes sintéticos y minerales de alto rendimiento, formulados para proteger el motor, reducir el desgaste y mejorar la eficiencia del vehículo.",
     specsFields: [
-      CategorySpecsFields.viscosity,
-      CategorySpecsFields.acea,
-      CategorySpecsFields.api,
-      CategorySpecsFields.type,
-      CategorySpecsFields.compatibleBrands,
+      { field: CategorySpecsFields.viscosity, label: "Viscosidad" },
+      { field: CategorySpecsFields.acea, label: "Clasificación ACEA" },
+      { field: CategorySpecsFields.api, label: "Clasificación API" },
+      { field: CategorySpecsFields.type, label: "Tipo de lubricante" },
+      {
+        field: CategorySpecsFields.compatibleBrands,
+        label: "Marcas compatibles",
+      },
     ],
   },
 ];

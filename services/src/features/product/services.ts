@@ -18,6 +18,8 @@ export class ProductServices extends ModelCrudTemplate<
     | 'createdBy'
     | 'hidden'
     | 'inStock'
+    | 'categoryType'
+    | 'specs'
   >,
   GetAllProductArgs
 > {

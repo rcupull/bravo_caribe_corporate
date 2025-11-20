@@ -2,10 +2,10 @@ import { FunctionComponent } from "react";
 import { StyleProps } from "./general";
 
 export enum CategoryType {
-  TOOL = "tool",
-  TIRE = "tire",
-  OIL = "oil",
-  PART = "part",
+  TOOL = "TOOL",
+  TIRE = "TIRE",
+  OIL = "OIL",
+  PART = "PART",
 }
 
 export enum CategorySpecsFields {
@@ -36,5 +36,8 @@ export interface Category {
   name: string;
   svg: FunctionComponent<StyleProps>;
   description: string;
-  specsFields: Array<string>;
+  specsFields: Array<{
+    field: CategorySpecsFields;
+    label: string;
+  }>;
 }

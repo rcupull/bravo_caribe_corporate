@@ -51,12 +51,12 @@ const Admin = () => {
                 svg: Package,
                 content: <TabProducts />,
               },
-              {
-                value: "blog",
-                label: "Blog",
-                svg: FileText,
-                content: <TabBlog />,
-              },
+              // {
+              //   value: "blog",
+              //   label: "Blog",
+              //   svg: FileText,
+              //   content: <TabBlog />,
+              // },
             ]}
           />
         </div>

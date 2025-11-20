@@ -63,25 +63,18 @@ export const DialogProductForm = ({
           }}
         >
           {({ value, resetForm }) => {
+            console.log("value", value);
+            const currentCategory = categories.find(
+              ({ type }) => value.categoryType === type
+            );
+
             return (
               <form className="space-y-4">
                 <FieldInput label="Nombre del Producto" name="name" />
 
                 <FieldTextArea label="Descripción" name="description" />
 
-                <div className="grid grid-cols-2 gap-4">
-                  <FieldInput label="Marca" name="brand" />
-
-                  <FieldSelect
-                    items={categories}
-                    label="Categoría"
-                    renderOption={({ name }) => name}
-                    renderValue={({ name }) => name}
-                    optionToValue={({ type }) => type}
-                    name="category"
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-3 gap-4">
                   <FieldInput label="Precio" name="price" type="number" />
 
                   <FieldSelect<{ value: Currency }>
@@ -121,22 +114,22 @@ export const DialogProductForm = ({
                     name="inStock"
                   />
                 </div>
-                {/* <div className="space-y-2">
-                      <Label htmlFor="image">URL de Imagen</Label>
-                      <Input
-                        id="image"
-                        type="url"
-                        value={productFormData.image}
-                        onChange={(e) =>
-                          setProductFormData({
-                            ...productFormData,
-                            image: e.target.value,
-                          })
-                        }
-                        placeholder="https://example.com/image.jpg"
-                        required
-                      />
-                    </div> */}
+
+                <FieldSelect
+                  items={categories}
+                  label="Categoría"
+                  renderOption={({ name }) => name}
+                  renderValue={({ name }) => name}
+                  optionToValue={({ type }) => type}
+                  name="categoryType"
+                />
+
+                <div className="grid grid-cols-2 gap-4">
+                  {currentCategory?.specsFields.map(({ field, label }) => {
+                    return <FieldInput label={label} name={`specs.${field}`} />;
+                  })}
+                </div>
+
                 <div className="flex gap-2 justify-end">
                   <Button
                     type="button"
@@ -156,6 +149,8 @@ export const DialogProductForm = ({
                         details,
                         images,
                         inStock,
+                        categoryType,
+                        specs,
                       } = value;
 
                       if (product) {
@@ -170,6 +165,8 @@ export const DialogProductForm = ({
                               details,
                               images,
                               inStock,
+                              categoryType,
+                              specs,
                             },
                           },
                           {
@@ -190,6 +187,8 @@ export const DialogProductForm = ({
                             details,
                             images,
                             inStock,
+                            categoryType,
+                            specs,
                           },
                           {
                             onAfterSuccess: () => {

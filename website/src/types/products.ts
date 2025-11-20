@@ -1,3 +1,4 @@
+import { CategorySpecsFields, CategoryType } from "./category";
 import { BaseIdentity, Currency, Image } from "./general";
 
 export interface Product extends BaseIdentity {
@@ -11,4 +12,7 @@ export interface Product extends BaseIdentity {
   currency: Currency;
   hidden?: boolean;
   inStock?: boolean;
+
+  categoryType?: CategoryType;
+  specs?: Record<CategorySpecsFields, string>;
 }
