@@ -6,7 +6,13 @@ import { useQueryMutation } from "@/utils/useQueryMutation";
 interface Args
   extends Pick<
     Product,
-    "name" | "price" | "description" | "currency" | "details" | "images"
+    | "name"
+    | "price"
+    | "description"
+    | "currency"
+    | "details"
+    | "images"
+    | "inStock"
   > {}
 
 export const useAdminAddOneProduct = (): {

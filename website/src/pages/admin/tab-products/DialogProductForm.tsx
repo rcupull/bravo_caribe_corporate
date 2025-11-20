@@ -103,7 +103,7 @@ export const DialogProductForm = ({
                     optionToValue={({ value }) => value}
                   />
 
-                  {/* <FieldSelect<{ value: boolean; label: string }>
+                  <FieldSelect<{ value: boolean; label: string }>
                     items={[
                       {
                         label: "En Stock",
@@ -119,7 +119,7 @@ export const DialogProductForm = ({
                     renderValue={({ label }) => label}
                     optionToValue={({ value }) => value}
                     name="inStock"
-                  /> */}
+                  />
                 </div>
                 {/* <div className="space-y-2">
                       <Label htmlFor="image">URL de Imagen</Label>
@@ -155,6 +155,7 @@ export const DialogProductForm = ({
                         description,
                         details,
                         images,
+                        inStock,
                       } = value;
 
                       if (product) {
@@ -168,6 +169,7 @@ export const DialogProductForm = ({
                               description,
                               details,
                               images,
+                              inStock,
                             },
                           },
                           {
@@ -187,6 +189,7 @@ export const DialogProductForm = ({
                             description,
                             details,
                             images,
+                            inStock,
                           },
                           {
                             onAfterSuccess: () => {

@@ -95,6 +95,7 @@ export class ProductController {
         name: z.string().nonempty(),
         hidden: z.boolean().optional(),
         description: z.string().optional(),
+        inStock: z.boolean().optional(),
         // details: z.string().nullish(),
         images: z.array(ImageShape).optional(),
         price: z.number().nonnegative(),
@@ -110,7 +111,7 @@ export class ProductController {
 
       const { body } = req;
 
-      const { name, hidden, description, details, images, price, currency } = body;
+      const { name, hidden, description, details, images, price, currency, inStock } = body;
 
       const out = await this.productServices.addOne({
         name,
@@ -120,6 +121,7 @@ export class ProductController {
         details,
         currency,
         images,
+        inStock,
         price,
         createdBy: user._id
       });
@@ -136,12 +138,11 @@ export class ProductController {
     },
     async ({ req, res }) => {
       const { params } = req;
-      const { productSlug, routeName } = params;
+      const { productSlug } = params;
 
       const product = await this.productServices.getOne({
         query: {
-          productSlug,
-          routeName
+          productSlug
         }
       });
 
@@ -165,6 +166,7 @@ export class ProductController {
         images: z.array(ImageShape).nullish(),
         name: z.string().nullish(),
         price: z.number().nonnegative().nullish(),
+        inStock: z.boolean().nullish(),
         currency: z.enum(Currency).nullish(),
         description: z.string().nullish(),
         hidden: z.boolean().optional()
@@ -174,7 +176,8 @@ export class ProductController {
       const { params, body } = req;
       const { productSlug, routeName } = params;
 
-      const { details, highlights, images, name, price, currency, description, hidden } = body;
+      const { details, highlights, images, name, price, currency, description, hidden, inStock } =
+        body;
 
       // if (images) {
       //   /**
@@ -208,6 +211,7 @@ export class ProductController {
         update: {
           details,
           highlights,
+          inStock,
           images,
           name,
           ...(name ? { productSlug: this.productServices.getProductSlugFromName(name) } : {}),

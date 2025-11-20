@@ -7,7 +7,13 @@ interface Args {
   productSlug: string;
   update: Pick<
     Product,
-    "name" | "price" | "description" | "currency" | "details" | "images"
+    | "name"
+    | "price"
+    | "description"
+    | "currency"
+    | "details"
+    | "images"
+    | "inStock"
   >;
 }
 
