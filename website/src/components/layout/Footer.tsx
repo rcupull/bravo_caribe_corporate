@@ -19,27 +19,20 @@ const Footer = () => {
           <div>
             <img src={logo} alt="Bravo Caribe" className="h-28 w-auto mb-4" />
             <p className="text-sm text-primary-foreground/70 mb-4">
-              Tu proveedor confiable de partes y piezas para autos, motos y
-              vehículos pesados en Cuba.
+              Donde la pasión por la excelencia es una constante.
             </p>
             <div className="flex space-x-4">
               <a
-                href="#"
+                href="https://www.facebook.com/share/1GdwhsB4CT/"
                 className="text-primary-foreground/70 hover:text-accent transition-colors"
               >
                 <Facebook className="h-5 w-5" />
               </a>
               <a
-                href="#"
+                href="https://www.instagram.com/bravocaribe_?igsh=eHg2NGNzcWd1ODZ6"
                 className="text-primary-foreground/70 hover:text-accent transition-colors"
               >
                 <Instagram className="h-5 w-5" />
-              </a>
-              <a
-                href="#"
-                className="text-primary-foreground/70 hover:text-accent transition-colors"
-              >
-                <Twitter className="h-5 w-5" />
               </a>
             </div>
           </div>
@@ -72,14 +65,14 @@ const Footer = () => {
                   Productos
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   to="/blog"
                   className="text-sm text-primary-foreground/70 hover:text-accent transition-colors"
                 >
                   Blog
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
 
@@ -106,24 +99,31 @@ const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-start space-x-3 text-sm text-primary-foreground/70">
                 <MapPin className="h-5 w-5 mt-0.5 flex-shrink-0" />
-                <span>Calle Principal #123, Ciudad, País</span>
+                <span>Zanja esquina a Espada. Centro Habana, Cuba</span>
               </li>
               <li className="flex items-center space-x-3 text-sm text-primary-foreground/70">
                 <Phone className="h-5 w-5 flex-shrink-0" />
                 <a
-                  href="tel:+1234567890"
+                  href="tel:+53 63672603"
                   className="hover:text-accent transition-colors"
                 >
-                  (123) 456-7890
+                  +53 63672603
+                </a>
+
+                <a
+                  href="tel:+53 63672603"
+                  className="hover:text-accent transition-colors"
+                >
+                  +53 63518395
                 </a>
               </li>
               <li className="flex items-center space-x-3 text-sm text-primary-foreground/70">
                 <Mail className="h-5 w-5 flex-shrink-0" />
                 <a
-                  href="mailto:info@bravocaribe.com"
+                  href="mailto:ventas@bravocaribe.com"
                   className="hover:text-accent transition-colors"
                 >
-                  info@bravocaribe.com
+                  ventas@bravocaribe.com
                 </a>
               </li>
             </ul>
@@ -132,8 +132,6 @@ const Footer = () => {
                 <strong>Horario:</strong>
                 <br />
                 Lun - Vie: 8:00 AM - 6:00 PM
-                <br />
-                Sáb: 9:00 AM - 2:00 PM
               </p>
             </div>
           </div>

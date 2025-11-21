@@ -20,11 +20,11 @@ import {
 import { useGetAllProducts } from "@/api/products/useGetAllProducts";
 import { Product } from "@/types/products";
 import { CategoryType } from "@/types/category";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const ITEMS_PER_PAGE = 9;
 
 const Products = () => {
-  const [selectedCategory, setSelectedCategory] = useState<CategoryType>();
   const [inStockOnly, setInStockOnly] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -34,9 +34,26 @@ const Products = () => {
 
   const { getAllProducts } = useGetAllProducts();
 
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const pushCategoryType = (categoryType: CategoryType | undefined) => {
+    if (categoryType) {
+      const newParams = new URLSearchParams(searchParams);
+      newParams.set("categoryType", categoryType);
+
+      navigate(`/productos?${newParams.toString()}`);
+    } else {
+      navigate(`/productos`);
+    }
+  };
+
+  const categoryType = searchParams.get("categoryType") as CategoryType | null;
+
   useEffect(() => {
-    getAllProducts.fetch();
-  }, []);
+    getAllProducts.fetch({
+      categoryType: categoryType ? categoryType : undefined,
+    });
+  }, [categoryType]);
 
   const handleProductClick = (product: Product) => {
     setSelectedProduct(product);
@@ -54,6 +71,8 @@ const Products = () => {
   const totalPages = getAllProducts.paginator?.pageCount || 0;
   const paginatedProducts = getAllProducts.data;
   const filteredProducts = getAllProducts.paginator?.dataCount;
+
+  const page = searchParams.get("page");
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -80,9 +99,9 @@ const Products = () => {
               {/* Filters Sidebar */}
               <aside className="lg:col-span-1">
                 <ProductFilters
-                  selectedCategory={selectedCategory}
+                  selectedCategory={categoryType}
                   onCategoryChange={(categoryType) => {
-                    getAllProducts.fetch({ categoryType });
+                    pushCategoryType(categoryType);
                   }}
                   inStockOnly={inStockOnly}
                   onInStockChange={setInStockOnly}

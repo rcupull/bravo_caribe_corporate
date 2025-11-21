@@ -103,8 +103,8 @@ const HeroBanner = ({
           {/* Trust indicators */}
           <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto">
             {[
-              { value: "10,000+", label: "Productos" },
-              { value: "5,000+", label: "Clientes" },
+              { value: "1,000+", label: "Productos" },
+              { value: "500+", label: "Clientes" },
               { value: "24/48h", label: "Entrega" },
               { value: "100%", label: "Garantía" },
             ].map((stat) => (

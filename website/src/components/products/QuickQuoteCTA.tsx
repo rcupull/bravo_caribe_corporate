@@ -12,8 +12,8 @@ interface QuickQuoteCTAProps {
 const QuickQuoteCTA = ({
   title = "¿Necesitas una Cotización Rápida?",
   description = "Nuestro equipo está listo para ayudarte a encontrar las partes que necesitas",
-  phoneNumber = "+1234567890",
-  whatsappNumber = "+1234567890",
+  phoneNumber = "+53 63672603",
+  whatsappNumber = "+53 63672603",
 }: QuickQuoteCTAProps) => {
   const whatsappMessage = encodeURIComponent(
     "Hola, necesito una cotización para partes de vehículos."

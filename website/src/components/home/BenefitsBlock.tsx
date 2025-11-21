@@ -1,4 +1,11 @@
-import { Truck, Shield, Package, HeadphonesIcon, Clock, Award } from "lucide-react";
+import {
+  Truck,
+  Shield,
+  Package,
+  HeadphonesIcon,
+  Clock,
+  Award,
+} from "lucide-react";
 
 interface Benefit {
   icon: React.ReactNode;
@@ -24,7 +31,7 @@ const defaultBenefits: Benefit[] = [
   {
     icon: <Package className="h-8 w-8" />,
     title: "Amplio Inventario",
-    description: "Más de 10,000 productos disponibles",
+    description: "Más de 1,000 productos disponibles",
   },
   {
     icon: <HeadphonesIcon className="h-8 w-8" />,
@@ -34,7 +41,7 @@ const defaultBenefits: Benefit[] = [
   {
     icon: <Clock className="h-8 w-8" />,
     title: "Horario Extendido",
-    description: "Atención de lunes a sábado",
+    description: "Atención de lunes a viernes",
   },
   {
     icon: <Award className="h-8 w-8" />,
@@ -49,7 +56,7 @@ const BenefitsBlock = ({ benefits = defaultBenefits }: BenefitsBlockProps) => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            ¿Por Qué Elegirnos?
+            ¿Por qué elegirnos?
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Nos comprometemos a ofrecer el mejor servicio y productos de calidad
@@ -58,7 +65,7 @@ const BenefitsBlock = ({ benefits = defaultBenefits }: BenefitsBlockProps) => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {benefits.map((benefit, index) => (
-            <div 
+            <div
               key={index}
               className="flex flex-col items-center text-center p-6 rounded-xl hover:bg-secondary transition-all duration-300 group"
             >

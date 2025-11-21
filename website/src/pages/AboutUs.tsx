@@ -54,18 +54,20 @@ const AboutUs = () => {
                 Nuestra Historia
               </h2>
               <p className="text-muted-foreground text-lg leading-relaxed mb-4">
-                <strong className="text-foreground">Bravo Caribe</strong> nació
-                en 2008 con una visión clara: proporcionar repuestos
-                automotrices de calidad superior a precios accesibles. Lo que
-                comenzó como un pequeño almacén en Barranquilla, se ha
-                convertido en una de las distribuidoras más confiables de Cuba.
+                <strong className="text-foreground">Bravo Caribe</strong>
+                nació en 2023 con una visión clara: proporcionar repuestos
+                automotrices y servicios de calidad superior a precios
+                accesibles, enfocados en la sostenibilidad y satisfacción del
+                cliente. Lo que comenzó como una pequeña idea, se ha convertido
+                en una de las distribuidoras más confiables de Cuba.
               </p>
               <p className="text-muted-foreground text-lg leading-relaxed">
-                A lo largo de los años, hemos construido relaciones sólidas con
-                fabricantes líderes mundiales, permitiéndonos ofrecer un
-                catálogo extenso que abarca desde piezas para vehículos
-                particulares hasta componentes especializados para maquinaria
-                pesada y flotas comerciales.
+                Durante este tiempo, hemos construido relaciones sólidas con
+                proveedores y fabricantes de prestigio, líderes mundiales,
+                permitiéndonos ofrecer un catálogo extenso que abarca desde
+                piezas para vehículos específicos hasta componentes
+                especializados para flotas comerciales y lubricantes de la más
+                alta calidad.
               </p>
             </div>
           </div>
@@ -85,10 +87,11 @@ const AboutUs = () => {
                     Nuestra Misión
                   </h3>
                   <p className="text-muted-foreground leading-relaxed text-center">
-                    Proveer repuestos automotrices de la más alta calidad, con
-                    un servicio personalizado y eficiente, garantizando la
-                    satisfacción de nuestros clientes y contribuyendo a la
-                    seguridad y óptimo funcionamiento de sus vehículos.
+                    Proveer autopartes, lubricantes y herramientas de la más
+                    alta calidad, con un servicio personalizado y eficiente,
+                    garantizando la satisfacción de nuestros clientes y
+                    contribuyendo a la seguridad y óptimo funcionamiento de sus
+                    vehículos.
                   </p>
                 </CardContent>
               </Card>
@@ -103,10 +106,11 @@ const AboutUs = () => {
                     Nuestra Visión
                   </h3>
                   <p className="text-muted-foreground leading-relaxed text-center">
-                    Ser la empresa líder en distribución de repuestos
-                    automotrices en toda Cuba, reconocida por nuestra excelencia
-                    en servicio, variedad de productos y compromiso con la
-                    innovación tecnológica del sector.
+                    Ser la empresa líder en distribución de autopartes en toda
+                    Cuba, reconocida por nuestra excelencia en servicio, precios
+                    competitivos, variedad de productos y compromiso con la
+                    innovación tecnológica del sector. Donde la pasión por la
+                    excelencia sea una constante en nuestro trabajo.
                   </p>
                 </CardContent>
               </Card>
@@ -219,36 +223,20 @@ const AboutUs = () => {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                 {[
                   {
-                    name: "ISO 9001",
-                    description: "Calidad certificada",
-                  },
-                  {
-                    name: "Bosch",
+                    name: "Castrol",
                     description: "Distribuidor autorizado",
                   },
                   {
-                    name: "Continental",
-                    description: "Partner comercial",
+                    name: "FIXTEC Tools",
+                    description: "Distribuidor autorizado",
                   },
                   {
-                    name: "ACDelco",
-                    description: "Proveedor oficial",
+                    name: "Lubricantes AD",
+                    description: "Distribuidor autorizado",
                   },
                   {
-                    name: "Gates",
-                    description: "Distribuidor certificado",
-                  },
-                  {
-                    name: "Mann-Filter",
-                    description: "Socio estratégico",
-                  },
-                  {
-                    name: "Mobil",
-                    description: "Partner autorizado",
-                  },
-                  {
-                    name: "NGK",
-                    description: "Distribuidor oficial",
+                    name: "CENTARA",
+                    description: "Distribuidor autorizado",
                   },
                 ].map((cert, index) => (
                   <div

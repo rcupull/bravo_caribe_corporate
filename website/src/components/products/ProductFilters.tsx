@@ -2,9 +2,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { categories } from "@/utils/category";
 import { CategoryType } from "@/types/category";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 interface ProductFiltersProps {
-  selectedCategory: CategoryType | undefined;
+  selectedCategory?: CategoryType | null;
   onCategoryChange: (category: CategoryType | undefined) => void;
   inStockOnly: boolean;
   onInStockChange: (inStock: boolean) => void;
@@ -33,9 +34,9 @@ const ProductFilters = ({
           >
             Todas
           </Badge>
-          {categories.map(({ type, name }) => (
+          {categories.map(({ type, name }, index) => (
             <Badge
-              key={type}
+              key={index}
               variant={selectedCategory === type ? "default" : "outline"}
               className="cursor-pointer hover:bg-accent hover:text-accent-foreground transition-colors"
               onClick={() => onCategoryChange(type)}

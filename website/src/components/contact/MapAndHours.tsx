@@ -7,21 +7,18 @@ interface MapAndHoursProps {
   phone?: string;
   email?: string;
   hours?: Array<{ days: string; time: string }>;
-  mapEmbedUrl?: string;
 }
 
 const defaultHours = [
   { days: "Lunes - Viernes", time: "8:00 AM - 6:00 PM" },
-  { days: "Sábado", time: "9:00 AM - 2:00 PM" },
-  { days: "Domingo", time: "Cerrado" },
+  { days: "Domingo y domingo", time: "Cerrado" },
 ];
 
 const MapAndHours = ({
-  address = "Calle Principal #123, Ciudad, País",
-  phone = "(123) 456-7890",
-  email = "info@bravocaribe.com",
+  address = "Zanja esquina a Espada. Centro Habana, Cuba",
+  phone = "+53 63672603",
+  email = "ventas@bravocaribe.com",
   hours = defaultHours,
-  mapEmbedUrl,
 }: MapAndHoursProps) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -34,7 +31,7 @@ const MapAndHours = ({
 
           <div className="space-y-4">
             <Card>
-              <CardContent className="flex items-start p-6">
+              <CardContent className="flex items-start pt-6">
                 <div className="mr-4 mt-1">
                   <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center">
                     <MapPin className="h-6 w-6 text-accent" />
@@ -50,7 +47,7 @@ const MapAndHours = ({
             </Card>
 
             <Card>
-              <CardContent className="flex items-start p-6">
+              <CardContent className="flex items-start pt-6">
                 <div className="mr-4 mt-1">
                   <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center">
                     <Phone className="h-6 w-6 text-accent" />
@@ -71,7 +68,7 @@ const MapAndHours = ({
             </Card>
 
             <Card>
-              <CardContent className="flex items-start p-6">
+              <CardContent className="flex items-start pt-6">
                 <div className="mr-4 mt-1">
                   <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center">
                     <Mail className="h-6 w-6 text-accent" />
@@ -97,7 +94,7 @@ const MapAndHours = ({
             Horario de Atención
           </h3>
           <Card>
-            <CardContent className="p-6">
+            <CardContent className="pt-6">
               <div className="flex items-center mb-4">
                 <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center mr-4">
                   <Clock className="h-6 w-6 text-accent" />
