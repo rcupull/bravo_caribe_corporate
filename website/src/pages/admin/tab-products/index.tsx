@@ -11,35 +11,21 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { toast } from "sonner";
-import { Plus, Edit, Trash2, RefreshCcw } from "lucide-react";
-import { Formux } from "@/components/ui/formux";
-import { FieldInput } from "@/components/ui/field-input";
-import { FieldSelect } from "@/components/ui/field-select";
-import { categories } from "@/utils/category";
-import { FieldTextArea } from "@/components/ui/field-text-area";
-import { useAuth } from "@/hooks/useAuth";
-import { DialogProductForm } from "./DialogProductForm";
-import { Product } from "@/types/products";
+
+import { Plus, RefreshCcw } from "lucide-react";
+
 import { useAdminGetAllProducts } from "@/api/products/useAdminGetAllProducts";
 import { RowActions } from "./RowActions";
+import { useAddUpdateProductModal } from "@/hooks/useAddUpdateProductModal";
 
 export const TabProducts = () => {
-  const [isProductDialogOpen, setIsProductDialogOpen] = useState(false);
-
   const { adminGetAllProducts } = useAdminGetAllProducts();
-  const handleRefresh = () => adminGetAllProducts.fetch();
+  const { addUpdateProductModal } = useAddUpdateProductModal();
+
+  const onRefresh = () => adminGetAllProducts.fetch();
 
   useEffect(() => {
-    handleRefresh();
+    onRefresh();
   }, []);
 
   return (
@@ -53,24 +39,18 @@ export const TabProducts = () => {
           <Button
             className="gap-2"
             onClick={() => {
-              setIsProductDialogOpen(true);
+              addUpdateProductModal.open({ onRefresh });
             }}
           >
             <Plus className="h-4 w-4" />
             Nuevo Producto
           </Button>
 
-          <Button variant="outline" className="gap-2" onClick={handleRefresh}>
+          <Button variant="outline" className="gap-2" onClick={onRefresh}>
             <RefreshCcw className="h-4 w-4" />
             Actualizar
           </Button>
         </div>
-
-        <DialogProductForm
-          open={isProductDialogOpen}
-          onOpenChange={setIsProductDialogOpen}
-          onRefresh={handleRefresh}
-        />
       </div>
 
       <div className="bg-card rounded-lg shadow-lg overflow-hidden">
@@ -120,7 +100,7 @@ export const TabProducts = () => {
                     </span>
                   </TableCell>
                   <TableCell className="text-right">
-                    <RowActions rowData={rowData} onRefresh={handleRefresh} />
+                    <RowActions rowData={rowData} onRefresh={onRefresh} />
                   </TableCell>
                 </TableRow>
               ))

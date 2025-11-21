@@ -10,6 +10,7 @@ import { ChildrenProp } from "./types/general";
 import { useEffect, useState } from "react";
 import { getInitialStore } from "./features/redux/getInitialStore";
 import { Store } from "@reduxjs/toolkit";
+import { ModalService } from "./features/modal";
 
 const queryClient = new QueryClient();
 
@@ -39,12 +40,14 @@ export const Providers = ({ children }: ChildrenProp) => {
     <ReduxProvider store={store}>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
-          <InitService />
-          <CartProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>{children}</BrowserRouter>
-          </CartProvider>
+          <ModalService>
+            <InitService />
+            <CartProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>{children}</BrowserRouter>
+            </CartProvider>
+          </ModalService>
         </TooltipProvider>
       </QueryClientProvider>
     </ReduxProvider>
