@@ -1,5 +1,5 @@
+import { Product } from "@/types/products";
 import { createContext, useContext, useState, ReactNode } from "react";
-import { Product } from "@/components/products/ProductCard";
 
 interface CartItem extends Product {
   quantity: number;
@@ -22,10 +22,12 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const addToCart = (product: Product) => {
     setItems((prevItems) => {
-      const existingItem = prevItems.find((item) => item.id === product.id);
+      const existingItem = prevItems.find(
+        (item) => item.productSlug === product.productSlug
+      );
       if (existingItem) {
         return prevItems.map((item) =>
-          item.id === product.id
+          item.productSlug === product.productSlug
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
@@ -34,18 +36,20 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  const removeFromCart = (productId: string) => {
-    setItems((prevItems) => prevItems.filter((item) => item.id !== productId));
+  const removeFromCart = (productSlug: string) => {
+    setItems((prevItems) =>
+      prevItems.filter((item) => item.productSlug !== productSlug)
+    );
   };
 
-  const updateQuantity = (productId: string, quantity: number) => {
+  const updateQuantity = (productSlug: string, quantity: number) => {
     if (quantity <= 0) {
-      removeFromCart(productId);
+      removeFromCart(productSlug);
       return;
     }
     setItems((prevItems) =>
       prevItems.map((item) =>
-        item.id === productId ? { ...item, quantity } : item
+        item.productSlug === productSlug ? { ...item, quantity } : item
       )
     );
   };

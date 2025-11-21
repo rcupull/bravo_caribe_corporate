@@ -2,21 +2,29 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X, Phone, LogIn, LogOut, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/contexts/AuthContext";
 import CartSheet from "@/components/cart/CartSheet";
 import logo from "@/assets/logo-h.png";
+import { useAuth } from "@/hooks/useAuth";
+import { resetPersistentAuthData } from "@/utils/persistent-auth";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { isAuthenticated, isAdmin, user, logout } = useAuth();
+  const { resetData } = useAuth();
+
+  const { isAdmin, isAuthenticated } = useAuth();
 
   const navLinks = [
     { name: "Inicio", path: "/" },
     { name: "Nosotros", path: "/nosotros" },
     { name: "Productos", path: "/productos" },
-    { name: "Blog", path: "/blog" },
+    // { name: "Blog", path: "/blog" },
     { name: "Contacto", path: "/contacto" },
   ];
+
+  const logout = () => {
+    resetData();
+    resetPersistentAuthData();
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full bg-primary border-b border-border/40 backdrop-blur-sm">
@@ -43,13 +51,20 @@ const Header = () => {
           {/* CTA Button */}
           <div className="hidden lg:flex items-center space-x-4">
             <a
-              href="tel:+1234567890"
+              href="tel:+53 63672603"
               className="flex items-center text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
             >
               <Phone className="h-4 w-4 mr-2" />
-              <span>(123) 456-7890</span>
+              <span>+53 63672603</span>
             </a>
             <CartSheet />
+
+            <Button
+              asChild
+              className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold"
+            >
+              <Link to="/contacto">Cotizar Ahora</Link>
+            </Button>
 
             {isAuthenticated ? (
               <>
@@ -61,7 +76,6 @@ const Header = () => {
                   >
                     <Link to="/admin">
                       <Shield className="h-4 w-4" />
-                      Admin
                     </Link>
                   </Button>
                 )}
@@ -71,28 +85,19 @@ const Header = () => {
                   className="hover:bg-primary-foreground/10"
                 >
                   <LogOut className="h-4 w-4" />
-                  Salir
                 </Button>
               </>
             ) : (
               <Button
                 asChild
                 variant="outline"
-                className="border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10"
+                className="border-primary-foreground/20 hover:bg-primary-foreground/10"
               >
                 <Link to="/auth">
-                  <LogIn className="h-4 w-4 mr-2" />
-                  Iniciar Sesión
+                  <LogIn className="h-4 w-4" />
                 </Link>
               </Button>
             )}
-
-            <Button
-              asChild
-              className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold"
-            >
-              <Link to="/contacto">Cotizar Ahora</Link>
-            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -130,7 +135,6 @@ const Header = () => {
                       <Button asChild variant="outline" className="w-full">
                         <Link to="/admin" onClick={() => setIsMenuOpen(false)}>
                           <Shield className="h-4 w-4 mr-2" />
-                          Admin
                         </Link>
                       </Button>
                     )}
@@ -143,14 +147,12 @@ const Header = () => {
                       className="w-full"
                     >
                       <LogOut className="h-4 w-4 mr-2" />
-                      Salir
                     </Button>
                   </>
                 ) : (
                   <Button asChild variant="outline" className="w-full">
                     <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
                       <LogIn className="h-4 w-4 mr-2" />
-                      Iniciar Sesión
                     </Link>
                   </Button>
                 )}

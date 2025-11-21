@@ -12,11 +12,13 @@ interface QuickQuoteCTAProps {
 const QuickQuoteCTA = ({
   title = "¿Necesitas una Cotización Rápida?",
   description = "Nuestro equipo está listo para ayudarte a encontrar las partes que necesitas",
-  phoneNumber = "+1234567890",
-  whatsappNumber = "+1234567890",
+  phoneNumber = "+53 63672603",
+  whatsappNumber = "+53 63672603",
 }: QuickQuoteCTAProps) => {
-  const whatsappMessage = encodeURIComponent("Hola, necesito una cotización para partes de vehículos.");
-  
+  const whatsappMessage = encodeURIComponent(
+    "Hola, necesito una cotización para partes de vehículos."
+  );
+
   return (
     <section className="py-16 bg-gradient-to-r from-accent to-accent/80">
       <div className="container mx-auto px-4">
@@ -29,7 +31,7 @@ const QuickQuoteCTA = ({
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button 
+            <Button
               asChild
               size="lg"
               className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8"
@@ -40,14 +42,17 @@ const QuickQuoteCTA = ({
               </Link>
             </Button>
 
-            <Button 
+            <Button
               asChild
               size="lg"
               variant="outline"
-              className="border-2 border-accent-foreground text-accent-foreground hover:bg-accent-foreground hover:text-accent font-semibold px-8"
+              className="border-2 border-accent-foreground hover:bg-accent-foreground font-semibold px-8"
             >
-              <a 
-                href={`https://wa.me/${whatsappNumber.replace(/\D/g, '')}?text=${whatsappMessage}`}
+              <a
+                href={`https://wa.me/${whatsappNumber.replace(
+                  /\D/g,
+                  ""
+                )}?text=${whatsappMessage}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center"
@@ -59,8 +64,11 @@ const QuickQuoteCTA = ({
           </div>
 
           <p className="mt-6 text-accent-foreground/80">
-            También puedes llamarnos al: 
-            <a href={`tel:${phoneNumber}`} className="font-semibold ml-2 hover:underline">
+            También puedes llamarnos al:
+            <a
+              href={`tel:${phoneNumber}`}
+              className="font-semibold ml-2 hover:underline"
+            >
               {phoneNumber}
             </a>
           </p>

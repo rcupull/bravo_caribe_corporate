@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -16,11 +15,16 @@ import {
 } from "@/components/ui/card";
 import { toast } from "sonner";
 import { LogIn, UserPlus } from "lucide-react";
+import { useAuthSignUp } from "@/api/auth/useAuthSignUp";
+import { useAuth } from "@/hooks/useAuth";
+import { useAuthSignIn } from "@/api/auth/useAuthSignIn";
+import { setPersistentAuthData } from "@/utils/persistent-auth";
 
 const Auth = () => {
   const navigate = useNavigate();
-  const { login, signup, isAuthenticated } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
+  const { isAuthenticated } = useAuth();
+
+  const { setData } = useAuth();
 
   // Login form state
   const [loginEmail, setLoginEmail] = useState("");
@@ -32,6 +36,9 @@ const Auth = () => {
   const [signupPassword, setSignupPassword] = useState("");
   const [signupConfirmPassword, setSignupConfirmPassword] = useState("");
 
+  const { authSignUp } = useAuthSignUp();
+  const { authSignIn } = useAuthSignIn();
+
   // Redirect if already authenticated
   if (isAuthenticated) {
     navigate("/");
@@ -40,18 +47,32 @@ const Auth = () => {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
 
-    const result = await login(loginEmail, loginPassword);
+    authSignIn.fetch(
+      {
+        email: loginEmail,
+        password: loginPassword,
+      },
+      {
+        onAfterSuccess: (response) => {
+          const { accessToken, refreshToken, steat, user } = response;
 
-    setIsLoading(false);
+          setData(user);
+          setPersistentAuthData({
+            user,
+            accessToken,
+            refreshToken,
+            steat,
+          });
 
-    if (result.success) {
-      toast.success("¡Bienvenido!");
-      navigate("/");
-    } else {
-      toast.error(result.error || "Error al iniciar sesión");
-    }
+          toast.success("¡Bienvenido!");
+          navigate("/");
+        },
+        onAfterFailed: () => {
+          toast.error("Error al iniciar sesión");
+        },
+      }
+    );
   };
 
   const handleSignup = async (e: React.FormEvent) => {
@@ -67,18 +88,21 @@ const Auth = () => {
       return;
     }
 
-    setIsLoading(true);
-
-    const result = await signup(signupEmail, signupPassword, signupName);
-
-    setIsLoading(false);
-
-    if (result.success) {
-      toast.success("¡Cuenta creada exitosamente!");
-      navigate("/");
-    } else {
-      toast.error(result.error || "Error al crear la cuenta");
-    }
+    authSignUp.fetch(
+      {
+        email: signupEmail,
+        password: signupPassword,
+        name: signupName,
+      },
+      {
+        onAfterSuccess: () => {
+          toast.success("¡Cuenta creada exitosamente!");
+        },
+        onAfterFailed: () => {
+          toast.error("Error al crear la cuenta");
+        },
+      }
+    );
   };
 
   return (
@@ -141,9 +165,11 @@ const Auth = () => {
                       <Button
                         type="submit"
                         className="w-full"
-                        disabled={isLoading}
+                        disabled={authSignIn.isPending}
                       >
-                        {isLoading ? "Iniciando sesión..." : "Iniciar Sesión"}
+                        {authSignIn.isPending
+                          ? "Iniciando sesión..."
+                          : "Iniciar Sesión"}
                       </Button>
                     </form>
                   </CardContent>
@@ -214,9 +240,11 @@ const Auth = () => {
                       <Button
                         type="submit"
                         className="w-full"
-                        disabled={isLoading}
+                        disabled={authSignUp.isPending}
                       >
-                        {isLoading ? "Creando cuenta..." : "Crear Cuenta"}
+                        {authSignUp.isPending
+                          ? "Creando cuenta..."
+                          : "Crear Cuenta"}
                       </Button>
                     </form>
                   </CardContent>

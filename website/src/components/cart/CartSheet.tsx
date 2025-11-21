@@ -7,9 +7,10 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ShoppingCart, Trash2, Plus, Minus } from "lucide-react";
+import { ShoppingCart, Trash2, Plus, Minus, FileImage } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { Link } from "react-router-dom";
+import { ImageComponent } from "../image-component";
 
 const CartSheet = () => {
   const { items, removeFromCart, updateQuantity, totalItems, totalPrice } =
@@ -44,57 +45,66 @@ const CartSheet = () => {
             </div>
           ) : (
             <>
-              {items.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex gap-4 border-b border-border pb-4"
-                >
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-20 h-20 object-cover rounded"
-                  />
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-sm mb-1">{item.name}</h4>
-                    <p className="text-sm text-muted-foreground mb-2">
-                      ${item.price?.toFixed(2)}
-                    </p>
-                    <div className="flex items-center gap-2">
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        className="h-6 w-6"
-                        onClick={() =>
-                          updateQuantity(item.id, item.quantity - 1)
-                        }
-                      >
-                        <Minus className="h-3 w-3" />
-                      </Button>
-                      <span className="text-sm font-medium w-8 text-center">
-                        {item.quantity}
-                      </span>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        className="h-6 w-6"
-                        onClick={() =>
-                          updateQuantity(item.id, item.quantity + 1)
-                        }
-                      >
-                        <Plus className="h-3 w-3" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-6 w-6 ml-auto text-destructive"
-                        onClick={() => removeFromCart(item.id)}
-                      >
-                        <Trash2 className="h-3 w-3" />
-                      </Button>
+              {items.map(
+                ({ images, name, price, productSlug, quantity }, index) => {
+                  const image = images && images.length > 0 ? images[0] : null;
+                  return (
+                    <div
+                      key={index}
+                      className="flex gap-4 border-b border-border pb-4"
+                    >
+                      {image ? (
+                        <ImageComponent
+                          image={image}
+                          className="h-20 object-cover rounded"
+                        />
+                      ) : (
+                        <FileImage className="h-20 w-20 text-gray-300 rounded" />
+                      )}
+
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-sm mb-1">{name}</h4>
+                        <p className="text-sm text-muted-foreground mb-2">
+                          ${price?.toFixed(2)}
+                        </p>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="h-6 w-6"
+                            onClick={() =>
+                              updateQuantity(productSlug, quantity - 1)
+                            }
+                          >
+                            <Minus className="h-3 w-3" />
+                          </Button>
+                          <span className="text-sm font-medium w-8 text-center">
+                            {quantity}
+                          </span>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="h-6 w-6"
+                            onClick={() =>
+                              updateQuantity(productSlug, quantity + 1)
+                            }
+                          >
+                            <Plus className="h-3 w-3" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-6 w-6 ml-auto text-destructive"
+                            onClick={() => removeFromCart(productSlug)}
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              ))}
+                  );
+                }
+              )}
 
               <div className="pt-4 space-y-4">
                 <div className="flex justify-between items-center text-lg font-bold">
