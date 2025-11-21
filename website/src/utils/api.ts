@@ -9,7 +9,7 @@ import qs from "query-string";
 import { AxiosPromise, AxiosRequestConfig } from "axios";
 import { axiosClient } from "./axios";
 import { differenceInSeconds } from "date-fns";
-import { Nullable } from "@/types/general";
+import { AnyRecord, Nullable } from "@/types/general";
 import {
   getPersistentAuthData,
   resetPersistentAuthData,
@@ -231,7 +231,7 @@ export const axiosFetch = async (args: AxiosRequestConfig): AxiosPromise => {
   return axiosClient(args);
 };
 
-export const getApiPersisteState = <D>(
+export const getApiPersisteState = <D extends AnyRecord = AnyRecord>(
   data: D
 ): SliceApiPersistentState<D> => ({
   data,

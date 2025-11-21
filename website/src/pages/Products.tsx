@@ -51,7 +51,7 @@ const Products = () => {
     });
   };
 
-  const totalPages = getAllProducts.paginator?.pageCount;
+  const totalPages = getAllProducts.paginator?.pageCount || 0;
   const paginatedProducts = getAllProducts.data;
   const filteredProducts = getAllProducts.paginator?.dataCount;
 
@@ -116,7 +116,7 @@ const Products = () => {
                 </div> */}
 
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
-                  {getAllProducts.data.map((product, index) => (
+                  {getAllProducts.data?.map((product, index) => (
                     <div
                       key={index}
                       onClick={() => handleProductClick(product)}

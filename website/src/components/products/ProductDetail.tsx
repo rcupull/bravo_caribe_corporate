@@ -13,8 +13,12 @@ import {
   Package,
   Truck,
   Shield,
+  FileImage,
 } from "lucide-react";
-import { Product } from "../products/ProductCard";
+import { Product } from "@/types/products";
+import { ImageComponent } from "../image-component";
+import { getCurrentCategory } from "@/utils/category";
+import { isNullOrUndefined } from "@/utils/general";
 
 interface ProductDetailProps {
   product: Product | null;
@@ -31,22 +35,23 @@ const ProductDetail = ({
 }: ProductDetailProps) => {
   if (!product) return null;
 
+  const { specs, images, price, inStock, categoryType, description, name } =
+    product;
+
+  const currentCategory = getCurrentCategory(categoryType);
+
+  const image = images && images.length > 0 ? images[0] : null;
+
   const generals = (
     <div>
-      {product.brand && (
-        <p className="text-sm text-muted-foreground mb-2 uppercase tracking-wider">
-          {product.brand}
-        </p>
-      )}
-
-      {product.category && (
+      {currentCategory && (
         <Badge className="mb-4 bg-accent text-accent-foreground">
-          {product.category}
+          {currentCategory.name}
         </Badge>
       )}
 
       <p className="text-muted-foreground mb-6 leading-relaxed">
-        {product.description}
+        {description}
       </p>
 
       {/* Características generales */}
@@ -94,34 +99,25 @@ const ProductDetail = ({
     <div className="space-y-4 bg-secondary p-4 rounded-lg">
       <h4 className="font-semibold text-foreground">Especificaciones</h4>
 
-      <div className="space-y-3 text-sm text-foreground/90">
-        <div className="flex justify-between border-b border-border/40 pb-1">
-          <span className="font-medium">Medida:</span>
-          <span>195/65R15</span>
-        </div>
-        <div className="flex justify-between border-b border-border/40 pb-1">
-          <span className="font-medium">Marca:</span>
-          <span>Joyroad</span>
-        </div>
-        <div className="flex justify-between border-b border-border/40 pb-1">
-          <span className="font-medium">Tipo:</span>
-          <span>Tubeless</span>
-        </div>
-        <div className="flex justify-between border-b border-border/40 pb-1">
-          <span className="font-medium">Modelo:</span>
-          <span>HPRX3</span>
-        </div>
-        <div className="flex justify-between border-b border-border/40 pb-1">
-          <span className="font-medium">Índice de Carga:</span>
-          <span>95</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="font-medium">Índice de Velocidad:</span>
-          <span>HXL</span>
-        </div>
-      </div>
+      {currentCategory && (
+        <div className="space-y-3 text-sm text-foreground/90">
+          {currentCategory.specsFields.map(({ label, field }) => {
+            const value = specs ? specs[field] : null;
 
-      <p className="text-sm text-muted-foreground leading-relaxed mt-3">
+            if (isNullOrUndefined(value)) {
+              return null;
+            }
+            return (
+              <div className="flex justify-between border-b border-border/40 pb-1">
+                <span className="font-medium">{`${label}:`}</span>
+                <span>{value}</span>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* <p className="text-sm text-muted-foreground leading-relaxed mt-3">
         Excelente calidad y durabilidad. Diseñadas con tecnología de vanguardia
         que garantiza un rendimiento óptimo en diversas condiciones de manejo.
         <br />
@@ -129,15 +125,15 @@ const ProductDetail = ({
         ofrecer una tracción óptima incluso en condiciones adversas como lluvia
         o nieve, brindando mejor control del vehículo y reduciendo el riesgo de
         deslizamiento o aquaplaning.
-      </p>
+      </p> */}
     </div>
   );
 
   const priceAndCTA = (
     <div>
-      {product.price && (
+      {price && (
         <p className="text-3xl font-bold text-accent mb-6">
-          ${product.price.toFixed(2)}
+          ${price.toFixed(2)}
         </p>
       )}
 
@@ -148,7 +144,7 @@ const ProductDetail = ({
             onClose();
           }}
           className="flex-1 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold"
-          disabled={!product.inStock}
+          disabled={!inStock}
         >
           <ShoppingCart className="mr-2 h-4 w-4" />
           Agregar al Carrito
@@ -157,25 +153,30 @@ const ProductDetail = ({
     </div>
   );
 
-  const image = (
+  const imageElement = (
     <div className="relative col-span-1 md:col-span-2">
-      <img
-        src={product.image}
-        alt={product.name}
-        className="w-full h-80 object-cover rounded-lg"
-      />
+      <div className="flex items-center justify-center">
+        {image ? (
+          <ImageComponent
+            image={image}
+            className="h-80 object-cover rounded-lg"
+          />
+        ) : (
+          <FileImage className="size-32 text-gray-300 " />
+        )}
+      </div>
       <Badge
-        variant={product.inStock ? "default" : "secondary"}
+        variant={inStock ? "default" : "secondary"}
         className={`absolute top-4 right-4 ${
-          product.inStock ? "bg-green-600" : "bg-gray-500"
+          inStock ? "bg-green-600" : "bg-gray-500"
         }`}
       >
-        {product.inStock ? (
+        {inStock ? (
           <CheckCircle className="h-3 w-3 mr-1" />
         ) : (
           <XCircle className="h-3 w-3 mr-1" />
         )}
-        {product.inStock ? "Disponible" : "Agotado"}
+        {inStock ? "Disponible" : "Agotado"}
       </Badge>
     </div>
   );
@@ -184,13 +185,11 @@ const ProductDetail = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-5xl max-h-[100vh] sm:max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold">
-            {product.name}
-          </DialogTitle>
+          <DialogTitle className="text-2xl font-bold">{name}</DialogTitle>
         </DialogHeader>
 
         <div className="grid md:hidden gap-6">
-          {image}
+          {imageElement}
 
           {/* Detalles */}
           <div className="flex flex-col gap-2">
@@ -201,7 +200,7 @@ const ProductDetail = ({
         </div>
 
         <div className="hidden md:grid md:grid-cols-2 gap-6">
-          {image}
+          {imageElement}
 
           <div>
             {generals}

@@ -67,3 +67,7 @@ export const categories: Array<Category> = [
     ],
   },
 ];
+
+export const getCurrentCategory = (categoryType: CategoryType | undefined) => {
+  return categories.find(({ type }) => type === categoryType);
+};

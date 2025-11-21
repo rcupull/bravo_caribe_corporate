@@ -33,14 +33,14 @@ const ProductFilters = ({
           >
             Todas
           </Badge>
-          {categories.map(({ type }) => (
+          {categories.map(({ type, name }) => (
             <Badge
               key={type}
               variant={selectedCategory === type ? "default" : "outline"}
               className="cursor-pointer hover:bg-accent hover:text-accent-foreground transition-colors"
               onClick={() => onCategoryChange(type)}
             >
-              {type}
+              {name}
             </Badge>
           ))}
         </div>

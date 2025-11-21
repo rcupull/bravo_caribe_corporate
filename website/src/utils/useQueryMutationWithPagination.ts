@@ -6,10 +6,11 @@ import {
   PaginatedData,
 } from "@/types/api";
 import { getPaginationResources } from "./pagination";
+import { AnyRecord } from "@/types/general";
 
 export const useQueryMutationWithPagination = <
   FetchArgs extends any,
-  Data extends any
+  Data extends AnyRecord = AnyRecord
 >(args: {
   fetch: (
     args: FetchArgs,

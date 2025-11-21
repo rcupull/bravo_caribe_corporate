@@ -1,3 +1,4 @@
+import { AnyRecord } from "@/types/general";
 import { useSimpleSlice } from "./useSimpleSlice";
 import {
   FetchOptions,
@@ -10,7 +11,7 @@ type ApiPersistent<Args = any, D = any> = FetchResource<Args, D> & {
   resetData: () => void;
 };
 
-export const useApiPersistent = <Args = any, D = any>(
+export const useApiPersistent = <Args = any, D extends AnyRecord = AnyRecord>(
   field: string,
   resources: FetchResource<Args, D>
 ): ApiPersistent<Args, D> => {

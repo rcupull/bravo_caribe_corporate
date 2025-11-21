@@ -63,7 +63,7 @@ export type FetchResource<Args = void, Data = any> = UseMutationResult<
 
 export type FetchResourceWithPagination<
   Args = void,
-  Data = any
+  Data extends AnyRecord = AnyRecord
 > = UseMutationResult<
   PaginatedData<Data>["data"] | null,
   any,
@@ -73,7 +73,7 @@ export type FetchResourceWithPagination<
   fetch: (args: Args, options?: FetchOptions<PaginatedData<Data>>) => void;
 };
 
-export type SliceApiPersistentState<D = any> = {
+export type SliceApiPersistentState<D extends AnyRecord = AnyRecord> = {
   data: FetchData<D>;
   isPending: boolean;
 } | null;

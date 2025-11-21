@@ -1,4 +1,4 @@
-import { Image, ImageFile } from 'types/general';
+import { Image, ImageFile } from "@/types/general";
 
 export type ImageElement = Image | ImageFile | undefined | null;
 
