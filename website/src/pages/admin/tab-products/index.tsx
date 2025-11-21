@@ -1,8 +1,5 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Table,
   TableBody,
@@ -12,11 +9,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { Plus, RefreshCcw } from "lucide-react";
+import { FileImage, Plus, RefreshCcw } from "lucide-react";
 
 import { useAdminGetAllProducts } from "@/api/products/useAdminGetAllProducts";
 import { RowActions } from "./RowActions";
 import { useAddUpdateProductModal } from "@/hooks/useAddUpdateProductModal";
+import { ImageComponent } from "@/components/image-component";
 
 export const TabProducts = () => {
   const { adminGetAllProducts } = useAdminGetAllProducts();
@@ -76,34 +74,45 @@ export const TabProducts = () => {
                 </TableCell>
               </TableRow>
             ) : (
-              adminGetAllProducts.data?.map((rowData) => (
-                <TableRow key={rowData._id}>
-                  <TableCell>
-                    {/* <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-16 h-16 object-cover rounded"
-                    /> */}
-                  </TableCell>
-                  <TableCell className="font-medium">{rowData.name}</TableCell>
-                  <TableCell>{rowData.categoryType}</TableCell>
-                  <TableCell>${rowData.price.toFixed(2)}</TableCell>
-                  <TableCell>
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        rowData.inStock
-                          ? "bg-green-100 text-green-800"
-                          : "bg-red-100 text-red-800"
-                      }`}
-                    >
-                      {rowData.inStock ? "En Stock" : "Agotado"}
-                    </span>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <RowActions rowData={rowData} onRefresh={onRefresh} />
-                  </TableCell>
-                </TableRow>
-              ))
+              adminGetAllProducts.data?.map((rowData) => {
+                const image =
+                  rowData.images && rowData.images.length > 0
+                    ? rowData.images[0]
+                    : null;
+                return (
+                  <TableRow key={rowData._id}>
+                    <TableCell>
+                      {image ? (
+                        <ImageComponent
+                          image={image}
+                          className="w-16 object-cover rounded"
+                        />
+                      ) : (
+                        <FileImage className="w-16 h-16 text-gray-300 object-cover rounded" />
+                      )}
+                    </TableCell>
+                    <TableCell className="font-medium">
+                      {rowData.name}
+                    </TableCell>
+                    <TableCell>{rowData.categoryType}</TableCell>
+                    <TableCell>${rowData.price.toFixed(2)}</TableCell>
+                    <TableCell>
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          rowData.inStock
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800"
+                        }`}
+                      >
+                        {rowData.inStock ? "En Stock" : "Agotado"}
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <RowActions rowData={rowData} onRefresh={onRefresh} />
+                    </TableCell>
+                  </TableRow>
+                );
+              })
             )}
           </TableBody>
         </Table>

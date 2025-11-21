@@ -47,11 +47,11 @@ export const getPersistentAuthData = async () => {
 
   const [accessToken, accessTokenUpdatedAt, refreshToken, steat, user] =
     await Promise.all([
-      readLS("accessToken"),
-      readLS("accessTokenUpdatedAt"),
-      readLS("refreshToken"),
-      readLS("steat"),
-      readLS("user"),
+      readLS<string>("accessToken"),
+      readLS<string>("accessTokenUpdatedAt"),
+      readLS<string>("refreshToken"),
+      readLS<number>("steat"),
+      readLS<User>("user"),
     ]);
 
   return {

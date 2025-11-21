@@ -1,3 +1,14 @@
+import multer from 'multer';
+import {
+  S3Client,
+  ListBucketsCommand,
+  PutObjectCommand,
+  ListObjectsV2Command,
+  DeleteObjectCommand
+} from '@aws-sdk/client-s3';
+import { Agent } from 'https';
+import sharp, { WebpOptions } from 'sharp';
+import { logger } from '../logger';
 import { Image, QueryHandle, RequestHandler } from '../../types/general';
 import {
   S3_REGION,
@@ -6,17 +17,6 @@ import {
   S3_SECRET_ACCESS_KEY,
   S3_BUCKET_APP
 } from '../../config';
-import { logger } from '../logger';
-import {
-  DeleteObjectCommand,
-  ListBucketsCommand,
-  ListObjectsV2Command,
-  PutObjectCommand,
-  S3Client
-} from '@aws-sdk/client-s3';
-import { Agent } from 'https';
-import multer from 'multer';
-import sharp, { WebpOptions } from 'sharp';
 
 export class FileServices {
   private s3: S3Client;
@@ -191,18 +191,5 @@ export class FileServices {
     } catch (e) {
       logger.error('Error deleting images', e);
     }
-  };
-
-  removeOldImages: QueryHandle<{
-    newImages: Array<Image>;
-    oldImages: Array<Image>;
-  }> = async ({ newImages, oldImages }) => {
-    const imagesToDelete = oldImages.filter(
-      (oldImage) => !newImages.some((newImage: Image) => newImage?.src === oldImage?.src)
-    );
-
-    await this.imagesDeleteMany({
-      imagesToDelete
-    });
   };
 }

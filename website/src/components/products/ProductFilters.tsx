@@ -29,7 +29,7 @@ const ProductFilters = ({
           <Badge
             variant={selectedCategory === null ? "default" : "outline"}
             className="cursor-pointer hover:bg-accent hover:text-accent-foreground transition-colors"
-            onClick={() => onCategoryChange(null)}
+            onClick={() => onCategoryChange(undefined)}
           >
             Todas
           </Badge>
@@ -71,7 +71,7 @@ const ProductFilters = ({
           size="sm"
           className="w-full mt-6"
           onClick={() => {
-            onCategoryChange(null);
+            onCategoryChange(undefined);
             onInStockChange(false);
           }}
         >

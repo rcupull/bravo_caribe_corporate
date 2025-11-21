@@ -25,6 +25,8 @@ import { UserDtosServices } from './features/user-dtos/services';
 import { EmailServices } from './features/email/services';
 import { UserController } from './features/user/controller';
 import { UserRouter } from './features/user/routes';
+import { FileController } from './features/files/controller';
+import { FileRouter } from './features/files/routes';
 
 export const app = express();
 const router = Router();
@@ -49,6 +51,7 @@ const productDtosServices = new ProductDtosServices();
 //////////////////////////////////////////////////////////////////////////////////////////
 
 const productController = new ProductController(productServices, productDtosServices);
+const fileController = new FileController(fileServices);
 const authController = new AuthController(
   authServices,
   authSessionServices,
@@ -65,6 +68,7 @@ const userController = new UserController(userServices, userDtosServices);
 //////////////////////////////////////////////////////////////////////////////////////////
 
 const productRouter = new ProductRouter(productController, accessServices);
+const fileRouter = new FileRouter(fileController, accessServices);
 const authRouter = new AuthRouter(authController, accessServices);
 const userRouter = new UserRouter(userController, accessServices);
 
@@ -72,7 +76,7 @@ const userRouter = new UserRouter(userController, accessServices);
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
 
-router.use('/', productRouter.router, authRouter.router, userRouter.router);
+router.use('/', productRouter.router, authRouter.router, userRouter.router, fileRouter.router);
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////

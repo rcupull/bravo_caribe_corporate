@@ -14,5 +14,5 @@ export interface Product extends BaseIdentity {
   inStock?: boolean;
 
   categoryType?: CategoryType;
-  specs?: Record<CategorySpecsFields, string>;
+  specs?: Partial<Record<CategorySpecsFields, string>>;
 }

@@ -7,28 +7,71 @@ import { categories } from "@/utils/category";
 import { FieldTextArea } from "@/components/ui/field-text-area";
 import { Product } from "@/types/products";
 import { useAdminAddOneProduct } from "@/api/products/useAdminAddOneProduct";
-import { Currency } from "@/types/general";
+import { Currency, Image, ImageFile } from "@/types/general";
 import { useAdminUpdateOneProduct } from "@/api/products/useAdminUpdateOneProduct";
 import { useModal } from "@/features/modal/useModal";
 import { ButtonClose } from "@/components/button-close";
+import { FieldInputImages } from "@/components/ui/field-input-images";
+import { CategoryType } from "@/types/category";
+import { useAdminAddProductImage } from "@/api/files/useAdminAddProductImage";
 
 interface ComponentProps {
   product?: Product;
   onRefresh: () => void;
 }
 
+interface State
+  extends Pick<
+    Product,
+    | "categoryType"
+    | "currency"
+    | "name"
+    | "price"
+    | "description"
+    | "details"
+    | "inStock"
+    | "specs"
+  > {
+  image?: Image;
+}
+
 const Component = ({ product, onRefresh }: ComponentProps) => {
   const { adminAddOneProduct } = useAdminAddOneProduct();
   const { adminUpdateOneProduct } = useAdminUpdateOneProduct();
+  const { adminAddProductImage } = useAdminAddProductImage();
+
+  const uploadImage = async (image: Image | ImageFile): Promise<Image> => {
+    return new Promise((resolve, rejected) => {
+      adminAddProductImage.fetch(
+        {
+          image,
+        },
+        {
+          onAfterSuccess: (data) => {
+            resolve(data);
+          },
+          onAfterFailed: () => {
+            rejected();
+          },
+        }
+      );
+    });
+  };
 
   const { onClose } = useModal();
 
   return (
-    <Formux<Partial<Product>>
+    <Formux<State>
       value={{
         name: "",
         currency: Currency.USD,
         description: "",
+        price: 0,
+        inStock: true,
+        categoryType: CategoryType.TIRE,
+        details: "",
+        image: product?.images?.[0],
+        specs: {},
         ...(product || {}),
       }}
     >
@@ -93,34 +136,48 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
               name="categoryType"
             />
 
-            <div className="grid grid-cols-2 gap-4">
-              {currentCategory?.specsFields.map(({ field, label }, index) => {
-                return (
-                  <FieldInput
-                    key={index}
-                    label={label}
-                    name={`specs.${field}`}
-                  />
-                );
-              })}
-            </div>
+            {currentCategory?.specsFields.length && (
+              <div className="bg-gray-100 rounded-md px-2 py-3">
+                <p className="mb-2">Detalles de las categorías</p>
+
+                <div className="grid grid-cols-2 gap-4 ">
+                  {currentCategory?.specsFields.map(
+                    ({ field, label }, index) => {
+                      return (
+                        <FieldInput
+                          key={index}
+                          label={label}
+                          name={`specs.${field}`}
+                        />
+                      );
+                    }
+                  )}
+                </div>
+              </div>
+            )}
+
+            <FieldInputImages label="Imágen" name="image" />
 
             <div className="flex gap-2 justify-end">
               <ButtonClose>Cancelar</ButtonClose>
               <Button
                 type="button"
-                onClick={() => {
+                onClick={async () => {
                   const {
                     currency,
                     name,
                     price,
                     description,
                     details,
-                    images,
+                    image,
                     inStock,
                     categoryType,
                     specs,
                   } = value;
+
+                  const imageToUpload = image
+                    ? await uploadImage(image)
+                    : undefined;
 
                   if (product) {
                     adminUpdateOneProduct.fetch(
@@ -132,7 +189,7 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
                           price,
                           description,
                           details,
-                          images,
+                          images: imageToUpload ? [imageToUpload] : [],
                           inStock,
                           categoryType,
                           specs,
@@ -153,7 +210,7 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
                         price,
                         description,
                         details,
-                        images,
+                        images: imageToUpload ? [imageToUpload] : [],
                         inStock,
                         categoryType,
                         specs,

@@ -1,5 +1,4 @@
 import {
-  FetchStatus,
   GetEndpoint,
   Query,
   SliceApiPersistentState,
@@ -17,6 +16,14 @@ import {
   setPersistentAuthData,
 } from "./persistent-auth";
 
+const S3_BUCKET_APP = (() => {
+  if (process.env.NODE_ENV === "development") {
+    return `bravo-caribe-local`;
+  }
+
+  return "bravo-caribe-production";
+})();
+
 export const getEndpointUrl = () => {
   if (process.env.NODE_ENV === "development") {
     return "http://localhost:8081";
@@ -24,6 +31,10 @@ export const getEndpointUrl = () => {
 
   return ""; //TODO
   // return "https://api-dev.bessandsolar.com/api";
+};
+
+export const getImageEndpoint = (src = "") => {
+  return `https://s3-api.services.eltrapichecubiche.com/${S3_BUCKET_APP}${src}`;
 };
 
 export const injectUrlParams = (
@@ -138,28 +149,12 @@ const getAuthData = async (): Promise<{
   const isSSR = () => false;
 
   if (isSSR()) {
-    // /**
-    //  * get auth data from server side
-    //  */
-    // const accessToken = getCookieValueFromPageContext(
-    //   pageContext,
-    //   "accessToken"
-    // );
-    // const refreshToken = getCookieValueFromPageContext(
-    //   pageContext,
-    //   "refreshToken"
-    // );
-    // const accessTokenUpdatedAt = getCookieValueFromPageContext(
-    //   pageContext,
-    //   "accessTokenUpdatedAt"
-    // );
-    // const steat = getCookieValueFromPageContext(pageContext, "steat");
-    // return {
-    //   accessToken,
-    //   accessTokenUpdatedAt,
-    //   refreshToken,
-    //   steat: isNaN(Number(steat)) ? null : Number(steat),
-    // };
+    return {
+      accessToken: null,
+      accessTokenUpdatedAt: null,
+      refreshToken: null,
+      steat: null,
+    };
   } else {
     /**
      * get auth data from client side

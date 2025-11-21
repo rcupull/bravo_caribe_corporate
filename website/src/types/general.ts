@@ -33,3 +33,11 @@ export interface Image {
   alt?: string;
   href?: string;
 }
+
+export interface ImageFile {
+  src: File;
+  width: number;
+  height: number;
+  alt?: string;
+  href?: string;
+}
