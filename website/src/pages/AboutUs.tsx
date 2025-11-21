@@ -166,21 +166,18 @@ const AboutUs = () => {
               <div className="grid md:grid-cols-3 gap-6">
                 {[
                   {
-                    image:
-                      "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=600&h=400&fit=crop",
-                    title: "Almacén Central",
+                    image: "/1.jpg",
+                    title: "Administración general",
                     description: "Más de 5,000 m² de inventario organizado",
                   },
                   {
-                    image:
-                      "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=600&h=400&fit=crop",
-                    title: "Equipo Especializado",
+                    image: "/6.jpg",
+                    title: "Equipo de ventas",
                     description:
                       "Profesionales con más de 10 años de experiencia",
                   },
                   {
-                    image:
-                      "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&h=400&fit=crop",
+                    image: "/7.jpg",
                     title: "Área de Atención",
                     description: "Servicio personalizado y asesoría técnica",
                   },
@@ -192,7 +189,7 @@ const AboutUs = () => {
                     <img
                       src={item.image}
                       alt={item.title}
-                      className="w-full h-48 object-cover"
+                      className="h-60 w-full object-cover"
                     />
                     <CardContent className="p-6">
                       <h3 className="text-xl font-semibold mb-2 text-foreground">

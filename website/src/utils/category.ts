@@ -1,5 +1,5 @@
 import { Category, CategorySpecsFields, CategoryType } from "@/types/category";
-import { Car, PaintBucket, Wrench } from "lucide-react";
+import { Car, PaintBucket, Settings, Wrench } from "lucide-react";
 
 export const categories: Array<Category> = [
   {
@@ -21,7 +21,7 @@ export const categories: Array<Category> = [
   {
     type: CategoryType.PART,
     name: "Partes y piezas",
-    svg: Wrench,
+    svg: Settings,
     description:
       "Filtros y repuestos automotrices de alta calidad que garantizan un óptimo rendimiento del motor y una mayor vida útil del vehículo.",
     specsFields: [

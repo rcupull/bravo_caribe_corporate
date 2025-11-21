@@ -83,7 +83,7 @@ const Footer = () => {
               {categories.map(({ name, type }, index) => (
                 <li key={index}>
                   <Link
-                    to={`/productos?category=${type}`}
+                    to={`/productos?categoryType=${type}`}
                     className="text-sm text-primary-foreground/70 hover:text-accent transition-colors"
                   >
                     {name}
