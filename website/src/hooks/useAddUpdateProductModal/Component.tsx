@@ -94,8 +94,14 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
             />
 
             <div className="grid grid-cols-2 gap-4">
-              {currentCategory?.specsFields.map(({ field, label }) => {
-                return <FieldInput label={label} name={`specs.${field}`} />;
+              {currentCategory?.specsFields.map(({ field, label }, index) => {
+                return (
+                  <FieldInput
+                    key={index}
+                    label={label}
+                    name={`specs.${field}`}
+                  />
+                );
               })}
             </div>
 
