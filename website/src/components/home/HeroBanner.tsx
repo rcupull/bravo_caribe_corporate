@@ -109,7 +109,7 @@ const HeroBanner = ({
               { value: "100%", label: "Garantía" },
             ].map((stat) => (
               <div key={stat.label} className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-warning mb-1">
+                <div className="text-3xl md:text-4xl font-bold text-orange-400 mb-1">
                   {stat.value}
                 </div>
                 <div className="text-sm text-primary-foreground/70">

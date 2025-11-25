@@ -15,6 +15,7 @@ export const useQueryMutation = <
     mutationFn: ({ fetchArgs }) => args.fetch(fetchArgs),
     onSuccess: (data, { options }) => {
       const { onAfterSuccess } = options || {};
+      //@ts-expect-error ignore
       onAfterSuccess?.(data);
     },
     onError: (error, { options }) => {

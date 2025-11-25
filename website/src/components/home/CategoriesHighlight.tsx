@@ -23,12 +23,12 @@ const CategoriesHighlight = () => {
               to={`/productos?category=${type}`}
               className="group"
             >
-              <Card className="h-full border-2 hover:border-accent hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+              <Card className="h-full border-2 hover:border-warning hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                 <CardContent className="p-8 text-center">
-                  <div className="my-6 inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-accent/10 text-accent group-hover:bg-accent group-hover:text-accent-foreground transition-all duration-300">
+                  <div className="my-6 inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-warning/10 text-warning group-hover:bg-warning group-hover:text-accent-foreground transition-all duration-300">
                     <Svg className="h-12 w-12" />
                   </div>
-                  <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-accent transition-colors">
+                  <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-warning transition-colors">
                     {name}
                   </h3>
                   <p className="text-sm text-muted-foreground">{description}</p>

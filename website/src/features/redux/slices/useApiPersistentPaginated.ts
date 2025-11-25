@@ -23,9 +23,11 @@ export const useApiPersistentPaginated = <
     setData,
   } = useSimpleSlice<PersistentState<D>>(field);
 
+  //@ts-expect-error ignore
   return {
     ...resources,
     isPending: state?.isPending || resources.isPending,
+    //@ts-expect-error ignore
     ...getPaginationResources(state),
     fetch: (args, options = {}) => {
       setData((state) => ({ ...state, isPending: true }));

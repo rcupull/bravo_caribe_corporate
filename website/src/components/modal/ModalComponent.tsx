@@ -67,8 +67,8 @@ export const ModalComponent = (props: ModalComponentProps) => {
     >
       <DialogContent
         className={cn(
-          "max-w-5xl max-h-[100vh] sm:max-h-[90vh] overflow-y-auto",
-          className
+          className,
+          "!max-w-5xl max-h-[100vh] sm:max-h-[90vh] overflow-y-auto"
         )}
       >
         <DialogHeader>

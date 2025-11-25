@@ -10,7 +10,7 @@ import {
 import logo from "@/assets/logo-v.png";
 import { categories } from "@/utils/category";
 
-const Footer = () => {
+export const Footer = () => {
   return (
     <footer className="bg-primary text-primary-foreground">
       <div className="container mx-auto px-4 py-12">
@@ -19,7 +19,7 @@ const Footer = () => {
           <div>
             <img src={logo} alt="Bravo Caribe" className="h-28 w-auto mb-4" />
             <p className="text-sm text-primary-foreground/70 mb-4">
-              Donde la pasión por la excelencia es una constante.
+              Precio y Calidad.
             </p>
             <div className="flex space-x-4">
               <a
@@ -44,7 +44,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/"
-                  className="text-sm text-primary-foreground/70 hover:text-accent transition-colors"
+                  className="text-lg text-primary-foreground/70 hover:text-accent transition-colors"
                 >
                   Inicio
                 </Link>
@@ -52,7 +52,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/nosotros"
-                  className="text-sm text-primary-foreground/70 hover:text-accent transition-colors"
+                  className="text-lg text-primary-foreground/70 hover:text-accent transition-colors"
                 >
                   Nosotros
                 </Link>
@@ -60,7 +60,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/productos"
-                  className="text-sm text-primary-foreground/70 hover:text-accent transition-colors"
+                  className="text-lg text-primary-foreground/70 hover:text-accent transition-colors"
                 >
                   Productos
                 </Link>
@@ -84,7 +84,7 @@ const Footer = () => {
                 <li key={index}>
                   <Link
                     to={`/productos?categoryType=${type}`}
-                    className="text-sm text-primary-foreground/70 hover:text-accent transition-colors"
+                    className="text-lg text-primary-foreground/70 hover:text-accent transition-colors"
                   >
                     {name}
                   </Link>
@@ -97,11 +97,11 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold text-lg mb-4">Contacto</h3>
             <ul className="space-y-3">
-              <li className="flex items-start space-x-3 text-sm text-primary-foreground/70">
+              <li className="flex items-start space-x-3 text-lg text-primary-foreground/70">
                 <MapPin className="h-5 w-5 mt-0.5 flex-shrink-0" />
                 <span>Zanja esquina a Espada. Centro Habana, Cuba</span>
               </li>
-              <li className="flex items-center space-x-3 text-sm text-primary-foreground/70">
+              <li className="flex items-center space-x-3 text-lg text-primary-foreground/70">
                 <Phone className="h-5 w-5 flex-shrink-0" />
                 <a
                   href="tel:+53 63672603"
@@ -117,7 +117,7 @@ const Footer = () => {
                   +53 63518395
                 </a>
               </li>
-              <li className="flex items-center space-x-3 text-sm text-primary-foreground/70">
+              <li className="flex items-center space-x-3 text-lg text-primary-foreground/70">
                 <Mail className="h-5 w-5 flex-shrink-0" />
                 <a
                   href="mailto:ventas@bravocaribe.com"
@@ -128,7 +128,7 @@ const Footer = () => {
               </li>
             </ul>
             <div className="mt-4">
-              <p className="text-sm text-primary-foreground/70">
+              <p className="text-lg text-primary-foreground/70">
                 <strong>Horario:</strong>
                 <br />
                 Lun - Vie: 8:00 AM - 6:00 PM
@@ -138,7 +138,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-primary-foreground/20 mt-8 pt-6 text-center">
-          <p className="text-sm text-primary-foreground/60">
+          <p className="text-lg text-primary-foreground/60">
             © {new Date().getFullYear()} Bravo Caribe. Todos los derechos
             reservados.
           </p>
@@ -147,5 +147,3 @@ const Footer = () => {
     </footer>
   );
 };
-
-export default Footer;

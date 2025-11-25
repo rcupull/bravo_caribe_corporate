@@ -73,7 +73,7 @@ export type FetchResourceWithPagination<
   fetch: (args: Args, options?: FetchOptions<PaginatedData<Data>>) => void;
 };
 
-export type SliceApiPersistentState<D extends AnyRecord = AnyRecord> = {
+export type SliceApiPersistentState<D extends any = any> = {
   data: FetchData<D>;
   isPending: boolean;
 } | null;

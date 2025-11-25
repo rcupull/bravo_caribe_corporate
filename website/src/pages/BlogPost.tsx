@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, User, ArrowLeft, Clock } from "lucide-react";
@@ -29,13 +29,13 @@ const BlogPost = () => {
     const storedPosts = localStorage.getItem("blogPosts");
     if (storedPosts) {
       const posts: BlogPost[] = JSON.parse(storedPosts);
-      const currentPost = posts.find(p => p.id === id);
-      
+      const currentPost = posts.find((p) => p.id === id);
+
       if (currentPost) {
         setPost(currentPost);
         // Get related posts from same category
         const related = posts
-          .filter(p => p.id !== id && p.category === currentPost.category)
+          .filter((p) => p.id !== id && p.category === currentPost.category)
           .slice(0, 3);
         setRelatedPosts(related);
       }
@@ -48,7 +48,9 @@ const BlogPost = () => {
         <Header />
         <main className="flex-1 flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-foreground mb-4">Artículo no encontrado</h1>
+            <h1 className="text-2xl font-bold text-foreground mb-4">
+              Artículo no encontrado
+            </h1>
             <Button onClick={() => navigate("/blog")}>
               <ArrowLeft className="mr-2 h-4 w-4" />
               Volver al Blog
@@ -68,7 +70,11 @@ const BlogPost = () => {
         {/* Back Button */}
         <section className="py-6 bg-secondary/30">
           <div className="container mx-auto px-4">
-            <Button variant="ghost" onClick={() => navigate("/blog")} className="gap-2">
+            <Button
+              variant="ghost"
+              onClick={() => navigate("/blog")}
+              className="gap-2"
+            >
               <ArrowLeft className="h-4 w-4" />
               Volver al Blog
             </Button>
@@ -93,10 +99,10 @@ const BlogPost = () => {
                   <div className="flex items-center gap-2">
                     <Calendar className="h-5 w-5" />
                     <span>
-                      {new Date(post.date).toLocaleDateString('es-ES', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
+                      {new Date(post.date).toLocaleDateString("es-ES", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
                       })}
                     </span>
                   </div>
@@ -119,9 +125,9 @@ const BlogPost = () => {
                 <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
                   {post.excerpt}
                 </p>
-                
+
                 <div className="text-foreground space-y-6 leading-relaxed">
-                  {post.content.split('\n\n').map((paragraph, index) => (
+                  {post.content.split("\n\n").map((paragraph, index) => (
                     <p key={index} className="text-lg">
                       {paragraph}
                     </p>

@@ -6,8 +6,9 @@ import CartSheet from "@/components/cart/CartSheet";
 import logo from "@/assets/logo-h.png";
 import { useAuth } from "@/hooks/useAuth";
 import { resetPersistentAuthData } from "@/utils/persistent-auth";
+import { HeaderAnnouncement } from "../header-announcement";
 
-const Header = () => {
+export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { resetData } = useAuth();
 
@@ -27,7 +28,8 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-primary border-b border-border/40 backdrop-blur-sm">
+    <header className="sticky top-0 z-50 w-full bg-accent border-b border-border/40 backdrop-blur-sm">
+      <HeaderAnnouncement />
       <div className="container mx-auto px-4">
         <div className="flex h-20 items-center justify-between">
           {/* Logo */}
@@ -41,7 +43,7 @@ const Header = () => {
               <Link
                 key={link.path}
                 to={link.path}
-                className="px-4 py-2 text-sm font-medium text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10 rounded-md transition-colors"
+                className="px-4 py-2 text-lg font-medium text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10 rounded-md transition-colors"
               >
                 {link.name}
               </Link>
@@ -52,7 +54,7 @@ const Header = () => {
           <div className="hidden lg:flex items-center space-x-4">
             <a
               href="tel:+53 63672603"
-              className="flex items-center text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+              className="flex items-center text-lg text-primary-foreground/80 hover:text-primary-foreground transition-colors"
             >
               <Phone className="h-4 w-4 mr-2" />
               <span>+53 63672603</span>
@@ -172,5 +174,3 @@ const Header = () => {
     </header>
   );
 };
-
-export default Header;

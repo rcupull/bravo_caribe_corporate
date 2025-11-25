@@ -9,9 +9,7 @@ interface Args {
     Product,
     | "name"
     | "price"
-    | "description"
     | "currency"
-    | "details"
     | "images"
     | "inStock"
     | "categoryType"

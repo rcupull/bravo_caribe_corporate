@@ -108,9 +108,7 @@ export class ProductController {
       bodyShape: (z) => ({
         name: z.string().nonempty(),
         hidden: z.boolean().optional(),
-        description: z.string().optional(),
         inStock: z.boolean().optional(),
-        // details: z.string().nullish(),
         images: z.array(ImageShape).optional(),
         price: z.number().nonnegative(),
         currency: z.enum(Currency),
@@ -127,25 +125,12 @@ export class ProductController {
 
       const { body } = req;
 
-      const {
-        name,
-        hidden,
-        description,
-        details,
-        images,
-        price,
-        currency,
-        inStock,
-        categoryType,
-        specs
-      } = body;
+      const { name, hidden, images, price, currency, inStock, categoryType, specs } = body;
 
       const out = await this.productServices.addOne({
         name,
         productSlug: this.productServices.getProductSlugFromName(name),
         hidden,
-        description,
-        details,
         currency,
         images,
         inStock,
@@ -191,13 +176,11 @@ export class ProductController {
         productSlug: z.string().nonempty()
       }),
       bodyShape: (z) => ({
-        details: z.string().nullish(),
         images: z.array(ImageShape).nullish(),
         name: z.string().nullish(),
         price: z.number().nonnegative().nullish(),
         inStock: z.boolean().nullish(),
         currency: z.enum(Currency).nullish(),
-        description: z.string().nullish(),
         hidden: z.boolean().optional(),
         categoryType: z.enum(CategoryType).nullish(),
         specs: z.record(z.string(), z.any()).nullish()
@@ -207,19 +190,8 @@ export class ProductController {
       const { params, body } = req;
       const { productSlug, routeName } = params;
 
-      const {
-        details,
-        highlights,
-        images,
-        name,
-        price,
-        currency,
-        description,
-        hidden,
-        inStock,
-        categoryType,
-        specs
-      } = body;
+      const { highlights, images, name, price, currency, hidden, inStock, categoryType, specs } =
+        body;
 
       const out = await this.productServices.findOneAndUpdate({
         query: {
@@ -227,7 +199,6 @@ export class ProductController {
           routeName
         },
         update: {
-          details,
           highlights,
           inStock,
           images,
@@ -235,7 +206,6 @@ export class ProductController {
           ...(name ? { productSlug: this.productServices.getProductSlugFromName(name) } : {}),
           price,
           currency,
-          description,
           hidden,
           categoryType,
           specs

@@ -12,8 +12,9 @@ import { useAdminUpdateOneProduct } from "@/api/products/useAdminUpdateOneProduc
 import { useModal } from "@/features/modal/useModal";
 import { ButtonClose } from "@/components/button-close";
 import { FieldInputImages } from "@/components/ui/field-input-images";
-import { CategoryType } from "@/types/category";
+import { CategorySpecsType, CategoryType } from "@/types/category";
 import { useAdminAddProductImage } from "@/api/files/useAdminAddProductImage";
+import { Fragment } from "react/jsx-runtime";
 
 interface ComponentProps {
   product?: Product;
@@ -23,14 +24,7 @@ interface ComponentProps {
 interface State
   extends Pick<
     Product,
-    | "categoryType"
-    | "currency"
-    | "name"
-    | "price"
-    | "description"
-    | "details"
-    | "inStock"
-    | "specs"
+    "categoryType" | "currency" | "name" | "price" | "inStock" | "specs"
   > {
   image?: Image;
 }
@@ -65,11 +59,9 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
       value={{
         name: "",
         currency: Currency.USD,
-        description: "",
         price: 0,
         inStock: true,
         categoryType: CategoryType.TIRE,
-        details: "",
         image: product?.images?.[0],
         specs: {},
         ...(product || {}),
@@ -83,8 +75,6 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
         return (
           <form className="space-y-4">
             <FieldInput label="Nombre del Producto" name="name" />
-
-            <FieldTextArea label="Descripción" name="description" />
 
             <div className="grid grid-cols-3 gap-4">
               <FieldInput label="Precio" name="price" type="number" />
@@ -142,21 +132,45 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
 
                 <div className="grid grid-cols-2 gap-4 ">
                   {currentCategory?.specsFields.map(
-                    ({ field, label }, index) => {
-                      return (
-                        <FieldInput
-                          key={index}
-                          label={label}
-                          name={`specs.${field}`}
-                        />
-                      );
+                    ({ field, label, type }, index) => {
+                      const element = (() => {
+                        if (type === CategorySpecsType.string) {
+                          return (
+                            <FieldInput label={label} name={`specs.${field}`} />
+                          );
+                        }
+
+                        if (type === CategorySpecsType.longString) {
+                          return (
+                            <FieldTextArea
+                              label={label}
+                              name={`specs.${field}`}
+                              rows={10}
+                            />
+                          );
+                        }
+
+                        if (type === CategorySpecsType.number) {
+                          return (
+                            <FieldInput
+                              type="number"
+                              label={label}
+                              name={`specs.${field}`}
+                            />
+                          );
+                        }
+
+                        return null;
+                      })();
+
+                      return <Fragment key={index}>{element}</Fragment>;
                     }
                   )}
                 </div>
               </div>
             )}
 
-            <FieldInputImages label="Imágen" name="image" />
+            <FieldInputImages label="Imagen" name="image" />
 
             <div className="flex gap-2 justify-end">
               <ButtonClose>Cancelar</ButtonClose>
@@ -167,8 +181,6 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
                     currency,
                     name,
                     price,
-                    description,
-                    details,
                     image,
                     inStock,
                     categoryType,
@@ -187,8 +199,6 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
                           currency,
                           name,
                           price,
-                          description,
-                          details,
                           images: imageToUpload ? [imageToUpload] : [],
                           inStock,
                           categoryType,
@@ -208,8 +218,6 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
                         currency,
                         name,
                         price,
-                        description,
-                        details,
                         images: imageToUpload ? [imageToUpload] : [],
                         inStock,
                         categoryType,

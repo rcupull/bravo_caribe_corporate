@@ -28,6 +28,7 @@ export const useQueryMutationWithPagination = <
     mutationFn: ({ fetchArgs }) => args.fetch(fetchArgs),
     onSuccess: (data, { options }) => {
       const { onAfterSuccess } = options || {};
+      //@ts-expect-error ignore
       onAfterSuccess?.(data);
     },
     onError: (error, { options }) => {
@@ -39,6 +40,7 @@ export const useQueryMutationWithPagination = <
   //@ts-expect-error ignore
   return {
     ...mutation,
+    //@ts-expect-error ignore
     ...getPaginationResources(data),
     fetch: (fetchArgs, options) => mutation.mutate({ fetchArgs, options }),
   };

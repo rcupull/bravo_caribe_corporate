@@ -10,6 +10,9 @@ export enum CategoryType {
 
 export enum CategorySpecsFields {
   "voltage" = "voltage",
+  "frequecy" = "frequecy",
+  "brand" = "brand",
+  "model" = "model",
   "power" = "power",
   "speed" = "speed",
   "clampSize" = "clampSize",
@@ -31,6 +34,12 @@ export enum CategorySpecsFields {
   "compatibleBrands" = "compatibleBrands",
 }
 
+export enum CategorySpecsType {
+  "string" = "string",
+  "number" = "number",
+  "longString" = "longString",
+}
+
 export interface Category {
   type: CategoryType;
   name: string;
@@ -39,5 +48,6 @@ export interface Category {
   specsFields: Array<{
     field: CategorySpecsFields;
     label: string;
+    type: CategorySpecsType;
   }>;
 }

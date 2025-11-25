@@ -10,8 +10,6 @@ export const modelGetter = () => {
   if (!ProductModel) {
     const ProductSchema = new Schema<Product>({
       ...createdAtSchemaDefinition,
-      description: { type: String },
-      details: { type: String },
       hidden: { type: Boolean, default: false },
       createdBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
       images: {

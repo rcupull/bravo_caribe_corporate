@@ -31,7 +31,7 @@ All colors MUST be HSL.
     --accent: 0 72% 42%; /* Red from logo hand */
     --accent-foreground: 0 0% 98%;
 
-    --warning: 43 96% 56%; /* Yellow/Orange from logo fingers */
+    --warning: 28 90% 55%;/* /Orange from logo fingers */
     --warning-foreground: 218 25% 15%;
 
     --destructive: 0 84% 60%;

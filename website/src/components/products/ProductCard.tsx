@@ -12,15 +12,7 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product, onQuoteRequest }: ProductCardProps) => {
-  const {
-    images,
-    categoryType,
-    productSlug,
-    description,
-    name,
-    inStock,
-    price,
-  } = product;
+  const { images, categoryType, productSlug, name, inStock, price } = product;
 
   const currentCategory = getCurrentCategory(categoryType);
 
@@ -65,9 +57,9 @@ const ProductCard = ({ product, onQuoteRequest }: ProductCardProps) => {
         <h3 className="font-bold text-lg mb-2 text-foreground group-hover:text-accent transition-colors line-clamp-2">
           {name}
         </h3>
-        <p className="text-sm text-muted-foreground line-clamp-3">
+        {/* <p className="text-sm text-muted-foreground line-clamp-3">
           {description}
-        </p>
+        </p> */}
         {price && (
           <p className="text-2xl font-bold text-accent mt-4">
             ${price.toFixed(2)}

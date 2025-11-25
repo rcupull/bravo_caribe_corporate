@@ -1,5 +1,5 @@
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
 import { Target, Eye, Award, Users } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
