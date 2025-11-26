@@ -53,7 +53,7 @@ const HeroBanner = ({
       className="relative min-h-[600px] flex items-center justify-center overflow-hidden transition-all duration-1000 ease-in-out "
       style={{
         background: currentBackground
-          ? `linear-gradient(rgba(31, 41, 55, 0.85), rgba(31, 41, 55, 0.85)), url(${currentBackground}) center/cover no-repeat`
+          ? `linear-gradient(rgba(31, 41, 55, 0.2), rgba(31, 41, 55, 0.85)), url(${currentBackground}) center/cover no-repeat`
           : "linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(218 20% 25%) 100%)",
       }}
     >

@@ -54,8 +54,8 @@ const AboutUs = () => {
                 Nuestra Historia
               </h2>
               <p className="text-muted-foreground text-lg leading-relaxed mb-4">
-                <strong className="text-foreground">Bravo Caribe</strong>
-                nació en 2023 con una visión clara: proporcionar repuestos
+                <strong className="text-foreground">Bravo Caribe</strong> nació
+                en 2023 con una visión clara: proporcionar repuestos
                 automotrices y servicios de calidad superior a precios
                 accesibles, enfocados en la sostenibilidad y satisfacción del
                 cliente. Lo que comenzó como una pequeña idea, se ha convertido
@@ -79,9 +79,9 @@ const AboutUs = () => {
             <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
               {/* Misión */}
               <Card className="border-2 border-primary/20 shadow-lg hover:shadow-xl transition-shadow">
-                <CardContent className="p-8">
-                  <div className="flex items-center justify-center w-16 h-16 rounded-full bg-accent/10 mb-6 mx-auto">
-                    <Target className="h-8 w-8 text-accent" />
+                <CardContent className="p-8 mt-6">
+                  <div className="flex items-center justify-center w-16 h-16 rounded-full bg-warning/10 mb-6 mx-auto">
+                    <Target className="h-8 w-8 text-warning" />
                   </div>
                   <h3 className="text-2xl font-bold text-center mb-4 text-foreground">
                     Nuestra Misión
@@ -98,9 +98,9 @@ const AboutUs = () => {
 
               {/* Visión */}
               <Card className="border-2 border-primary/20 shadow-lg hover:shadow-xl transition-shadow">
-                <CardContent className="p-8">
-                  <div className="flex items-center justify-center w-16 h-16 rounded-full bg-accent/10 mb-6 mx-auto">
-                    <Eye className="h-8 w-8 text-accent" />
+                <CardContent className="p-8 mt-6">
+                  <div className="flex items-center justify-center w-16 h-16 rounded-full bg-warning/10 mb-6 mx-auto">
+                    <Eye className="h-8 w-8 text-warning" />
                   </div>
                   <h3 className="text-2xl font-bold text-center mb-4 text-foreground">
                     Nuestra Visión
@@ -133,7 +133,7 @@ const AboutUs = () => {
                       key={index}
                       className="text-center hover:shadow-lg transition-shadow"
                     >
-                      <CardContent className="p-6">
+                      <CardContent className="p-6 mt-6">
                         <div className="flex items-center justify-center w-16 h-16 rounded-full bg-warning/10 mb-4 mx-auto">
                           <Icon className="h-8 w-8 text-warning" />
                         </div>
@@ -157,7 +157,7 @@ const AboutUs = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <h2 className="text-3xl font-bold text-center mb-4 text-foreground">
-                Nuestro Equipo y Almacén
+                Nuestro Equipo
               </h2>
               <p className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
                 Contamos con un equipo profesional y modernas instalaciones para
@@ -167,19 +167,21 @@ const AboutUs = () => {
                 {[
                   {
                     image: "/1.jpg",
-                    title: "Administración general",
-                    description: "Más de 5,000 m² de inventario organizado",
+                    title: "Administración General",
+                    description:
+                      "Gestión eficiente y organizada de operaciones para garantizar el funcionamiento óptimo de la empresa.",
                   },
                   {
                     image: "/6.jpg",
-                    title: "Equipo de ventas",
+                    title: "Equipo de Ventas",
                     description:
-                      "Profesionales con más de 10 años de experiencia",
+                      "Profesionales altamente capacitados con más de 10 años de experiencia en brindar soluciones a medida a nuestros clientes.",
                   },
                   {
                     image: "/7.jpg",
                     title: "Área de Atención",
-                    description: "Servicio personalizado y asesoría técnica",
+                    description:
+                      "Atención personalizada y asesoría técnica especializada para garantizar la satisfacción total de cada cliente.",
                   },
                 ].map((item, index) => (
                   <Card
@@ -191,7 +193,7 @@ const AboutUs = () => {
                       alt={item.title}
                       className="h-60 w-full object-cover"
                     />
-                    <CardContent className="p-6">
+                    <CardContent className="p-6 mt-6">
                       <h3 className="text-xl font-semibold mb-2 text-foreground">
                         {item.title}
                       </h3>
@@ -202,12 +204,30 @@ const AboutUs = () => {
                   </Card>
                 ))}
               </div>
+
+              <Card className="overflow-hidden hover:shadow-lg transition-shadow mt-20">
+                <img
+                  src={"/9.jpg"}
+                  className="h-80 sm:h-[35rem] w-full object-cover"
+                />
+
+                <CardContent className="p-6 mt-6">
+                  <h3 className="text-xl font-semibold mb-2 text-foreground">
+                    La familia
+                  </h3>
+
+                  <p className="text-muted-foreground">
+                    Expertos dedicados a ayudarte a encontrar productos de la
+                    más alta calidad.
+                  </p>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </section>
 
         {/* Certificaciones y Alianzas */}
-        <section className="py-16 bg-background">
+        {/* <section className="py-16 bg-background">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <h2 className="text-3xl font-bold text-center mb-4 text-foreground">
@@ -240,8 +260,8 @@ const AboutUs = () => {
                     key={index}
                     className="flex flex-col items-center justify-center p-6 bg-card border border-border rounded-lg hover:shadow-md transition-shadow"
                   >
-                    <div className="w-20 h-20 bg-accent/10 rounded-full flex items-center justify-center mb-3">
-                      <Award className="h-10 w-10 text-accent" />
+                    <div className="w-20 h-20 bg-warning/10 rounded-full flex items-center justify-center mb-3">
+                      <Award className="h-10 w-10 text-warning" />
                     </div>
                     <h3 className="text-lg font-semibold text-center mb-1 text-foreground">
                       {cert.name}
@@ -254,7 +274,7 @@ const AboutUs = () => {
               </div>
             </div>
           </div>
-        </section>
+        </section> */}
 
         {/* CTA Section */}
         <section className="py-16 bg-primary text-primary-foreground">
@@ -269,7 +289,7 @@ const AboutUs = () => {
               </p>
               <a
                 href="/contacto"
-                className="inline-flex items-center justify-center px-8 py-3 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold rounded-md transition-colors"
+                className="inline-flex items-center justify-center px-8 py-3 bg-warning hover:bg-warning/90 text-warning-foreground font-semibold rounded-md transition-colors"
               >
                 Contáctanos Ahora
               </a>
