@@ -10,6 +10,7 @@ export interface Product extends BaseIdentity {
   currency: Currency;
   hidden?: boolean;
   inStock?: boolean;
+  featured?: boolean;
 
   categoryType?: CategoryType;
   specs?: Partial<Record<CategorySpecsFields, string>>;

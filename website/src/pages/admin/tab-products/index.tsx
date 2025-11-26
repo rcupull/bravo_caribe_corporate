@@ -93,6 +93,11 @@ export const TabProducts = () => {
                     </TableCell>
                     <TableCell className="font-medium">
                       {rowData.name}
+                      {rowData.featured && (
+                        <span className="px-2 py-1 ml-6 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                          Destacado
+                        </span>
+                      )}
                     </TableCell>
                     <TableCell>{rowData.categoryType}</TableCell>
                     <TableCell>${rowData.price.toFixed(2)}</TableCell>

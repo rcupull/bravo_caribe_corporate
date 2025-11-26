@@ -70,12 +70,12 @@ export const Header = () => {
                 return (
                   <>
                     {isAdmin && (
-                      <Button variant="outline">
-                        <Link to="/admin">
+                      <Link to="/admin">
+                        <Button variant="outline">
                           <Shield className="h-4 w-4" />
-                        </Link>
-                        Admin
-                      </Button>
+                          Admin
+                        </Button>
+                      </Link>
                     )}
                     <Button variant="outline" onClick={logout}>
                       <LogOut className="h-4 w-4" />

@@ -14,6 +14,7 @@ interface Args {
     | "inStock"
     | "categoryType"
     | "specs"
+    | "featured"
   >;
 }
 

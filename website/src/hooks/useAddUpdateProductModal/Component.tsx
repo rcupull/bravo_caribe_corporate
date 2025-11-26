@@ -15,6 +15,7 @@ import { FieldInputImages } from "@/components/ui/field-input-images";
 import { CategorySpecsType, CategoryType } from "@/types/category";
 import { useAdminAddProductImage } from "@/api/files/useAdminAddProductImage";
 import { Fragment } from "react/jsx-runtime";
+import { FieldCheckbox } from "@/components/ui/field-checkbox";
 
 interface ComponentProps {
   product?: Product;
@@ -24,7 +25,13 @@ interface ComponentProps {
 interface State
   extends Pick<
     Product,
-    "categoryType" | "currency" | "name" | "price" | "inStock" | "specs"
+    | "categoryType"
+    | "currency"
+    | "name"
+    | "price"
+    | "inStock"
+    | "specs"
+    | "featured"
   > {
   image?: Image;
 }
@@ -64,6 +71,7 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
         categoryType: CategoryType.TIRE,
         image: product?.images?.[0],
         specs: {},
+        featured: false,
         ...(product || {}),
       }}
     >
@@ -74,9 +82,15 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
 
         return (
           <form className="space-y-4">
-            <FieldInput label="Nombre del Producto" name="name" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <FieldInput label="Nombre del Producto" name="name" />
 
-            <div className="grid grid-cols-3 gap-4">
+              <div className="mt-6 flex items-center justify-around gap-4">
+                <FieldCheckbox label="En Stock" name="inStock" />
+
+                <FieldCheckbox label="Destacado" name="featured" />
+              </div>
+
               <FieldInput label="Precio" name="price" type="number" />
 
               <FieldSelect<{ value: Currency }>
@@ -97,24 +111,6 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
                 renderValue={({ value }) => value}
                 optionToValue={({ value }) => value}
               />
-
-              <FieldSelect<{ value: boolean; label: string }>
-                items={[
-                  {
-                    label: "En Stock",
-                    value: true,
-                  },
-                  {
-                    label: "Agotado",
-                    value: false,
-                  },
-                ]}
-                label="Disponibilidad"
-                renderOption={({ label }) => label}
-                renderValue={({ label }) => label}
-                optionToValue={({ value }) => value}
-                name="inStock"
-              />
             </div>
 
             <FieldSelect
@@ -127,10 +123,10 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
             />
 
             {currentCategory?.specsFields.length && (
-              <div className="bg-gray-100 rounded-md px-2 py-3">
+              <div className="bg-gray-200 rounded-md px-2 py-3">
                 <p className="mb-2">Detalles de las categorías</p>
 
-                <div className="grid grid-cols-2 gap-4 ">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
                   {currentCategory?.specsFields.map(
                     ({ field, label, type }, index) => {
                       const element = (() => {
@@ -146,6 +142,7 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
                               label={label}
                               name={`specs.${field}`}
                               rows={10}
+                              className="col-span-1 sm:col-span-2"
                             />
                           );
                         }
@@ -185,6 +182,7 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
                     inStock,
                     categoryType,
                     specs,
+                    featured,
                   } = value;
 
                   const imageToUpload = image
@@ -199,6 +197,7 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
                           currency,
                           name,
                           price,
+                          featured,
                           images: imageToUpload ? [imageToUpload] : [],
                           inStock,
                           categoryType,
@@ -218,6 +217,7 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
                         currency,
                         name,
                         price,
+                        featured,
                         images: imageToUpload ? [imageToUpload] : [],
                         inStock,
                         categoryType,

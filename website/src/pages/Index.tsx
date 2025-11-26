@@ -12,7 +12,7 @@ const Index = () => {
   const { getAllProducts } = useGetAllProducts();
 
   useEffect(() => {
-    getAllProducts.fetch();
+    getAllProducts.fetch({ featured: true });
   }, []);
 
   return (

@@ -26,6 +26,7 @@ export const modelGetter = () => {
       //
       price: { type: Number, required: true },
       inStock: { type: Boolean },
+      featured: { type: Boolean },
       currency: { type: String, enum: Object.values(Currency), required: true },
 
       categoryType: { type: String, enum: Object.values(CategoryType) },

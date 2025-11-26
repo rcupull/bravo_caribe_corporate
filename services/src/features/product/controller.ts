@@ -1,7 +1,7 @@
 import { ProductServices } from './services';
 import { ProductDtosServices } from '../product-dtos/services';
 import { controllerFactory } from '../../utils/controllers';
-import { ImageShape } from '../../utils/zod-shapes';
+import { ImageShape, QueryBooleanSchema } from '../../utils/zod-shapes';
 import { getProductNotFoundResponse, getUserNotFoundResponse } from '../../utils/responses';
 import { Currency } from '../../types/general';
 import { CategoryType } from '../../types/category';
@@ -18,13 +18,14 @@ export class ProductController {
       withPagination: true,
       queryShape: (z) => ({
         search: z.string().nullish(),
+        featured: QueryBooleanSchema.nullish(),
         categoryType: z.enum(CategoryType).nullish()
       })
     },
     async ({ req, res }) => {
       const { query, paginateOptions } = req;
 
-      const { search, categoryType } = query;
+      const { search, categoryType, featured } = query;
 
       const out = await this.productServices.getAllWithPagination({
         paginateOptions,
@@ -35,6 +36,10 @@ export class ProductController {
 
           if (search) {
             out.search = search;
+          }
+
+          if (featured) {
+            out.featured = true;
           }
 
           if (categoryType) {
@@ -109,6 +114,7 @@ export class ProductController {
         name: z.string().nonempty(),
         hidden: z.boolean().optional(),
         inStock: z.boolean().optional(),
+        featured: z.boolean().optional(),
         images: z.array(ImageShape).optional(),
         price: z.number().nonnegative(),
         currency: z.enum(Currency),
@@ -125,7 +131,8 @@ export class ProductController {
 
       const { body } = req;
 
-      const { name, hidden, images, price, currency, inStock, categoryType, specs } = body;
+      const { name, hidden, images, price, currency, inStock, categoryType, specs, featured } =
+        body;
 
       const out = await this.productServices.addOne({
         name,
@@ -135,6 +142,7 @@ export class ProductController {
         images,
         inStock,
         price,
+        featured,
         createdBy: user._id,
         categoryType,
         specs
@@ -180,6 +188,7 @@ export class ProductController {
         name: z.string().nullish(),
         price: z.number().nonnegative().nullish(),
         inStock: z.boolean().nullish(),
+        featured: z.boolean().nullish(),
         currency: z.enum(Currency).nullish(),
         hidden: z.boolean().optional(),
         categoryType: z.enum(CategoryType).nullish(),
@@ -190,8 +199,18 @@ export class ProductController {
       const { params, body } = req;
       const { productSlug, routeName } = params;
 
-      const { highlights, images, name, price, currency, hidden, inStock, categoryType, specs } =
-        body;
+      const {
+        highlights,
+        images,
+        name,
+        price,
+        currency,
+        hidden,
+        inStock,
+        categoryType,
+        specs,
+        featured
+      } = body;
 
       const out = await this.productServices.findOneAndUpdate({
         query: {
@@ -203,6 +222,7 @@ export class ProductController {
           inStock,
           images,
           name,
+          featured,
           ...(name ? { productSlug: this.productServices.getProductSlugFromName(name) } : {}),
           price,
           currency,

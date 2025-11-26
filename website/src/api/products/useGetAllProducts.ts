@@ -6,6 +6,7 @@ import { CategoryType } from "@/types/category";
 
 interface Args {
   categoryType?: CategoryType;
+  featured?: boolean;
 }
 
 export const useGetAllProducts = (): {
