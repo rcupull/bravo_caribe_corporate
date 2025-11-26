@@ -3,7 +3,6 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
-import { CartProvider } from "./contexts/CartContext";
 import { InitService } from "./features/init-service";
 import { ReduxProvider } from "./features/redux";
 import { ChildrenProp } from "./types/general";
@@ -40,14 +39,14 @@ export const Providers = ({ children }: ChildrenProp) => {
     <ReduxProvider store={store}>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
-          <ModalService>
-            <InitService />
-            <CartProvider>
+          <BrowserRouter>
+            <ModalService>
+              <InitService />
               <Toaster />
               <Sonner />
-              <BrowserRouter>{children}</BrowserRouter>
-            </CartProvider>
-          </ModalService>
+              {children}
+            </ModalService>
+          </BrowserRouter>
         </TooltipProvider>
       </QueryClientProvider>
     </ReduxProvider>

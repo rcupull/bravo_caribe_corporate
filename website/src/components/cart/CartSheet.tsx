@@ -8,9 +8,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ShoppingCart, Trash2, Plus, Minus, FileImage } from "lucide-react";
-import { useCart } from "@/contexts/CartContext";
 import { Link } from "react-router-dom";
 import { ImageComponent } from "../image-component";
+import { useCart } from "@/hooks/useCart";
 
 const CartSheet = () => {
   const { items, removeFromCart, updateQuantity, totalItems, totalPrice } =

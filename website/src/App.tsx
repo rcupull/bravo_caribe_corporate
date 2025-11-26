@@ -5,7 +5,7 @@ import Products from "./pages/Products";
 import AboutUs from "./pages/AboutUs";
 import Auth from "./pages/Auth";
 import Admin from "./pages/admin";
-import Contact from "./pages/Contact";
+import Contact from "./pages/contact";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import { Providers } from "./Providers";
@@ -19,7 +19,7 @@ const App = () => (
       <Route path="/contacto" element={<Contact />} />
       <Route path="/blog" element={<Blog />} />
       <Route path="/blog/:id" element={<BlogPost />} />
-      <Route path="/auth" element={<Auth />} />
+      <Route path="/cuenta" element={<Auth />} />
       <Route path="/admin" element={<Admin />} />
       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
       <Route path="*" element={<NotFound />} />

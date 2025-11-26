@@ -3,9 +3,7 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import ProductCard from "@/components/products/ProductCard";
 import ProductFilters from "@/components/products/ProductFilters";
-import ProductDetail from "@/components/products/ProductDetail";
 import QuickQuoteCTA from "@/components/products/QuickQuoteCTA";
-import { useCart } from "@/contexts/CartContext";
 import { toast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
@@ -18,19 +16,14 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { useGetAllProducts } from "@/api/products/useGetAllProducts";
-import { Product } from "@/types/products";
 import { CategoryType } from "@/types/category";
 import { useNavigate, useSearchParams } from "react-router-dom";
-
-const ITEMS_PER_PAGE = 9;
+import { useProductDetails } from "@/hooks/useProductDetails";
 
 const Products = () => {
   const [inStockOnly, setInStockOnly] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const { addToCart } = useCart();
 
   const { getAllProducts } = useGetAllProducts();
 
@@ -55,18 +48,7 @@ const Products = () => {
     });
   }, [categoryType]);
 
-  const handleProductClick = (product: Product) => {
-    setSelectedProduct(product);
-    setIsDetailOpen(true);
-  };
-
-  const handleAddToCart = (product: Product) => {
-    addToCart(product);
-    toast({
-      title: "Producto agregado",
-      description: `${product.name} se ha agregado al carrito`,
-    });
-  };
+  const { productDetails } = useProductDetails();
 
   const totalPages = getAllProducts.paginator?.pageCount || 0;
   const paginatedProducts = getAllProducts.data;
@@ -138,12 +120,11 @@ const Products = () => {
                   {getAllProducts.data?.map((product, index) => (
                     <div
                       key={index}
-                      onClick={() => handleProductClick(product)}
+                      onClick={() => {
+                        productDetails.open({ product });
+                      }}
                     >
-                      <ProductCard
-                        product={product}
-                        onQuoteRequest={() => handleAddToCart(product)}
-                      />
+                      <ProductCard product={product} />
                     </div>
                   ))}
                 </div>
@@ -201,14 +182,6 @@ const Products = () => {
       </main>
 
       <Footer />
-
-      {/* Product Detail Modal */}
-      <ProductDetail
-        product={selectedProduct}
-        isOpen={isDetailOpen}
-        onClose={() => setIsDetailOpen(false)}
-        onAddToCart={handleAddToCart}
-      />
     </div>
   );
 };

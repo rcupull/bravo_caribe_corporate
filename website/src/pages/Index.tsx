@@ -9,12 +9,6 @@ import { useGetAllProducts } from "@/api/products/useGetAllProducts";
 import { useEffect } from "react";
 
 const Index = () => {
-  const handleQuoteRequest = (productId: string) => {
-    console.log("Quote requested for product:", productId);
-    // Here you would typically navigate to contact form or open a modal
-    window.location.href = "/contacto";
-  };
-
   const { getAllProducts } = useGetAllProducts();
 
   useEffect(() => {
@@ -53,11 +47,7 @@ const Index = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {getAllProducts.data?.map((product, index) => (
-                <ProductCard
-                  key={index}
-                  product={product}
-                  onQuoteRequest={handleQuoteRequest}
-                />
+                <ProductCard key={index} product={product} />
               ))}
             </div>
           </div>

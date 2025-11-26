@@ -17,7 +17,7 @@ const Admin = () => {
   useEffect(() => {
     if (!isAuthenticated) {
       toast.error("Debes iniciar sesión para acceder");
-      navigate("/auth");
+      navigate("/cuenta");
     } else if (!isAdmin) {
       toast.error("No tienes permisos de administrador");
       navigate("/");

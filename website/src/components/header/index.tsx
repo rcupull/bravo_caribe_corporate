@@ -59,47 +59,41 @@ export const Header = () => {
               <Phone className="h-4 w-4 mr-2" />
               <span>+53 63672603</span>
             </a>
-            <CartSheet />
+            {/* <CartSheet /> */}
 
-            <Button
-              asChild
-              className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold"
-            >
-              <Link to="/contacto">Cotizar Ahora</Link>
+            <Button variant={"outline"}>
+              <Link to="/contacto">Contáctanos</Link>
             </Button>
 
-            {isAuthenticated ? (
-              <>
-                {isAdmin && (
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="hover:bg-primary-foreground/10"
-                  >
-                    <Link to="/admin">
-                      <Shield className="h-4 w-4" />
-                    </Link>
-                  </Button>
-                )}
-                <Button
-                  variant="outline"
-                  onClick={logout}
-                  className="hover:bg-primary-foreground/10"
-                >
-                  <LogOut className="h-4 w-4" />
-                </Button>
-              </>
-            ) : (
-              <Button
-                asChild
-                variant="outline"
-                className="border-primary-foreground/20 hover:bg-primary-foreground/10"
-              >
-                <Link to="/auth">
-                  <LogIn className="h-4 w-4" />
-                </Link>
-              </Button>
-            )}
+            {(() => {
+              if (isAuthenticated) {
+                return (
+                  <>
+                    {isAdmin && (
+                      <Button variant="outline">
+                        <Link to="/admin">
+                          <Shield className="h-4 w-4" />
+                        </Link>
+                        Admin
+                      </Button>
+                    )}
+                    <Button variant="outline" onClick={logout}>
+                      <LogOut className="h-4 w-4" />
+                    </Button>
+                  </>
+                );
+              }
+
+              return null;
+
+              // return (
+              //   <Button asChild variant="outline">
+              //     <Link to="/cuenta">
+              //       <LogIn className="h-4 w-4" />
+              //     </Link>
+              //   </Button>
+              // );
+            })()}
           </div>
 
           {/* Mobile Menu Button */}
@@ -153,7 +147,7 @@ export const Header = () => {
                   </>
                 ) : (
                   <Button asChild variant="outline" className="w-full">
-                    <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
+                    <Link to="/cuenta" onClick={() => setIsMenuOpen(false)}>
                       <LogIn className="h-4 w-4 mr-2" />
                     </Link>
                   </Button>

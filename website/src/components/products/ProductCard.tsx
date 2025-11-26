@@ -5,26 +5,23 @@ import { ShoppingCart, CheckCircle, XCircle, FileImage } from "lucide-react";
 import { Product } from "@/types/products";
 import { ImageComponent } from "../image-component";
 import { getCurrentCategory } from "@/utils/category";
+import { useRequestProduct } from "@/hooks/useRequestProduct";
 
 interface ProductCardProps {
   product: Product;
-  onQuoteRequest?: (productId: string) => void;
 }
 
-const ProductCard = ({ product, onQuoteRequest }: ProductCardProps) => {
+const ProductCard = ({ product }: ProductCardProps) => {
   const { images, categoryType, productSlug, name, inStock, price } = product;
 
   const currentCategory = getCurrentCategory(categoryType);
 
+  const { onRequest } = useRequestProduct();
+
   const image = images?.length ? images[0] : null;
-  const handleQuoteClick = () => {
-    if (onQuoteRequest) {
-      onQuoteRequest(productSlug);
-    }
-  };
 
   return (
-    <Card className="group h-full flex flex-col hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-accent">
+    <Card className="group h-full flex flex-col hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-warning">
       <div className="relative overflow-hidden rounded-t-lg">
         <div className="flex items-center justify-center w-full h-56 bg-gray-200">
           {image ? (
@@ -34,7 +31,7 @@ const ProductCard = ({ product, onQuoteRequest }: ProductCardProps) => {
           )}
         </div>
         {currentCategory?.name && (
-          <Badge className="absolute top-3 left-3 bg-accent text-accent-foreground">
+          <Badge className="absolute top-3 left-3 bg-warning text-accent-foreground">
             {currentCategory?.name}
           </Badge>
         )}
@@ -54,14 +51,12 @@ const ProductCard = ({ product, onQuoteRequest }: ProductCardProps) => {
       </div>
 
       <CardContent className="flex-1 p-6">
-        <h3 className="font-bold text-lg mb-2 text-foreground group-hover:text-accent transition-colors line-clamp-2">
+        <h3 className="font-bold text-lg mb-2 text-foreground group-hover:text-warning transition-colors line-clamp-2">
           {name}
         </h3>
-        {/* <p className="text-sm text-muted-foreground line-clamp-3">
-          {description}
-        </p> */}
+
         {price && (
-          <p className="text-2xl font-bold text-accent mt-4">
+          <p className="text-2xl font-bold text-warning mt-4">
             ${price.toFixed(2)}
           </p>
         )}
@@ -69,12 +64,16 @@ const ProductCard = ({ product, onQuoteRequest }: ProductCardProps) => {
 
       <CardFooter className="p-6 pt-0">
         <Button
-          onClick={handleQuoteClick}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onRequest(product);
+          }}
           className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold"
           disabled={!inStock}
         >
           <ShoppingCart className="mr-2 h-4 w-4" />
-          Solicitar Cotización
+          Solicitar este producto
         </Button>
       </CardFooter>
     </Card>

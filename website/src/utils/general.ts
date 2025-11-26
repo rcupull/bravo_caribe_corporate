@@ -296,3 +296,7 @@ export const set = <T extends AnyRecord = AnyRecord>(
 ): void => {
   dset(obj, path, value);
 };
+
+export const getWhatsAppLink = (phoneNumber: string) => {
+  return `https://wa.me/${phoneNumber}`;
+};

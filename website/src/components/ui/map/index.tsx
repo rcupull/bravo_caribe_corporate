@@ -12,6 +12,7 @@ import {
 import { Feature, Map, MapBrowserEvent, View } from "ol";
 import * as geom from "ol/geom";
 import { Tile, Vector as VectorLayer } from "ol/layer";
+import { defaults as defaultControls } from "ol/control";
 import { fromLonLat, transform } from "ol/proj";
 import { Vector as VectorSource } from "ol/source";
 import OSM from "ol/source/OSM";
@@ -129,6 +130,11 @@ export const MapOl = ({
         view: new View({
           center: positionToCoordinate(center),
         }),
+        controls: defaultControls({
+          attribution: false,
+          zoom: false,
+          rotate: false,
+        }),
       });
 
       setMap(map);
@@ -209,15 +215,25 @@ export const MapOl = ({
               geometry: new geom.Point(fromLonLat([lon, lat])),
             });
 
-            feature.setStyle(
+            feature.setStyle([
               new Style({
                 image: new CircleStyle({
                   radius: 8, // circle size
-                  fill: new Fill({ color: "#25ad5f" }), // background color
+                  fill: new Fill({ color: "#cf1843" }), // background color
                   stroke: new Stroke({ color: "#fff", width: 2 }), // border
                 }),
-              })
-            );
+              }),
+              new Style({
+                image: new CircleStyle({
+                  radius: 12,
+                  fill: new Fill({ color: "rgba(0,0,0,0)" }), // transparente
+                  stroke: new Stroke({
+                    color: "#cf1843",
+                    width: 3,
+                  }),
+                }),
+              }),
+            ]);
 
             return feature;
           })
