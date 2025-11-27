@@ -3,11 +3,12 @@
   "private": true,
   "scripts": {
     "start": "nodemon --watch ./src --ext ts --exec 'ts-node ./src/index.ts'",
-    "serve": "npm run serve",
-    "build": "npm run build",
+    "build": "rm -rf build && tsc",
     "tsc": "tsc --noEmit -p ./tsconfig.json",
-    "deploy": "pnpm nx run market-deploy:stage",
-    "lint": "pnpm nx run market-lint"
+    "serve": "node ./build/index.js",
+    "compress": "tar -cvf ./deploy.tar ./package.json ./package-lock.json ./tsconfig.json captain-definition ./build/*",
+    "caprover:deploy": "caprover deploy -t ./deploy.tar -h https://captain.eltrapichecubiche.com -a bravo-api",
+    "deploy": "npm run build && npm run compress && npm run caprover:deploy"
   },
   "devDependencies": {
     "@eslint/js": "^9.32.0",

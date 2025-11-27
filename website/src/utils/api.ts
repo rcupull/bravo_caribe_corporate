@@ -21,7 +21,7 @@ const S3_BUCKET_APP = (() => {
     return `bravo-caribe-local`;
   }
 
-  return "bravo-caribe-production";
+  return "bravo-caribe-prod";
 })();
 
 export const getEndpointUrl = () => {
@@ -29,8 +29,7 @@ export const getEndpointUrl = () => {
     return "http://localhost:8081";
   }
 
-  return ""; //TODO
-  // return "https://api-dev.bessandsolar.com/api";
+  return "http://bravo-api.eltrapichecubiche.com";
 };
 
 export const getImageEndpoint = (src = "") => {
