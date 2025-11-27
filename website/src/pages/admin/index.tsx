@@ -3,11 +3,11 @@ import { Footer } from "@/components/footer";
 import { TabsUI } from "@/components/ui/tabs-ui";
 import { Package, FileText } from "lucide-react";
 import { TabProducts } from "./tab-products";
-import { TabBlog } from "./tab-blog";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
+import { TabBlogs } from "./tab-blog";
 
 const Admin = () => {
   const { isAuthenticated, isAdmin } = useAuth();
@@ -51,12 +51,12 @@ const Admin = () => {
                 svg: Package,
                 content: <TabProducts />,
               },
-              // {
-              //   value: "blog",
-              //   label: "Blog",
-              //   svg: FileText,
-              //   content: <TabBlog />,
-              // },
+              {
+                value: "blog",
+                label: "Blogs",
+                svg: FileText,
+                content: <TabBlogs />,
+              },
             ]}
           />
         </div>

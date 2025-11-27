@@ -27,6 +27,10 @@ import { UserController } from './features/user/controller';
 import { UserRouter } from './features/user/routes';
 import { FileController } from './features/files/controller';
 import { FileRouter } from './features/files/routes';
+import { BlogServices } from './features/blog/services';
+import { BlogDtosServices } from './features/blog-dtos/services';
+import { BlogController } from './features/blog/controller';
+import { BlogRouter } from './features/blog/routes';
 
 export const app = express();
 const router = Router();
@@ -36,6 +40,11 @@ const router = Router();
 
 const fileServices = new FileServices();
 const productServices = new ProductServices();
+const productDtosServices = new ProductDtosServices();
+
+const blogServices = new BlogServices();
+const blogDtosServices = new BlogDtosServices();
+
 const authSessionServices = new AuthSessionServices();
 const userServices = new UserServices();
 const userDtosServices = new UserDtosServices(authSessionServices);
@@ -44,13 +53,12 @@ const authServices = new AuthServices(authSessionServices, userServices, validat
 const accessServices = new AccessServices(authServices);
 const emailServices = new EmailServices();
 
-const productDtosServices = new ProductDtosServices();
-
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
 
 const productController = new ProductController(productServices, productDtosServices);
+const blogController = new BlogController(blogServices, blogDtosServices);
 const fileController = new FileController(fileServices);
 const authController = new AuthController(
   authServices,
@@ -68,6 +76,7 @@ const userController = new UserController(userServices, userDtosServices);
 //////////////////////////////////////////////////////////////////////////////////////////
 
 const productRouter = new ProductRouter(productController, accessServices);
+const blogRouter = new BlogRouter(blogController, accessServices);
 const fileRouter = new FileRouter(fileController, accessServices);
 const authRouter = new AuthRouter(authController, accessServices);
 const userRouter = new UserRouter(userController, accessServices);
@@ -76,7 +85,14 @@ const userRouter = new UserRouter(userController, accessServices);
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
 
-router.use('/', productRouter.router, authRouter.router, userRouter.router, fileRouter.router);
+router.use(
+  '/',
+  productRouter.router,
+  authRouter.router,
+  userRouter.router,
+  fileRouter.router,
+  blogRouter.router
+);
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
