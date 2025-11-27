@@ -1,11 +1,10 @@
+
+@import "ol/ol.css";
+@import 'ckeditor-styles.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import "ol/ol.css";
-
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
 
 @layer base {
   :root {

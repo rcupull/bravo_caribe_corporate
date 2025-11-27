@@ -3,91 +3,37 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, User, ArrowRight } from "lucide-react";
+import { Calendar, User, ArrowRight, FileImage } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-interface BlogPost {
-  id: string;
-  title: string;
-  excerpt: string;
-  content: string;
-  image: string;
-  author: string;
-  date: string;
-  category: string;
-  featured: boolean;
-}
+import { useGetAllBlogs } from "@/api/blogs/useGetAllBlogs";
+import { ImageComponent } from "@/components/image-component";
+import { useNavigate } from "react-router-dom";
 
 const Blog = () => {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>("Todos");
+  const navigate = useNavigate();
+
+  const { getAllBlogs } = useGetAllBlogs();
 
   useEffect(() => {
-    const storedPosts = localStorage.getItem("blogPosts");
-    if (storedPosts) {
-      setPosts(JSON.parse(storedPosts));
-    } else {
-      // Posts iniciales
-      const initialPosts: BlogPost[] = [
-        {
-          id: "1",
-          title: "Guía Completa de Mantenimiento Preventivo",
-          excerpt:
-            "Descubre cómo el mantenimiento preventivo puede extender la vida útil de tu vehículo y ahorrarte dinero.",
-          content: "El mantenimiento preventivo es clave...",
-          image:
-            "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=800&h=600&fit=crop",
-          author: "Carlos Mendoza",
-          date: "2024-01-15",
-          category: "Mantenimiento",
-          featured: true,
-        },
-        {
-          id: "2",
-          title: "Cómo Elegir las Pastillas de Freno Correctas",
-          excerpt:
-            "Todo lo que necesitas saber para seleccionar las pastillas de freno ideales para tu vehículo.",
-          content: "Las pastillas de freno son fundamentales...",
-          image:
-            "https://images.unsplash.com/photo-1625047509248-ec889cbff17f?w=800&h=600&fit=crop",
-          author: "María González",
-          date: "2024-01-10",
-          category: "Frenos",
-          featured: false,
-        },
-        {
-          id: "3",
-          title: "Filtros de Aceite: Cuándo y Por Qué Cambiarlos",
-          excerpt:
-            "Aprende la importancia de cambiar el filtro de aceite regularmente y sus beneficios.",
-          content: "Los filtros de aceite juegan un papel crucial...",
-          image:
-            "https://images.unsplash.com/photo-1487754180451-c456f719a1fc?w=800&h=600&fit=crop",
-          author: "Juan Pérez",
-          date: "2024-01-05",
-          category: "Lubricación",
-          featured: false,
-        },
-      ];
-      setPosts(initialPosts);
-      localStorage.setItem("blogPosts", JSON.stringify(initialPosts));
-    }
+    getAllBlogs.fetch();
   }, []);
 
-  const categories = [
-    "Todos",
-    ...Array.from(new Set(posts.map((p) => p.category))),
-  ];
+  const featuredBlog = getAllBlogs.data?.find((p) => p.featured);
 
-  const filteredPosts =
-    selectedCategory === "Todos"
-      ? posts
-      : posts.filter((p) => p.category === selectedCategory);
+  // const categories = [
+  //   "Todos",
+  //   ...Array.from(new Set(posts.map((p) => p.category))),
+  // ];
 
-  const featuredPost = posts.find((p) => p.featured);
-  const regularPosts = filteredPosts.filter(
-    (p) => !p.featured || selectedCategory !== "Todos"
-  );
+  // const filteredPosts =
+  //   selectedCategory === "Todos"
+  //     ? posts
+  //     : posts.filter((p) => p.category === selectedCategory);
+
+  // const featuredPost = posts.find((p) => p.featured);
+  // const regularPosts = filteredPosts.filter(
+  //   (p) => !p.featured || selectedCategory !== "Todos"
+  // );
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -110,7 +56,7 @@ const Blog = () => {
         </section>
 
         {/* Featured Post */}
-        {featuredPost && selectedCategory === "Todos" && (
+        {featuredBlog && (
           <section className="py-16 bg-background">
             <div className="container mx-auto px-4">
               <div className="max-w-6xl mx-auto">
@@ -119,29 +65,33 @@ const Blog = () => {
                 </h2>
                 <Card className="overflow-hidden hover:shadow-xl transition-shadow">
                   <div className="grid md:grid-cols-2 gap-6">
-                    <img
-                      src={featuredPost.image}
-                      alt={featuredPost.title}
-                      className="w-full h-full object-cover"
-                    />
+                    {featuredBlog.coverImage ? (
+                      <ImageComponent
+                        image={featuredBlog.coverImage}
+                        className="h-[20rem] object-cover"
+                      />
+                    ) : (
+                      <FileImage className="w-full h-[20rem]" />
+                    )}
+
                     <CardContent className="p-8 flex flex-col justify-center">
-                      <Badge className="w-fit mb-4">
+                      {/* <Badge className="w-fit mb-4">
                         {featuredPost.category}
-                      </Badge>
+                      </Badge> */}
                       <h3 className="text-3xl font-bold mb-4 text-foreground">
-                        {featuredPost.title}
+                        {featuredBlog.title}
                       </h3>
                       <p className="text-muted-foreground mb-6 text-lg">
-                        {featuredPost.excerpt}
+                        {featuredBlog.description}
                       </p>
                       <div className="flex items-center gap-6 text-sm text-muted-foreground mb-6">
                         <div className="flex items-center gap-2">
                           <User className="h-4 w-4" />
-                          {featuredPost.author}
+                          {featuredBlog.author}
                         </div>
                         <div className="flex items-center gap-2">
                           <Calendar className="h-4 w-4" />
-                          {new Date(featuredPost.date).toLocaleDateString(
+                          {new Date(featuredBlog.createdAt).toLocaleDateString(
                             "es-ES",
                             {
                               year: "numeric",
@@ -153,9 +103,9 @@ const Blog = () => {
                       </div>
                       <Button
                         className="w-fit gap-2"
-                        onClick={() =>
-                          (window.location.href = `/blog/${featuredPost.id}`)
-                        }
+                        onClick={() => {
+                          navigate(`/blog/${featuredBlog.blogSlug}`);
+                        }}
                       >
                         Leer más
                         <ArrowRight className="h-4 w-4" />
@@ -169,7 +119,7 @@ const Blog = () => {
         )}
 
         {/* Category Filter */}
-        <section className="py-8 bg-secondary/30">
+        {/* <section className="py-8 bg-secondary/30">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="flex flex-wrap gap-3">
@@ -187,56 +137,62 @@ const Blog = () => {
               </div>
             </div>
           </div>
-        </section>
+        </section> */}
 
         {/* Blog Posts Grid */}
         <section className="py-16 bg-background">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
-              {regularPosts.length === 0 ? (
+              {!getAllBlogs.data?.length ? (
                 <p className="text-center text-muted-foreground py-12">
                   No hay artículos en esta categoría
                 </p>
               ) : (
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {regularPosts.map((post) => (
+                  {getAllBlogs.data?.map((blog, index) => (
                     <Card
-                      key={post.id}
+                      key={index}
                       className="overflow-hidden hover:shadow-lg transition-shadow flex flex-col"
                     >
-                      <img
-                        src={post.image}
-                        alt={post.title}
-                        className="w-full h-48 object-cover"
-                      />
+                      {blog.coverImage ? (
+                        <ImageComponent
+                          image={blog.coverImage}
+                          className="w-48 object-cover mx-auto"
+                        />
+                      ) : (
+                        <FileImage className="w-48 mx-auto" />
+                      )}
                       <CardContent className="p-6 flex flex-col flex-1">
-                        <Badge className="w-fit mb-3">{post.category}</Badge>
+                        {/* <Badge className="w-fit mb-3">{post.category}</Badge> */}
                         <h3 className="text-xl font-bold mb-3 text-foreground">
-                          {post.title}
+                          {blog.title}
                         </h3>
                         <p className="text-muted-foreground mb-4 flex-1">
-                          {post.excerpt}
+                          {blog.description}
                         </p>
                         <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
                           <div className="flex items-center gap-2">
                             <User className="h-4 w-4" />
-                            {post.author}
+                            {blog.author}
                           </div>
                           <div className="flex items-center gap-2">
                             <Calendar className="h-4 w-4" />
-                            {new Date(post.date).toLocaleDateString("es-ES", {
-                              year: "numeric",
-                              month: "short",
-                              day: "numeric",
-                            })}
+                            {new Date(blog.createdAt).toLocaleDateString(
+                              "es-ES",
+                              {
+                                year: "numeric",
+                                month: "short",
+                                day: "numeric",
+                              }
+                            )}
                           </div>
                         </div>
                         <Button
                           variant="outline"
                           className="w-full gap-2"
-                          onClick={() =>
-                            (window.location.href = `/blog/${post.id}`)
-                          }
+                          onClick={() => {
+                            navigate(`/blog/${blog.blogSlug}`);
+                          }}
                         >
                           Leer más
                           <ArrowRight className="h-4 w-4" />

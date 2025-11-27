@@ -29,4 +29,27 @@ export class FileController {
       });
     })
   );
+
+  post_image_blogs = combineMiddleware(
+    this.fileServices.middlewareMulterMemoryStorage,
+    controllerFactory({}, async ({ req, res }) => {
+      const { file } = req;
+
+      if (!file) {
+        return res.status(400).send('No file uploaded.');
+      }
+
+      const { imageSrc } = await this.fileServices.uploadImage({
+        imageBuffer: file.buffer,
+        imagePath: `blogs`
+      });
+
+      get200Response({
+        res,
+        json: {
+          imageSrc
+        }
+      });
+    })
+  );
 }

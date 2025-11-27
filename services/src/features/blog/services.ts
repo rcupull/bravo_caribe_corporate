@@ -6,7 +6,17 @@ import { Blog, GetAllBlogsArgs } from '../../types/blog';
 
 export class BlogServices extends ModelCrudTemplate<
   Blog,
-  Pick<Blog, 'title' | 'blogSlug' | 'hidden' | 'description' | 'coverImage' | 'message'>,
+  Pick<
+    Blog,
+    | 'title'
+    | 'blogSlug'
+    | 'hidden'
+    | 'description'
+    | 'coverImage'
+    | 'message'
+    | 'author'
+    | 'featured'
+  >,
   GetAllBlogsArgs
 > {
   constructor() {

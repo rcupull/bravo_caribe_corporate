@@ -16,6 +16,8 @@
     "deploy": "npm run build && npm run compress && npm run caprover:deploy"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-core": "^46.0.1",
+    "@ckeditor/ckeditor5-react": "^6.2.0",
     "@floating-ui/react": "^0.27.12",
     "@hookform/resolvers": "^3.10.0",
     "@loadable/component": "^5.16.3",
@@ -49,6 +51,7 @@
     "@reduxjs/toolkit": "^2.2.1",
     "@tanstack/react-query": "^5.90.5",
     "axios": "^1.12.2",
+    "ckeditor5-build": "github:rcupull/ckeditor5",
     "class-variance-authority": "^0.7.1",
     "classnames": "^2.5.1",
     "cmdk": "^1.1.1",

@@ -1,13 +1,13 @@
 import { Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
-import Products from "./pages/Products";
-import AboutUs from "./pages/AboutUs";
-import Auth from "./pages/Auth";
+import Index from "./pages/home/Index";
+import NotFound from "./pages/not-found";
+import Products from "./pages/products";
+import AboutUs from "./pages/sobre-nosotros";
+import Auth from "./pages/cuenta";
 import Admin from "./pages/admin";
 import Contact from "./pages/contact";
-import Blog from "./pages/Blog";
-import BlogPost from "./pages/BlogPost";
+import Blog from "./pages/blog";
+import BlogPost from "./pages/blog/blog-slug";
 import { Providers } from "./Providers";
 
 const App = () => (
@@ -18,10 +18,9 @@ const App = () => (
       <Route path="/nosotros" element={<AboutUs />} />
       <Route path="/contacto" element={<Contact />} />
       <Route path="/blog" element={<Blog />} />
-      <Route path="/blog/:id" element={<BlogPost />} />
+      <Route path="/blog/:blogSlug" element={<BlogPost />} />
       <Route path="/cuenta" element={<Auth />} />
       <Route path="/admin" element={<Admin />} />
-      {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
       <Route path="*" element={<NotFound />} />
     </Routes>
   </Providers>

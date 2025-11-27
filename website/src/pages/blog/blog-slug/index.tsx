@@ -1,46 +1,36 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Calendar, User, ArrowLeft, Clock } from "lucide-react";
+import { Calendar, User, ArrowLeft, Clock, FileImage } from "lucide-react";
+import { useGetOneBlog } from "@/api/blogs/useGetOneBlog";
+import { ImageComponent } from "@/components/image-component";
+import { HtmlTextContainer } from "@/components/ui/html-text-container";
+import { useGetAllBlogs } from "@/api/blogs/useGetAllBlogs";
 import { Card, CardContent } from "@/components/ui/card";
 
-interface BlogPost {
-  id: string;
-  title: string;
-  excerpt: string;
-  content: string;
-  image: string;
-  author: string;
-  date: string;
-  category: string;
-  featured: boolean;
-}
-
 const BlogPost = () => {
-  const { id } = useParams();
+  const { blogSlug } = useParams();
+
+  const { getOneBlog } = useGetOneBlog();
+  const { getAllBlogs } = useGetAllBlogs();
   const navigate = useNavigate();
-  const [post, setPost] = useState<BlogPost | null>(null);
-  const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([]);
 
   useEffect(() => {
-    const storedPosts = localStorage.getItem("blogPosts");
-    if (storedPosts) {
-      const posts: BlogPost[] = JSON.parse(storedPosts);
-      const currentPost = posts.find((p) => p.id === id);
-
-      if (currentPost) {
-        setPost(currentPost);
-        // Get related posts from same category
-        const related = posts
-          .filter((p) => p.id !== id && p.category === currentPost.category)
-          .slice(0, 3);
-        setRelatedPosts(related);
-      }
+    if (blogSlug) {
+      getOneBlog.fetch({ blogSlug });
     }
-  }, [id]);
+  }, [blogSlug]);
+
+  useEffect(() => {
+    getAllBlogs.fetch();
+  }, []);
+
+  const post = getOneBlog.data;
+  const relatedPosts = (getAllBlogs.data || []).filter(
+    (p) => post && p.blogSlug !== post.blogSlug
+  );
 
   if (!post) {
     return (
@@ -87,7 +77,7 @@ const BlogPost = () => {
             <div className="max-w-4xl mx-auto">
               {/* Meta Info */}
               <div className="mb-6">
-                <Badge className="mb-4">{post.category}</Badge>
+                {/* <Badge className="mb-4">{post.category}</Badge> */}
                 <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
                   {post.title}
                 </h1>
@@ -99,7 +89,7 @@ const BlogPost = () => {
                   <div className="flex items-center gap-2">
                     <Calendar className="h-5 w-5" />
                     <span>
-                      {new Date(post.date).toLocaleDateString("es-ES", {
+                      {new Date(post.createdAt).toLocaleDateString("es-ES", {
                         year: "numeric",
                         month: "long",
                         day: "numeric",
@@ -114,29 +104,30 @@ const BlogPost = () => {
               </div>
 
               {/* Featured Image */}
-              <img
-                src={post.image}
-                alt={post.title}
-                className="w-full h-[400px] md:h-[500px] object-cover rounded-lg mb-8"
-              />
+
+              {post.coverImage ? (
+                <ImageComponent
+                  image={post.coverImage}
+                  className="w-full h-[400px] md:h-[500px] object-cover rounded-lg mb-8"
+                />
+              ) : (
+                <FileImage className="w-full h-[400px] md:h-[500px] object-cover rounded-lg mb-8" />
+              )}
 
               {/* Article Content */}
               <div className="prose prose-lg max-w-none">
                 <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-                  {post.excerpt}
+                  {post.description}
                 </p>
 
-                <div className="text-foreground space-y-6 leading-relaxed">
-                  {post.content.split("\n\n").map((paragraph, index) => (
-                    <p key={index} className="text-lg">
-                      {paragraph}
-                    </p>
-                  ))}
-                </div>
+                <HtmlTextContainer
+                  className="text-foreground space-y-6 leading-relaxed"
+                  ckEditorData={post.message}
+                />
               </div>
 
               {/* Share Section */}
-              <div className="mt-12 pt-8 border-t border-border">
+              {/* <div className="mt-12 pt-8 border-t border-border">
                 <h3 className="text-lg font-semibold text-foreground mb-4">
                   Compartir este artículo
                 </h3>
@@ -146,7 +137,7 @@ const BlogPost = () => {
                   <Button variant="outline">LinkedIn</Button>
                   <Button variant="outline">WhatsApp</Button>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </article>
@@ -160,24 +151,28 @@ const BlogPost = () => {
                   Artículos Relacionados
                 </h2>
                 <div className="grid md:grid-cols-3 gap-6">
-                  {relatedPosts.map((relatedPost) => (
+                  {relatedPosts.map((relatedPost, index) => (
                     <Card
-                      key={relatedPost.id}
+                      key={index}
                       className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
-                      onClick={() => navigate(`/blog/${relatedPost.id}`)}
+                      onClick={() => navigate(`/blog/${relatedPost.blogSlug}`)}
                     >
-                      <img
-                        src={relatedPost.image}
-                        alt={relatedPost.title}
-                        className="w-full h-48 object-cover"
-                      />
+                      {relatedPost.coverImage ? (
+                        <ImageComponent
+                          image={relatedPost.coverImage}
+                          className="w-full h-48 object-cover"
+                        />
+                      ) : (
+                        <FileImage className="w-full h-48 object-cover" />
+                      )}
+
                       <CardContent className="p-6">
-                        <Badge className="mb-3">{relatedPost.category}</Badge>
+                        {/* <Badge className="mb-3">{relatedPost.category}</Badge> */}
                         <h3 className="text-xl font-bold text-foreground mb-3">
                           {relatedPost.title}
                         </h3>
                         <p className="text-muted-foreground line-clamp-2">
-                          {relatedPost.excerpt}
+                          {relatedPost.description}
                         </p>
                       </CardContent>
                     </Card>

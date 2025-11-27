@@ -15,6 +15,14 @@ export class FileRouter {
       }),
       this.fileController.post_image_products
     );
+
+    this.router.route('/admin/images/blogs').post(
+      this.accessServices.middlewareIsLogged,
+      this.accessServices.middlewareAccessControl({
+        isAdminWithAccess: [Access.FULL]
+      }),
+      this.fileController.post_image_blogs
+    );
   }
 
   public readonly router: Router = Router();

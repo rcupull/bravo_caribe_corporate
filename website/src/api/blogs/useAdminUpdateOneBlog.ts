@@ -7,7 +7,13 @@ interface Args {
   blogSlug: string;
   update: Pick<
     Blog,
-    "title" | "coverImage" | "hidden" | "description" | "message"
+    | "title"
+    | "coverImage"
+    | "hidden"
+    | "description"
+    | "message"
+    | "author"
+    | "featured"
   >;
 }
 

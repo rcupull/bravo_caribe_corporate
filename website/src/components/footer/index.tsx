@@ -65,14 +65,14 @@ export const Footer = () => {
                   Productos
                 </Link>
               </li>
-              {/* <li>
+              <li>
                 <Link
                   to="/blog"
-                  className="text-sm text-primary-foreground/70 hover:text-accent transition-colors"
+                  className="text-lg text-primary-foreground/70 hover:text-accent transition-colors"
                 >
                   Blog
                 </Link>
-              </li> */}
+              </li>
             </ul>
           </div>
 

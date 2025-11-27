@@ -1,6 +1,6 @@
 import { BlogServices } from './services';
 import { controllerFactory } from '../../utils/controllers';
-import { ImageShape } from '../../utils/zod-shapes';
+import { ImageShape, QueryBooleanSchema } from '../../utils/zod-shapes';
 import { getBlogNotFoundResponse, getUserNotFoundResponse } from '../../utils/responses';
 import { BlogDtosServices } from '../blog-dtos/services';
 import { GetAllBlogsArgs } from '../../types/blog';
@@ -15,13 +15,14 @@ export class BlogController {
     {
       withPagination: true,
       queryShape: (z) => ({
-        search: z.string().nullish()
+        search: z.string().optional(),
+        featured: QueryBooleanSchema.optional()
       })
     },
     async ({ req, res }) => {
       const { query, paginateOptions } = req;
 
-      const { search } = query;
+      const { search, featured } = query;
 
       const out = await this.blogServices.getAllWithPagination({
         paginateOptions,
@@ -32,6 +33,10 @@ export class BlogController {
 
           if (search) {
             out.search = search;
+          }
+
+          if (featured) {
+            out.featured = true;
           }
 
           return out;
@@ -102,8 +107,10 @@ export class BlogController {
         title: z.string().nonempty(),
         description: z.string().optional(),
         message: z.string().optional(),
+        author: z.string().optional(),
         hidden: z.boolean().optional(),
-        coverImage: ImageShape.optional()
+        coverImage: ImageShape.optional(),
+        featured: z.boolean().optional()
       })
     },
     async ({ req, res }) => {
@@ -115,15 +122,17 @@ export class BlogController {
 
       const { body } = req;
 
-      const { title, coverImage, description, message, hidden } = body;
+      const { title, coverImage, description, message, hidden, author, featured } = body;
 
       const out = await this.blogServices.addOne({
         title,
         blogSlug: this.blogServices.getBlogSlugFromName(title),
         hidden,
         coverImage,
+        author,
         description,
-        message
+        message,
+        featured
       });
 
       res.send(out);
@@ -165,15 +174,17 @@ export class BlogController {
         title: z.string().nonempty().nullish(),
         description: z.string().nonempty().nullish(),
         message: z.string().nonempty().nullish(),
+        author: z.string().nullish(),
         hidden: z.boolean().nullish(),
-        coverImage: ImageShape.nullish()
+        coverImage: ImageShape.nullish(),
+        featured: z.boolean().nullish()
       })
     },
     async ({ req, res, next }) => {
       const { params, body } = req;
       const { blogSlug, routeName } = params;
 
-      const { title, coverImage, description, message, hidden } = body;
+      const { title, coverImage, description, message, hidden, author, featured } = body;
 
       const out = await this.blogServices.findOneAndUpdate({
         query: {
@@ -184,9 +195,11 @@ export class BlogController {
           title,
           ...(title ? { blogSlug: this.blogServices.getBlogSlugFromName(title) } : {}),
           hidden,
+          author,
           coverImage,
           description,
-          message
+          message,
+          featured
         }
       });
 

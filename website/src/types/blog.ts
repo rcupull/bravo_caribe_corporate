@@ -7,4 +7,6 @@ export interface Blog extends BaseIdentity {
   message?: string;
   description?: string;
   hidden?: boolean;
+  author?: string;
+  featured?: boolean;
 }

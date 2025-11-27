@@ -2,10 +2,8 @@ import { Button } from "@/components/ui/button";
 
 import { Formux } from "@/components/ui/formux";
 import { FieldInput } from "@/components/ui/field-input";
-import { FieldSelect } from "@/components/ui/field-select";
-import { categories } from "@/utils/category";
 import { useAdminAddOneBlog } from "@/api/blogs/useAdminAddOneBlog";
-import { Currency, Image, ImageFile } from "@/types/general";
+import { Image, ImageFile } from "@/types/general";
 import { useAdminUpdateOneBlog } from "@/api/blogs/useAdminUpdateOneBlog";
 import { useModal } from "@/features/modal/useModal";
 import { ButtonClose } from "@/components/button-close";
@@ -13,7 +11,8 @@ import { FieldInputImages } from "@/components/ui/field-input-images";
 import { FieldCheckbox } from "@/components/ui/field-checkbox";
 import { Blog } from "@/types/blog";
 import { useAdminAddBlogImage } from "@/api/files/useAdminAddBlogImage";
-import { FieldTextArea } from "@/components/ui/field-text-area";
+import { FieldCheckEditor } from "@/components/ui/field-check-editor";
+import { getEndpoint } from "@/utils/api";
 
 interface ComponentProps {
   blog?: Blog;
@@ -23,7 +22,13 @@ interface ComponentProps {
 interface State
   extends Pick<
     Blog,
-    "title" | "description" | "hidden" | "message" | "coverImage"
+    | "title"
+    | "description"
+    | "hidden"
+    | "message"
+    | "coverImage"
+    | "author"
+    | "featured"
   > {}
 
 const Component = ({ blog, onRefresh }: ComponentProps) => {
@@ -67,11 +72,24 @@ const Component = ({ blog, onRefresh }: ComponentProps) => {
           <form className="space-y-4">
             <FieldInput label="Título" name="title" />
 
+            <FieldInput label="Autor" name="author" />
+
             <FieldInput label="Descripción" name="description" />
 
             <FieldCheckbox label="Oculto" name="hidden" />
 
-            <FieldTextArea label="Texto" name="message" />
+            <FieldCheckbox label="Destacado" name="featured" />
+
+            <FieldCheckEditor
+              label="Texto"
+              name="message"
+              checkEditorProps={{
+                className: "check-editor-min-h-50vh",
+                uploadUrl: getEndpoint({
+                  path: "/admin/images/blogs",
+                }),
+              }}
+            />
 
             <FieldInputImages label="Cover" name="coverImage" />
 
@@ -80,8 +98,15 @@ const Component = ({ blog, onRefresh }: ComponentProps) => {
               <Button
                 type="button"
                 onClick={async () => {
-                  const { title, coverImage, description, hidden, message } =
-                    value;
+                  const {
+                    title,
+                    coverImage,
+                    description,
+                    hidden,
+                    message,
+                    author,
+                    featured,
+                  } = value;
 
                   const imageToUpload = coverImage
                     ? await uploadImage(coverImage)
@@ -96,7 +121,9 @@ const Component = ({ blog, onRefresh }: ComponentProps) => {
                           coverImage: imageToUpload,
                           description,
                           hidden,
+                          featured,
                           message,
+                          author,
                         },
                       },
                       {
@@ -113,7 +140,9 @@ const Component = ({ blog, onRefresh }: ComponentProps) => {
                         coverImage: imageToUpload,
                         description,
                         hidden,
+                        featured,
                         message,
+                        author,
                       },
                       {
                         onAfterSuccess: () => {

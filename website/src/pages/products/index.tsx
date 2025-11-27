@@ -51,10 +51,6 @@ const Products = () => {
   const { productDetails } = useProductDetails();
 
   const totalPages = getAllProducts.paginator?.pageCount || 0;
-  const paginatedProducts = getAllProducts.data;
-  const filteredProducts = getAllProducts.paginator?.dataCount;
-
-  const page = searchParams.get("page");
 
   return (
     <div className="min-h-screen flex flex-col">

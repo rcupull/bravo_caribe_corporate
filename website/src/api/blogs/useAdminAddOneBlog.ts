@@ -6,7 +6,13 @@ import { Blog } from "@/types/blog";
 interface Args
   extends Pick<
     Blog,
-    "title" | "message" | "coverImage" | "description" | "hidden"
+    | "title"
+    | "message"
+    | "coverImage"
+    | "description"
+    | "hidden"
+    | "author"
+    | "featured"
   > {}
 
 export const useAdminAddOneBlog = (): {

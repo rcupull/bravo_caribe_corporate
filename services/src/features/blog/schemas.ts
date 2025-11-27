@@ -19,7 +19,9 @@ export const modelGetter = () => {
         }
       },
       description: { type: String },
-      message: { type: String }
+      message: { type: String },
+      author: { type: String },
+      featured: { type: Boolean, default: false }
     });
 
     BlogModel = getMongooseModel<Blog>(model, 'Blog', BlogSchema, 'blogs');
