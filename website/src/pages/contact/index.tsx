@@ -9,6 +9,7 @@ import { MapOl } from "@/components/ui/map";
 import { MapPin, Clock, Phone, Mail, Send, FileImage } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { ImageComponent } from "@/components/image-component";
+import { categories } from "@/utils/category";
 
 const defaultHours = [
   { days: "Lunes - Viernes", time: "8:00 AM - 6:00 PM" },
@@ -34,6 +35,10 @@ const Contact = () => {
   }, [productSlug]);
 
   const product = getOneProduct.data;
+
+  const currentCategory = categories.find(
+    ({ type }) => product?.categoryType === type
+  );
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -81,12 +86,19 @@ const Contact = () => {
                             <div className="text-sm text-muted-foreground">
                               {Object.keys(product.specs)
                                 .slice(0, 3)
-                                .map((key) => (
-                                  <p key={key}>
-                                    <strong>{key}:</strong>{" "}
-                                    {product.specs![key]}
-                                  </p>
-                                ))}
+                                .map((key) => {
+                                  const { specsFields } = currentCategory || {};
+                                  const currentField = specsFields?.find(
+                                    ({ field }) => field === key
+                                  );
+
+                                  return (
+                                    <p key={key}>
+                                      <strong>{currentField?.label}:</strong>{" "}
+                                      {product.specs![key]}
+                                    </p>
+                                  );
+                                })}
                             </div>
                           )}
                         </div>

@@ -7,10 +7,12 @@ import QuickQuoteCTA from "@/components/products/QuickQuoteCTA";
 import ProductCard from "@/components/products/ProductCard";
 import { useGetAllProducts } from "@/api/products/useGetAllProducts";
 import { useEffect } from "react";
+import { useProductDetails } from "@/hooks/useProductDetails";
 
 const Index = () => {
   const { getAllProducts } = useGetAllProducts();
 
+  const { productDetails } = useProductDetails();
   useEffect(() => {
     getAllProducts.fetch({ featured: true });
   }, []);
@@ -47,7 +49,14 @@ const Index = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {getAllProducts.data?.map((product, index) => (
-                <ProductCard key={index} product={product} />
+                <div
+                  key={index}
+                  onClick={() => {
+                    productDetails.open({ product });
+                  }}
+                >
+                  <ProductCard product={product} />
+                </div>
               ))}
             </div>
           </div>
