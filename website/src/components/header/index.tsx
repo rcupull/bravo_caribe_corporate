@@ -52,18 +52,18 @@ export const Header = () => {
 
           {/* CTA Button */}
           <div className="hidden lg:flex items-center space-x-4">
-            <a
+            {/* <a
               href="tel:+53 63672603"
               className="flex items-center text-lg text-primary-foreground/80 hover:text-primary-foreground transition-colors"
             >
               <Phone className="h-4 w-4 mr-2" />
               <span>+53 63672603</span>
-            </a>
-            {/* <CartSheet /> */}
+            </a> */}
+            <CartSheet />
 
-            <Button variant={"outline"}>
+            {/* <Button variant={"outline"}>
               <Link to="/contacto">Contáctanos</Link>
-            </Button>
+            </Button> */}
 
             {(() => {
               if (isAuthenticated) {
@@ -84,15 +84,14 @@ export const Header = () => {
                 );
               }
 
-              return null;
-
-              // return (
-              //   <Button asChild variant="outline">
-              //     <Link to="/cuenta">
-              //       <LogIn className="h-4 w-4" />
-              //     </Link>
-              //   </Button>
-              // );
+              return (
+                <Button asChild variant="outline">
+                  <Link to="/iniciar-sesion">
+                    <LogIn className="h-4 w-4" />
+                    Iniciar sesión
+                  </Link>
+                </Button>
+              );
             })()}
           </div>
 
@@ -147,7 +146,10 @@ export const Header = () => {
                   </>
                 ) : (
                   <Button asChild variant="outline" className="w-full">
-                    <Link to="/cuenta" onClick={() => setIsMenuOpen(false)}>
+                    <Link
+                      to="/iniciar-sesion"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
                       <LogIn className="h-4 w-4 mr-2" />
                     </Link>
                   </Button>

@@ -1,0 +1,138 @@
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { toast } from "sonner";
+import { LogIn } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { useAuthSignIn } from "@/api/auth/useAuthSignIn";
+import { setPersistentAuthData } from "@/utils/persistent-auth";
+import { withMainLayout } from "@/components/main-layout";
+import { Formux } from "@/components/ui/formux";
+import { FieldInput } from "@/components/ui/field-input";
+import { getRequiredLabel } from "@/utils/form";
+import { FieldInputPassword } from "@/components/ui/field-input-password";
+import { HtmlTextContainer } from "@/components/ui/html-text-container";
+
+interface State {
+  email: string;
+  password: string;
+}
+
+export let SignIn = () => {
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+
+  const { setData } = useAuth();
+
+  const { authSignIn } = useAuthSignIn();
+
+  if (isAuthenticated) {
+    navigate("/");
+    return null;
+  }
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <LogIn className="h-5 w-5" />
+          Iniciar Sesión
+        </CardTitle>
+        <CardDescription>Ingresa tus credenciales para acceder</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Formux<State>
+          value={{
+            email: "",
+            password: "",
+          }}
+          validate={[
+            {
+              field: "email",
+              type: "required",
+            },
+            {
+              field: "email",
+              type: "email",
+            },
+            {
+              field: "password",
+              type: "required",
+            },
+          ]}
+        >
+          {({ value }) => {
+            return (
+              <form className="space-y-4">
+                <FieldInput
+                  id="login-email"
+                  label={getRequiredLabel("Correo Electrónico")}
+                  placeholder="tu@correo.com"
+                  name="email"
+                />
+
+                <FieldInputPassword
+                  id="login-password"
+                  label={getRequiredLabel("Contraseña")}
+                  name="password"
+                />
+
+                <HtmlTextContainer className="flex justify-end mt-6">
+                  <Link to="/registrarse">Registrarse</Link>
+                </HtmlTextContainer>
+
+                <div className="flex gap-2 justify-end">
+                  <Button
+                    formuxSubmit
+                    className="w-full"
+                    isLoading={authSignIn.isPending}
+                    onClick={async () => {
+                      const { email, password } = value;
+
+                      authSignIn.fetch(
+                        {
+                          email,
+                          password,
+                        },
+                        {
+                          onAfterSuccess: (response) => {
+                            const { accessToken, refreshToken, steat, user } =
+                              response;
+
+                            setData(user);
+                            setPersistentAuthData({
+                              user,
+                              accessToken,
+                              refreshToken,
+                              steat,
+                            });
+
+                            toast.success("¡Bienvenido!");
+                            navigate("/");
+                          },
+                          onAfterFailed: () => {
+                            toast.error("Error al iniciar sesión");
+                          },
+                        }
+                      );
+                    }}
+                  >
+                    Iniciar Sesión
+                  </Button>
+                </div>
+              </form>
+            );
+          }}
+        </Formux>
+      </CardContent>
+    </Card>
+  );
+};
+
+SignIn = withMainLayout(SignIn);

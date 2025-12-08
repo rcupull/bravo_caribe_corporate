@@ -117,7 +117,7 @@ const Auth = () => {
                 Acceso a tu Cuenta
               </h1>
               <p className="text-muted-foreground">
-                Inicia sesión o crea una nueva cuenta administrativa
+                Inicia sesión o crea una nueva cuenta
               </p>
             </div>
 

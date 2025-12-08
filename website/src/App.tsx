@@ -3,12 +3,13 @@ import Index from "./pages/home/Index";
 import NotFound from "./pages/not-found";
 import Products from "./pages/products";
 import AboutUs from "./pages/sobre-nosotros";
-import Auth from "./pages/cuenta";
 import Admin from "./pages/admin";
 import Contact from "./pages/contact";
 import Blog from "./pages/blog";
 import BlogPost from "./pages/blog/blog-slug";
 import { Providers } from "./Providers";
+import { SignIn } from "./pages/iniciar-sesion";
+import { SignUp } from "./pages/registrarse";
 
 const App = () => (
   <Providers>
@@ -19,7 +20,8 @@ const App = () => (
       <Route path="/contacto" element={<Contact />} />
       <Route path="/blog" element={<Blog />} />
       <Route path="/blog/:blogSlug" element={<BlogPost />} />
-      <Route path="/cuenta" element={<Auth />} />
+      <Route path="/iniciar-sesion" element={<SignIn />} />
+      <Route path="/registrarse" element={<SignUp />} />
       <Route path="/admin" element={<Admin />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
