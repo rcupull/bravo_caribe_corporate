@@ -9,6 +9,7 @@ import { HtmlTextContainer } from "@/components/ui/html-text-container";
 import { useGetAllBlogs } from "@/api/blogs/useGetAllBlogs";
 import { Card, CardContent } from "@/components/ui/card";
 import { useRouter } from "@/hooks/useRouter";
+import { getBlogRoute } from "@/utils/routes";
 
 export const Page = () => {
   const { params, pushRoute } = useRouter();
@@ -41,7 +42,7 @@ export const Page = () => {
             <h1 className="text-2xl font-bold text-foreground mb-4">
               Artículo no encontrado
             </h1>
-            <Button onClick={() => pushRoute("/blog")}>
+            <Button onClick={() => pushRoute(getBlogRoute())}>
               <ArrowLeft className="mr-2 h-4 w-4" />
               Volver al Blog
             </Button>
@@ -62,7 +63,7 @@ export const Page = () => {
           <div className="container mx-auto px-4">
             <Button
               variant="ghost"
-              onClick={() => pushRoute("/blog")}
+              onClick={() => pushRoute(getBlogRoute())}
               className="gap-2"
             >
               <ArrowLeft className="h-4 w-4" />
@@ -151,32 +152,36 @@ export const Page = () => {
                   Artículos Relacionados
                 </h2>
                 <div className="grid md:grid-cols-3 gap-6">
-                  {relatedPosts.map((relatedPost, index) => (
-                    <Card
-                      key={index}
-                      className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
-                      onClick={() => pushRoute(`/blog/${relatedPost.blogSlug}`)}
-                    >
-                      {relatedPost.coverImage ? (
-                        <ImageComponent
-                          image={relatedPost.coverImage}
-                          className="w-full h-48 object-cover"
-                        />
-                      ) : (
-                        <FileImage className="w-full h-48 object-cover" />
-                      )}
+                  {relatedPosts.map(
+                    ({ blogSlug, coverImage, title, description }, index) => {
+                      return (
+                        <Card
+                          key={index}
+                          className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                          onClick={() => pushRoute(getBlogRoute({ blogSlug }))}
+                        >
+                          {coverImage ? (
+                            <ImageComponent
+                              image={coverImage}
+                              className="w-full h-48 object-cover"
+                            />
+                          ) : (
+                            <FileImage className="w-full h-48 object-cover" />
+                          )}
 
-                      <CardContent className="p-6">
-                        {/* <Badge className="mb-3">{relatedPost.category}</Badge> */}
-                        <h3 className="text-xl font-bold text-foreground mb-3">
-                          {relatedPost.title}
-                        </h3>
-                        <p className="text-muted-foreground line-clamp-2">
-                          {relatedPost.description}
-                        </p>
-                      </CardContent>
-                    </Card>
-                  ))}
+                          <CardContent className="p-6">
+                            {/* <Badge className="mb-3">{relatedPost.category}</Badge> */}
+                            <h3 className="text-xl font-bold text-foreground mb-3">
+                              {title}
+                            </h3>
+                            <p className="text-muted-foreground line-clamp-2">
+                              {description}
+                            </p>
+                          </CardContent>
+                        </Card>
+                      );
+                    }
+                  )}
                 </div>
               </div>
             </div>

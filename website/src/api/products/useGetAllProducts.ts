@@ -3,6 +3,7 @@ import { FetchResourceWithPagination } from "@/types/api";
 import { Product } from "@/types/products";
 import { useQueryMutationWithPagination } from "@/utils/useQueryMutationWithPagination";
 import { CategoryType } from "@/types/category";
+import { usePageContext } from "@/hooks/usePageContext";
 
 interface Args {
   categoryType?: CategoryType;
@@ -12,13 +13,17 @@ interface Args {
 export const useGetAllProducts = (): {
   getAllProducts: FetchResourceWithPagination<Args | void, Product>;
 } => {
+  const pageContext = usePageContext();
   return {
     getAllProducts: useQueryMutationWithPagination<Args | void, Product>({
       fetch: async (args = {}) => {
-        const response = await axiosFetch({
-          method: "get",
-          url: getEndpoint({ path: "/products", query: { ...args } }),
-        });
+        const response = await axiosFetch(
+          {
+            method: "get",
+            url: getEndpoint({ path: "/products", query: { ...args } }),
+          },
+          pageContext
+        );
         return response.data;
       },
     }),

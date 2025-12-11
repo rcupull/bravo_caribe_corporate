@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useGetAllBlogs } from "@/api/blogs/useGetAllBlogs";
 import { ImageComponent } from "@/components/image-component";
 import { useRouter } from "@/hooks/useRouter";
+import { getBlogRoute } from "@/utils/routes";
 
 export const Page = () => {
   const { pushRoute } = useRouter();
@@ -104,7 +105,9 @@ export const Page = () => {
                       <Button
                         className="w-fit gap-2"
                         onClick={() => {
-                          pushRoute(`/blog/${featuredBlog.blogSlug}`);
+                          pushRoute(
+                            getBlogRoute({ blogSlug: featuredBlog.blogSlug })
+                          );
                         }}
                       >
                         Leer más
@@ -191,7 +194,9 @@ export const Page = () => {
                           variant="outline"
                           className="w-full gap-2"
                           onClick={() => {
-                            pushRoute(`/blog/${blog.blogSlug}`);
+                            pushRoute(
+                              getBlogRoute({ blogSlug: blog.blogSlug })
+                            );
                           }}
                         >
                           Leer más

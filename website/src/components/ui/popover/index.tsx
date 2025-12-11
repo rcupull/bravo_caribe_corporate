@@ -1,6 +1,7 @@
 import { ChildrenProp, StyleProps } from "@/types/general";
 import { PopoverWrapper } from "./PopoverWrapper";
 import { cn, isFunction } from "@/utils/general";
+import { isSSR } from "@/utils/ssr";
 
 export interface PopoverProps extends ChildrenProp, StyleProps {
   content:
@@ -19,8 +20,6 @@ export const Popover = ({
   disabled,
   className,
 }: PopoverProps) => {
-  const isSSR = () => false;
-
   if (isSSR()) {
     return (
       <div

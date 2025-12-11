@@ -1,57 +1,53 @@
 import { localStorageUtils } from "@/features/local-storage";
+import { persistentBackdoor } from "@/features/persistent/Context";
 import { User } from "@/types/auth";
 
 export const resetPersistentAuthData = () => {
-  const { removeLS } = localStorageUtils();
+  const { removePersistent } = persistentBackdoor;
 
-  removeLS("accessToken");
-  removeLS("accessTokenUpdatedAt");
-  removeLS("refreshToken");
-  removeLS("user");
-  removeLS("steat");
+  removePersistent("accessToken");
+  removePersistent("accessTokenUpdatedAt");
+  removePersistent("refreshToken");
+  removePersistent("user");
+  removePersistent("steat");
 };
 
 export const setPersistentAuthData = ({
   accessToken,
   refreshToken,
   steat,
-  user,
 }: {
   accessToken?: string;
   refreshToken?: string;
-  user?: User;
   steat?: number;
 }) => {
+  const { setPersistent } = persistentBackdoor;
+
   const { saveLS } = localStorageUtils();
 
   if (accessToken) {
-    saveLS("accessToken", accessToken);
-    saveLS("accessTokenUpdatedAt", new Date().toISOString());
+    setPersistent("accessToken", accessToken);
+    setPersistent("accessTokenUpdatedAt", new Date().toISOString());
   }
 
   if (refreshToken) {
-    saveLS("refreshToken", refreshToken);
+    setPersistent("refreshToken", refreshToken);
   }
 
   if (steat) {
-    saveLS("steat", steat);
-  }
-
-  if (user) {
-    saveLS("user", user);
+    setPersistent("steat", steat);
   }
 };
 
 export const getPersistentAuthData = async () => {
-  const { readLS } = localStorageUtils();
+  const { getPersistent } = persistentBackdoor;
 
-  const [accessToken, accessTokenUpdatedAt, refreshToken, steat, user] =
+  const [accessToken, accessTokenUpdatedAt, refreshToken, steat] =
     await Promise.all([
-      readLS<string>("accessToken"),
-      readLS<string>("accessTokenUpdatedAt"),
-      readLS<string>("refreshToken"),
-      readLS<number>("steat"),
-      readLS<User>("user"),
+      getPersistent("accessToken"),
+      getPersistent("accessTokenUpdatedAt"),
+      getPersistent("refreshToken"),
+      getPersistent("steat"),
     ]);
 
   return {
@@ -59,6 +55,5 @@ export const getPersistentAuthData = async () => {
     accessTokenUpdatedAt,
     refreshToken,
     steat,
-    user,
   };
 };

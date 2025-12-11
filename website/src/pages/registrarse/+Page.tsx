@@ -17,6 +17,7 @@ import { getRequiredLabel } from "@/utils/form";
 import { FieldInput } from "@/components/ui/field-input";
 import { useRouter } from "@/hooks/useRouter";
 import { Link } from "@/components/link";
+import { getHomeRoute, getSignInRoute } from "@/utils/routes";
 
 interface State {
   name: string;
@@ -33,7 +34,7 @@ export const Page = () => {
 
   // Redirect if already authenticated
   if (isAuthenticated) {
-    pushRoute("/");
+    pushRoute(getHomeRoute());
     return null;
   }
 
@@ -113,7 +114,7 @@ export const Page = () => {
                 />
 
                 <HtmlTextContainer className="flex justify-end mt-6">
-                  <Link to="/iniciar-sesion">Iniciar Sesión</Link>
+                  <Link to={getSignInRoute()}>Iniciar Sesión</Link>
                 </HtmlTextContainer>
 
                 <div className="flex gap-2 justify-end">

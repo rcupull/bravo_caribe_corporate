@@ -18,13 +18,19 @@ import { FieldInputPassword } from "@/components/ui/field-input-password";
 import { HtmlTextContainer } from "@/components/ui/html-text-container";
 import { useRouter } from "@/hooks/useRouter";
 import { Link } from "@/components/link";
+import {
+  getHomeRoute,
+  getRecoveryPasswordRoute,
+  getSignInRoute,
+  getSignUpRoute,
+} from "@/utils/routes";
 
 interface State {
   email: string;
   password: string;
 }
 
-export let Page = () => {
+export const Page = () => {
   const { isAuthenticated } = useAuth();
   const { pushRoute } = useRouter();
 
@@ -33,7 +39,7 @@ export let Page = () => {
   const { authSignIn } = useAuthSignIn();
 
   if (isAuthenticated) {
-    pushRoute("/");
+    pushRoute(getHomeRoute());
     return null;
   }
 
@@ -84,8 +90,8 @@ export let Page = () => {
                 />
 
                 <HtmlTextContainer className="flex justify-between mt-6">
-                  <Link to="/recuperar-cuenta">Recuperar Cuenta</Link>
-                  <Link to="/registrarse">Registrarse</Link>
+                  <Link to={getRecoveryPasswordRoute()}>Recuperar Cuenta</Link>
+                  <Link to={getSignUpRoute()}>Registrarse</Link>
                 </HtmlTextContainer>
 
                 <div className="flex gap-2 justify-end">
@@ -108,14 +114,13 @@ export let Page = () => {
 
                             setData(user);
                             setPersistentAuthData({
-                              user,
                               accessToken,
                               refreshToken,
                               steat,
                             });
 
                             toast.success("¡Bienvenido!");
-                            pushRoute("/");
+                            pushRoute(getHomeRoute());
                           },
                           onAfterFailed: () => {
                             toast.error("Error al iniciar sesión");

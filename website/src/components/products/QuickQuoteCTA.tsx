@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { MessageSquare, Phone } from "lucide-react";
 import { Link } from "../link";
+import { getContactRoute } from "@/utils/routes";
+import { useRouter } from "@/hooks/useRouter";
 
 interface QuickQuoteCTAProps {
   title?: string;
@@ -32,18 +34,16 @@ const QuickQuoteCTA = ({
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button
-              asChild
               size="lg"
               className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8"
             >
-              <Link to="/contacto" className="flex items-center">
+              <Link to={getContactRoute()} className="flex items-center">
                 <MessageSquare className="mr-2 h-5 w-5" />
                 Formulario de Contacto
               </Link>
             </Button>
 
             <Button
-              asChild
               size="lg"
               variant="outline"
               className="border-2 border-accent-foreground hover:bg-accent-foreground font-semibold px-8"

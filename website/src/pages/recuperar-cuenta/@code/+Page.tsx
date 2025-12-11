@@ -13,9 +13,10 @@ import { Formux } from "@/components/ui/formux";
 import { HtmlTextContainer } from "@/components/ui/html-text-container";
 import { useRouter } from "@/hooks/useRouter";
 import { getRequiredLabel } from "@/utils/form";
+import { getSignInRoute } from "@/utils/routes";
 import { UserCircle } from "lucide-react";
 
-export let Page = () => {
+export const Page = () => {
   const { params } = useRouter();
   const { code } = params;
 
@@ -34,7 +35,7 @@ export let Page = () => {
         </CardHeader>
         <CardContent>
           <HtmlTextContainer>
-            <Link to="/iniciar-sesion">Iniciar sesión</Link>
+            <Link to={getSignInRoute()}>Iniciar sesión</Link>
           </HtmlTextContainer>
           <Button
             stopPropagation

@@ -7,6 +7,12 @@ import { useAuth } from "@/hooks/useAuth";
 import { resetPersistentAuthData } from "@/utils/persistent-auth";
 import { HeaderAnnouncement } from "../header-announcement";
 import { Link } from "../link";
+import {
+  getAdminRoute,
+  getContactRoute,
+  getHomeRoute,
+  getSignInRoute,
+} from "@/utils/routes";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -33,7 +39,7 @@ export const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex h-20 items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3">
+          <Link to={getHomeRoute()} className="flex items-center space-x-3">
             <img src={logo} alt="Bravo Caribe" className="h-12 w-auto" />
           </Link>
 
@@ -70,7 +76,7 @@ export const Header = () => {
                 return (
                   <>
                     {isAdmin && (
-                      <Link to="/admin">
+                      <Link to={getAdminRoute()}>
                         <Button variant="outline">
                           <Shield className="h-4 w-4" />
                           Admin
@@ -85,11 +91,9 @@ export const Header = () => {
               }
 
               return (
-                <Button asChild variant="outline">
-                  <Link to="/iniciar-sesion">
-                    <LogIn className="h-4 w-4" />
-                    Iniciar sesión
-                  </Link>
+                <Button variant="outline">
+                  <LogIn className="h-4 w-4" />
+                  <Link to={getSignInRoute()}>Iniciar sesión</Link>
                 </Button>
               );
             })()}
@@ -127,8 +131,11 @@ export const Header = () => {
                 {isAuthenticated ? (
                   <>
                     {isAdmin && (
-                      <Button asChild variant="outline" className="w-full">
-                        <Link to="/admin" onClick={() => setIsMenuOpen(false)}>
+                      <Button variant="outline" className="w-full">
+                        <Link
+                          to={getAdminRoute()}
+                          onClick={() => setIsMenuOpen(false)}
+                        >
                           <Shield className="h-4 w-4 mr-2" />
                         </Link>
                       </Button>
@@ -145,7 +152,7 @@ export const Header = () => {
                     </Button>
                   </>
                 ) : (
-                  <Button asChild variant="outline" className="w-full">
+                  <Button variant="outline" className="w-full">
                     <Link
                       to="/iniciar-sesion"
                       onClick={() => setIsMenuOpen(false)}
@@ -154,11 +161,11 @@ export const Header = () => {
                     </Link>
                   </Button>
                 )}
-                <Button
-                  asChild
-                  className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold"
-                >
-                  <Link to="/contacto" onClick={() => setIsMenuOpen(false)}>
+                <Button className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold">
+                  <Link
+                    to={getContactRoute()}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
                     Cotizar Ahora
                   </Link>
                 </Button>

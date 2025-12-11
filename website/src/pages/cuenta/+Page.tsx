@@ -19,6 +19,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useAuthSignIn } from "@/api/auth/useAuthSignIn";
 import { setPersistentAuthData } from "@/utils/persistent-auth";
 import { useRouter } from "@/hooks/useRouter";
+import { getHomeRoute } from "@/utils/routes";
 
 export const Page = () => {
   const { isAuthenticated } = useAuth();
@@ -41,7 +42,7 @@ export const Page = () => {
 
   // Redirect if already authenticated
   if (isAuthenticated) {
-    pushRoute("/");
+    pushRoute(getHomeRoute());
     return null;
   }
 
@@ -59,14 +60,13 @@ export const Page = () => {
 
           setData(user);
           setPersistentAuthData({
-            user,
             accessToken,
             refreshToken,
             steat,
           });
 
           toast.success("¡Bienvenido!");
-          pushRoute("/");
+          pushRoute(getHomeRoute());
         },
         onAfterFailed: () => {
           toast.error("Error al iniciar sesión");

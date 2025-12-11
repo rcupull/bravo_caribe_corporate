@@ -75,6 +75,7 @@
     "sonner": "^1.7.4",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
+    "universal-cookie": "^8.0.1",
     "vaul": "^0.9.9",
     "vike": "^0.4.210",
     "vike-react": "^0.5.11",

@@ -18,6 +18,7 @@ import { useGetAllProducts } from "@/api/products/useGetAllProducts";
 import { CategoryType } from "@/types/category";
 import { useProductDetails } from "@/hooks/useProductDetails";
 import { useRouter } from "@/hooks/useRouter";
+import { getBlogRoute, getProductRoute } from "@/utils/routes";
 
 export const Page = () => {
   const [inStockOnly, setInStockOnly] = useState(false);
@@ -31,9 +32,9 @@ export const Page = () => {
 
   const pushCategoryType = (categoryType: CategoryType | undefined) => {
     if (categoryType) {
-      pushRoute(`/productos`, { categoryType });
+      pushRoute(getProductRoute(), { categoryType });
     } else {
-      pushRoute(`/productos`);
+      pushRoute(getProductRoute());
     }
   };
 

@@ -16,7 +16,7 @@ interface State {
   email: string;
 }
 
-export let Page = () => {
+export const Page = () => {
   const { authForgotPasswordRequest } = useAuthForgotPasswordRequest();
 
   if (authForgotPasswordRequest.data) {

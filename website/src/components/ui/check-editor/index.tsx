@@ -13,6 +13,7 @@ import { compact } from "@/utils/general";
 import { Nullable, StyleProps } from "@/types/general";
 import { axiosFetch } from "@/utils/api";
 import { HtmlTextContainer } from "../html-text-container";
+import { usePageContext } from "@/hooks/usePageContext";
 
 const ClassicEditor = ClassicEditorB as unknown as {
   create(...args: any[]): Promise<Editor>;
@@ -64,6 +65,8 @@ export const CheckEditor = ({
     return compact(out);
   };
 
+  const pageContext = usePageContext();
+
   return (
     <HtmlTextContainer className={className}>
       <CKEditor
@@ -89,7 +92,7 @@ export const CheckEditor = ({
                 const out = new CheckEditorUploadAdapter(
                   loader,
                   uploadUrl,
-                  (args) => axiosFetch(args)
+                  (args) => axiosFetch(args, pageContext)
                 );
 
                 return out as any;

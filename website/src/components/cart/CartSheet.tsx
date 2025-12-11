@@ -11,6 +11,7 @@ import { ShoppingCart, Trash2, Plus, Minus, FileImage } from "lucide-react";
 import { ImageComponent } from "../image-component";
 import { useCart } from "@/hooks/useCart";
 import { Link } from "../link";
+import { getContactRoute } from "@/utils/routes";
 
 const CartSheet = () => {
   const { items, removeFromCart, updateQuantity, totalItems, totalPrice } =
@@ -111,11 +112,8 @@ const CartSheet = () => {
                   <span>Total:</span>
                   <span className="text-accent">${totalPrice.toFixed(2)}</span>
                 </div>
-                <Button
-                  asChild
-                  className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
-                >
-                  <Link to="/contacto">Solicitar Cotización</Link>
+                <Button className="w-full bg-accent hover:bg-accent/90 text-accent-foreground">
+                  <Link to={getContactRoute()}>Solicitar Cotización</Link>
                 </Button>
               </div>
             </>

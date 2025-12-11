@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/utils/general";
@@ -37,7 +36,6 @@ const buttonVariants = cva(
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
-  asChild?: boolean;
   isLoading?: boolean;
   formuxSubmit?: boolean;
   stopPropagation?: boolean;
@@ -50,7 +48,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       className,
       variant,
       size,
-      asChild = false,
       children,
       isLoading,
       formuxSubmit,
@@ -62,8 +59,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
-    const Comp = asChild ? Slot : "button";
-
     if (formuxSubmit) {
       return (
         <FormuxDataContainer>
@@ -71,12 +66,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             const buttonDisabled = disabled || !isValid || !hasChange;
 
             return (
-              <Comp
+              <button
                 className={cn(
                   "relative",
                   buttonVariants({ variant, size, className })
                 )}
                 ref={ref}
+                type="button"
                 disabled={isLoading || buttonDisabled}
                 onClick={(e) => {
                   /**
@@ -130,7 +126,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                     </div>
                   )}
                 </>
-              </Comp>
+              </button>
             );
           }}
         </FormuxDataContainer>
@@ -138,10 +134,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     }
 
     return (
-      <Comp
+      <button
         className={cn("relative", buttonVariants({ variant, size, className }))}
         ref={ref}
         disabled={isLoading || disabled}
+        type="button"
         onClick={onClick}
         {...props}
       >
@@ -172,7 +169,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             </div>
           )}
         </>
-      </Comp>
+      </button>
     );
   }
 );

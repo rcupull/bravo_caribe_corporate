@@ -77,7 +77,6 @@ const HeroBanner = ({
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button
-              asChild
               size="lg"
               className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold px-8 py-6 text-lg"
             >
@@ -88,7 +87,6 @@ const HeroBanner = ({
             </Button>
 
             <Button
-              asChild
               size="lg"
               variant="outline"
               className="border-2 border-primary-foreground hover:bg-primary-foreground hover:text-primary font-semibold px-8 py-6 text-lg"

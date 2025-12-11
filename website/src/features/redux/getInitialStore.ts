@@ -8,8 +8,8 @@ import { PageContextServer } from "@/types/ssr";
 export const getInitialStore = async (args: {
   pageContext: PageContextServer;
 }) => {
-  const { pageContext } = args; //TODO
-  const accessToken = await getAccessToken();
+  const { pageContext } = args;
+  const accessToken = await getAccessToken(pageContext);
 
   const initialReduxState: Partial<ReduxState> = {};
 
@@ -21,7 +21,8 @@ export const getInitialStore = async (args: {
      */
 
     const { data: user } = await axiosFetch(
-      useGetOwnUser.fetchFnCallArgsGetter()
+      useGetOwnUser.fetchFnCallArgsGetter(),
+      pageContext
     );
 
     initialReduxState.useAuth = getApiPersisteState<User>(user);

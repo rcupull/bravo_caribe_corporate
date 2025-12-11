@@ -15,6 +15,8 @@ import {
   resetPersistentAuthData,
   setPersistentAuthData,
 } from "./persistent-auth";
+import { PageContextServer } from "@/types/ssr";
+import { isSSR } from "./ssr";
 
 const S3_BUCKET_APP = (() => {
   if (process.env.NODE_ENV === "development") {
@@ -139,20 +141,49 @@ const getNewAccessTokenValidatinProgress = (args: {
   return fetchingTokenPromise;
 };
 
-const getAuthData = async (): Promise<{
+export const getCookieValueFromPageContext = (
+  pageContext: PageContextServer,
+  field: string
+): string | null => {
+  const out = pageContext.headers.cookie
+    ?.split(";")
+    .find((c) => c.includes(field))
+    ?.split("=")[1];
+
+  return isString(out) ? decodeURIComponent(out) : null;
+};
+
+const getAuthData = async (
+  pageContext: PageContextServer
+): Promise<{
   accessToken: string | null;
   accessTokenUpdatedAt: string | null;
   refreshToken: string | null;
   steat: number | null;
 }> => {
-  const isSSR = () => false;
-
   if (isSSR()) {
+    /**
+     * get auth data from server side
+     */
+    const accessToken = getCookieValueFromPageContext(
+      pageContext,
+      "accessToken"
+    );
+    const refreshToken = getCookieValueFromPageContext(
+      pageContext,
+      "refreshToken"
+    );
+    const accessTokenUpdatedAt = getCookieValueFromPageContext(
+      pageContext,
+      "accessTokenUpdatedAt"
+    );
+    const steat = getCookieValueFromPageContext(pageContext, "steat");
+
     return {
-      accessToken: null,
-      accessTokenUpdatedAt: null,
-      refreshToken: null,
-      steat: null,
+      accessToken,
+      accessTokenUpdatedAt,
+      refreshToken,
+      steat: isNaN(Number(steat)) ? null : Number(steat),
     };
   } else {
     /**
@@ -170,9 +201,11 @@ const getAuthData = async (): Promise<{
   }
 };
 
-export const getAccessToken = async (): Promise<string | null> => {
+export const getAccessToken = async (
+  pageContext: PageContextServer
+): Promise<string | null> => {
   const { accessToken, accessTokenUpdatedAt, refreshToken, steat } =
-    await getAuthData();
+    await getAuthData(pageContext);
 
   if (!isString(accessToken)) return null;
   if (!isString(refreshToken)) return null;
@@ -189,8 +222,6 @@ export const getAccessToken = async (): Promise<string | null> => {
     const newAccessToken = await getNewAccessTokenValidatinProgress({
       refreshToken,
     });
-
-    const isSSR = () => false;
 
     if (!isSSR()) {
       /**
@@ -222,8 +253,11 @@ export const appendAuthorizationToken = (
   };
 };
 
-export const axiosFetch = async (args: AxiosRequestConfig): AxiosPromise => {
-  const accessToken = await getAccessToken();
+export const axiosFetch = async (
+  args: AxiosRequestConfig,
+  pageContext: PageContextServer
+): AxiosPromise => {
+  const accessToken = await getAccessToken(pageContext);
 
   args = appendAuthorizationToken(args, accessToken);
 
