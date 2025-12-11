@@ -1,4 +1,3 @@
-import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,12 +10,13 @@ import { toast } from "sonner";
 import { UserPlus } from "lucide-react";
 import { useAuthSignUp } from "@/api/auth/useAuthSignUp";
 import { useAuth } from "@/hooks/useAuth";
-import { withMainLayout } from "@/components/main-layout";
 import { Formux } from "@/components/ui/formux";
 import { HtmlTextContainer } from "@/components/ui/html-text-container";
 import { FieldInputPassword } from "@/components/ui/field-input-password";
 import { getRequiredLabel } from "@/utils/form";
 import { FieldInput } from "@/components/ui/field-input";
+import { useRouter } from "@/hooks/useRouter";
+import { Link } from "@/components/link";
 
 interface State {
   name: string;
@@ -25,15 +25,15 @@ interface State {
   confirmPassword: string;
 }
 
-export let SignUp = () => {
-  const navigate = useNavigate();
+export const Page = () => {
+  const { pushRoute } = useRouter();
   const { isAuthenticated } = useAuth();
 
   const { authSignUp } = useAuthSignUp();
 
   // Redirect if already authenticated
   if (isAuthenticated) {
-    navigate("/");
+    pushRoute("/");
     return null;
   }
 
@@ -152,5 +152,3 @@ export let SignUp = () => {
     </Card>
   );
 };
-
-SignUp = withMainLayout(SignUp);

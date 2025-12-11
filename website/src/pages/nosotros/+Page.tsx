@@ -3,7 +3,7 @@ import { Footer } from "@/components/footer";
 import { Target, Eye, Award, Users } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
-const AboutUs = () => {
+export const Page = () => {
   const values = [
     {
       icon: Award,
@@ -302,5 +302,3 @@ const AboutUs = () => {
     </div>
   );
 };
-
-export default AboutUs;

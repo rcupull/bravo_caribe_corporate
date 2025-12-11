@@ -2,7 +2,6 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 
 import { ChildrenProp } from "@/types/general";
-import { FunctionComponent } from "react";
 
 export const MainLayout = ({ children }: ChildrenProp) => {
   return (
@@ -18,14 +17,4 @@ export const MainLayout = ({ children }: ChildrenProp) => {
       <Footer />
     </div>
   );
-};
-
-export const withMainLayout = (Page: FunctionComponent) => {
-  const Commponent = () => (
-    <MainLayout>
-      <Page />
-    </MainLayout>
-  );
-
-  return Commponent;
 };

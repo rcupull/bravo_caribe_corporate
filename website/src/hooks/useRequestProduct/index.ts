@@ -1,16 +1,16 @@
 import { Product } from "@/types/products";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "../useRouter";
 
 export const useRequestProduct = () => {
-  const navigate = useNavigate();
+  const { pushRoute } = useRouter();
 
   return {
     onRequest: (product?: Product) => {
       if (product) {
         const { productSlug } = product;
-        return navigate(`/contacto?productSlug=${productSlug}`);
+        return pushRoute(`/contacto?productSlug=${productSlug}`);
       }
-      navigate("/contacto");
+      pushRoute("/contacto");
     },
   };
 };

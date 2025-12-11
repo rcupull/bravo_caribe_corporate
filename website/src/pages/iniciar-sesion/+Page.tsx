@@ -1,4 +1,3 @@
-import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,28 +11,29 @@ import { LogIn } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useAuthSignIn } from "@/api/auth/useAuthSignIn";
 import { setPersistentAuthData } from "@/utils/persistent-auth";
-import { withMainLayout } from "@/components/main-layout";
 import { Formux } from "@/components/ui/formux";
 import { FieldInput } from "@/components/ui/field-input";
 import { getRequiredLabel } from "@/utils/form";
 import { FieldInputPassword } from "@/components/ui/field-input-password";
 import { HtmlTextContainer } from "@/components/ui/html-text-container";
+import { useRouter } from "@/hooks/useRouter";
+import { Link } from "@/components/link";
 
 interface State {
   email: string;
   password: string;
 }
 
-export let SignIn = () => {
-  const navigate = useNavigate();
+export let Page = () => {
   const { isAuthenticated } = useAuth();
+  const { pushRoute } = useRouter();
 
   const { setData } = useAuth();
 
   const { authSignIn } = useAuthSignIn();
 
   if (isAuthenticated) {
-    navigate("/");
+    pushRoute("/");
     return null;
   }
 
@@ -115,7 +115,7 @@ export let SignIn = () => {
                             });
 
                             toast.success("¡Bienvenido!");
-                            navigate("/");
+                            pushRoute("/");
                           },
                           onAfterFailed: () => {
                             toast.error("Error al iniciar sesión");
@@ -135,5 +135,3 @@ export let SignIn = () => {
     </Card>
   );
 };
-
-SignIn = withMainLayout(SignIn);

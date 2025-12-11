@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
@@ -19,10 +18,11 @@ import { useAuthSignUp } from "@/api/auth/useAuthSignUp";
 import { useAuth } from "@/hooks/useAuth";
 import { useAuthSignIn } from "@/api/auth/useAuthSignIn";
 import { setPersistentAuthData } from "@/utils/persistent-auth";
+import { useRouter } from "@/hooks/useRouter";
 
-const Auth = () => {
-  const navigate = useNavigate();
+export const Page = () => {
   const { isAuthenticated } = useAuth();
+  const { pushRoute } = useRouter();
 
   const { setData } = useAuth();
 
@@ -41,7 +41,7 @@ const Auth = () => {
 
   // Redirect if already authenticated
   if (isAuthenticated) {
-    navigate("/");
+    pushRoute("/");
     return null;
   }
 
@@ -66,7 +66,7 @@ const Auth = () => {
           });
 
           toast.success("¡Bienvenido!");
-          navigate("/");
+          pushRoute("/");
         },
         onAfterFailed: () => {
           toast.error("Error al iniciar sesión");
@@ -259,5 +259,3 @@ const Auth = () => {
     </div>
   );
 };
-
-export default Auth;

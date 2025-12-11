@@ -4,7 +4,6 @@ import { Footer } from "@/components/footer";
 import ProductCard from "@/components/products/ProductCard";
 import ProductFilters from "@/components/products/ProductFilters";
 import QuickQuoteCTA from "@/components/products/QuickQuoteCTA";
-import { toast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import {
@@ -17,35 +16,29 @@ import {
 } from "@/components/ui/pagination";
 import { useGetAllProducts } from "@/api/products/useGetAllProducts";
 import { CategoryType } from "@/types/category";
-import { useNavigate, useSearchParams } from "react-router-dom";
 import { useProductDetails } from "@/hooks/useProductDetails";
+import { useRouter } from "@/hooks/useRouter";
 
-const Products = () => {
+export const Page = () => {
   const [inStockOnly, setInStockOnly] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
 
   const { getAllProducts } = useGetAllProducts();
 
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
+  const { pushRoute, query } = useRouter();
+  const categoryType = query.categoryType as CategoryType | undefined;
+
   const pushCategoryType = (categoryType: CategoryType | undefined) => {
     if (categoryType) {
-      const newParams = new URLSearchParams(searchParams);
-      newParams.set("categoryType", categoryType);
-
-      navigate(`/productos?${newParams.toString()}`);
+      pushRoute(`/productos`, { categoryType });
     } else {
-      navigate(`/productos`);
+      pushRoute(`/productos`);
     }
   };
 
-  const categoryType = searchParams.get("categoryType") as CategoryType | null;
-
   useEffect(() => {
-    getAllProducts.fetch({
-      categoryType: categoryType ? categoryType : undefined,
-    });
+    getAllProducts.fetch({ categoryType });
   }, [categoryType]);
 
   const { productDetails } = useProductDetails();
@@ -181,5 +174,3 @@ const Products = () => {
     </div>
   );
 };
-
-export default Products;

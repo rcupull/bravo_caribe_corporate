@@ -7,7 +7,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { UserCircle } from "lucide-react";
-import { withMainLayout } from "@/components/main-layout";
 import { Formux } from "@/components/ui/formux";
 import { getRequiredLabel } from "@/utils/form";
 import { FieldInput } from "@/components/ui/field-input";
@@ -17,7 +16,7 @@ interface State {
   email: string;
 }
 
-export let RecoveryAccount = () => {
+export let Page = () => {
   const { authForgotPasswordRequest } = useAuthForgotPasswordRequest();
 
   if (authForgotPasswordRequest.data) {
@@ -94,5 +93,3 @@ export let RecoveryAccount = () => {
     </Card>
   );
 };
-
-RecoveryAccount = withMainLayout(RecoveryAccount);

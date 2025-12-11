@@ -1,6 +1,5 @@
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { useSearchParams } from "react-router-dom";
 import { useGetOneProduct } from "@/api/products/useGetOneProduct";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -10,6 +9,7 @@ import { MapPin, Clock, Phone, Mail, Send, FileImage } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { ImageComponent } from "@/components/image-component";
 import { categories } from "@/utils/category";
+import { useRouter } from "@/hooks/useRouter";
 
 const defaultHours = [
   { days: "Lunes - Viernes", time: "8:00 AM - 6:00 PM" },
@@ -21,10 +21,10 @@ const phone = "+53 63672603";
 const email = "ventas@bravocaribe.com";
 const hours = defaultHours;
 
-const Contact = () => {
-  const [searchParams] = useSearchParams();
+export const Page = () => {
+  const { query } = useRouter();
 
-  const productSlug = searchParams.get("productSlug") as string | null;
+  const productSlug = query.productSlug as string | undefined;
 
   const { getOneProduct } = useGetOneProduct();
 
@@ -307,5 +307,3 @@ const Contact = () => {
     </div>
   );
 };
-
-export default Contact;

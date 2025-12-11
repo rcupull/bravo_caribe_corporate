@@ -7,10 +7,10 @@ import { Calendar, User, ArrowRight, FileImage } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useGetAllBlogs } from "@/api/blogs/useGetAllBlogs";
 import { ImageComponent } from "@/components/image-component";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "@/hooks/useRouter";
 
-const Blog = () => {
-  const navigate = useNavigate();
+export const Page = () => {
+  const { pushRoute } = useRouter();
 
   const { getAllBlogs } = useGetAllBlogs();
 
@@ -104,7 +104,7 @@ const Blog = () => {
                       <Button
                         className="w-fit gap-2"
                         onClick={() => {
-                          navigate(`/blog/${featuredBlog.blogSlug}`);
+                          pushRoute(`/blog/${featuredBlog.blogSlug}`);
                         }}
                       >
                         Leer más
@@ -191,7 +191,7 @@ const Blog = () => {
                           variant="outline"
                           className="w-full gap-2"
                           onClick={() => {
-                            navigate(`/blog/${blog.blogSlug}`);
+                            pushRoute(`/blog/${blog.blogSlug}`);
                           }}
                         >
                           Leer más
@@ -211,5 +211,3 @@ const Blog = () => {
     </div>
   );
 };
-
-export default Blog;

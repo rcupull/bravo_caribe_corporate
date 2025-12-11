@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
@@ -9,13 +8,14 @@ import { ImageComponent } from "@/components/image-component";
 import { HtmlTextContainer } from "@/components/ui/html-text-container";
 import { useGetAllBlogs } from "@/api/blogs/useGetAllBlogs";
 import { Card, CardContent } from "@/components/ui/card";
+import { useRouter } from "@/hooks/useRouter";
 
-const BlogPost = () => {
-  const { blogSlug } = useParams();
+export const Page = () => {
+  const { params, pushRoute } = useRouter();
+  const { blogSlug } = params;
 
   const { getOneBlog } = useGetOneBlog();
   const { getAllBlogs } = useGetAllBlogs();
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (blogSlug) {
@@ -41,7 +41,7 @@ const BlogPost = () => {
             <h1 className="text-2xl font-bold text-foreground mb-4">
               Artículo no encontrado
             </h1>
-            <Button onClick={() => navigate("/blog")}>
+            <Button onClick={() => pushRoute("/blog")}>
               <ArrowLeft className="mr-2 h-4 w-4" />
               Volver al Blog
             </Button>
@@ -62,7 +62,7 @@ const BlogPost = () => {
           <div className="container mx-auto px-4">
             <Button
               variant="ghost"
-              onClick={() => navigate("/blog")}
+              onClick={() => pushRoute("/blog")}
               className="gap-2"
             >
               <ArrowLeft className="h-4 w-4" />
@@ -155,7 +155,7 @@ const BlogPost = () => {
                     <Card
                       key={index}
                       className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
-                      onClick={() => navigate(`/blog/${relatedPost.blogSlug}`)}
+                      onClick={() => pushRoute(`/blog/${relatedPost.blogSlug}`)}
                     >
                       {relatedPost.coverImage ? (
                         <ImageComponent
@@ -188,5 +188,3 @@ const BlogPost = () => {
     </div>
   );
 };
-
-export default BlogPost;

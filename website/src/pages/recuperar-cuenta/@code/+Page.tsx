@@ -1,5 +1,5 @@
 import { useAuthForgotPasswordValidate } from "@/api/auth/useAuthForgotPasswordValidate";
-import { withMainLayout } from "@/components/main-layout";
+import { Link } from "@/components/link";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,12 +11,13 @@ import {
 import { FieldInputPassword } from "@/components/ui/field-input-password";
 import { Formux } from "@/components/ui/formux";
 import { HtmlTextContainer } from "@/components/ui/html-text-container";
+import { useRouter } from "@/hooks/useRouter";
 import { getRequiredLabel } from "@/utils/form";
 import { UserCircle } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
 
-export let RecoveryAccount_Code = () => {
-  const { code } = useParams();
+export let Page = () => {
+  const { params } = useRouter();
+  const { code } = params;
 
   const { authForgotPasswordValidate } = useAuthForgotPasswordValidate();
 
@@ -126,5 +127,3 @@ export let RecoveryAccount_Code = () => {
     </Card>
   );
 };
-
-RecoveryAccount_Code = withMainLayout(RecoveryAccount_Code);
