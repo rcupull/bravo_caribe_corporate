@@ -83,7 +83,8 @@ export let SignIn = () => {
                   name="password"
                 />
 
-                <HtmlTextContainer className="flex justify-end mt-6">
+                <HtmlTextContainer className="flex justify-between mt-6">
+                  <Link to="/recuperar-cuenta">Recuperar Cuenta</Link>
                   <Link to="/registrarse">Registrarse</Link>
                 </HtmlTextContainer>
 

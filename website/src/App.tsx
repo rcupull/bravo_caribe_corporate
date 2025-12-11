@@ -10,6 +10,8 @@ import BlogPost from "./pages/blog/blog-slug";
 import { Providers } from "./Providers";
 import { SignIn } from "./pages/iniciar-sesion";
 import { SignUp } from "./pages/registrarse";
+import { RecoveryAccount } from "./pages/recuperar-cuenta";
+import { RecoveryAccount_Code } from "./pages/recuperar-cuenta/@code";
 
 const App = () => (
   <Providers>
@@ -22,6 +24,11 @@ const App = () => (
       <Route path="/blog/:blogSlug" element={<BlogPost />} />
       <Route path="/iniciar-sesion" element={<SignIn />} />
       <Route path="/registrarse" element={<SignUp />} />
+      <Route path="/recuperar-cuenta" element={<RecoveryAccount />} />
+      <Route
+        path="/recuperar-cuenta/:code"
+        element={<RecoveryAccount_Code />}
+      />
       <Route path="/admin" element={<Admin />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
