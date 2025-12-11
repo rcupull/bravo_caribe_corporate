@@ -2,23 +2,25 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter } from "react-router-dom";
-import { InitService } from "./features/init-service";
-import { ReduxProvider } from "./features/redux";
-import { ChildrenProp } from "./types/general";
+import { InitService } from "../features/init-service";
+import { ReduxProvider } from "../features/redux";
+import { ChildrenProp } from "../types/general";
 import { useEffect, useState } from "react";
-import { getInitialStore } from "./features/redux/getInitialStore";
-import { Store } from "@reduxjs/toolkit";
-import { ModalService } from "./features/modal";
+import { getInitialStore } from "../features/redux/getInitialStore";
+import { ModalService } from "../features/modal";
+import { usePageContext } from "../hooks/usePageContext";
+import "./index.css";
 
 const queryClient = new QueryClient();
 
-export const Providers = ({ children }: ChildrenProp) => {
+export const Wrapper = ({ children }: ChildrenProp) => {
+  const pageContext = usePageContext();
+
   /**
    * setting store when ssr is enabled
    * (the store is created in onBeforeRenderClient)
    */
-  const [store, setStore] = useState<Store>();
+  const [store, setStore] = useState(pageContext.store);
 
   useEffect(() => {
     const createReduxStoreInBrowser = async () => {
@@ -26,7 +28,7 @@ export const Providers = ({ children }: ChildrenProp) => {
        * setting store when SSR is disabled
        * (the store is created just here)
        */
-      const { store } = await getInitialStore();
+      const { store } = await getInitialStore({ pageContext });
       setStore(store);
     };
 
@@ -39,14 +41,12 @@ export const Providers = ({ children }: ChildrenProp) => {
     <ReduxProvider store={store}>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
-          <BrowserRouter>
-            <ModalService>
-              <InitService />
-              <Toaster />
-              <Sonner />
-              {children}
-            </ModalService>
-          </BrowserRouter>
+          <ModalService>
+            <InitService />
+            <Toaster />
+            <Sonner />
+            {children}
+          </ModalService>
         </TooltipProvider>
       </QueryClientProvider>
     </ReduxProvider>

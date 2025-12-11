@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Search } from "lucide-react";
+import { Link } from "../link";
 
 interface HeroBannerProps {
   title?: string;

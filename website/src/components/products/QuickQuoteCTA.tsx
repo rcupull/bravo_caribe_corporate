@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { MessageSquare, Phone } from "lucide-react";
+import { Link } from "../link";
 
 interface QuickQuoteCTAProps {
   title?: string;

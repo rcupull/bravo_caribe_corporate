@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { categories } from "@/utils/category";
+import { Link } from "../link";
 
 const CategoriesHighlight = () => {
   return (

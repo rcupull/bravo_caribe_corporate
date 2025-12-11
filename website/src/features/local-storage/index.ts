@@ -1,3 +1,5 @@
+import { isSSR } from "@/utils/ssr";
+
 const save = <T = any>(field: string, value: T) => {
   localStorage.setItem(field, JSON.stringify(value));
 };
@@ -16,7 +18,7 @@ const reset = () => {
 };
 
 export const localStorageUtils = () => {
-  const enabled = true;
+  const enabled = !isSSR();
 
   return {
     saveLS: enabled ? save : () => {},

@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import {
   Facebook,
   Instagram,
@@ -9,6 +8,7 @@ import {
 } from "lucide-react";
 import logo from "@/assets/logo-v.png";
 import { categories } from "@/utils/category";
+import { Link } from "../link";
 
 export const Footer = () => {
   return (

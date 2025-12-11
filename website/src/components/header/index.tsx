@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { Menu, X, Phone, LogIn, LogOut, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import CartSheet from "@/components/cart/CartSheet";
@@ -7,6 +6,7 @@ import logo from "@/assets/logo-h.png";
 import { useAuth } from "@/hooks/useAuth";
 import { resetPersistentAuthData } from "@/utils/persistent-auth";
 import { HeaderAnnouncement } from "../header-announcement";
+import { Link } from "../link";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

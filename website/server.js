@@ -1,28 +1,45 @@
 /**
  * https://github.com/brillout/vite-plugin-server-entry
  */
+import './dist/server/entry.mjs';
 import compression from 'compression';
 import express from 'express';
-import path from "path";
 import sirv from 'sirv';
-import { fileURLToPath } from "url";
+import { renderPage } from 'vike/server';
 
-const port = 5173;
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const clientPath = path.join(__dirname, "dist");
-
+const port = 8080;
+const base = '/';
 
 async function startServer() {
-  const base = '/';
+  // Create an Express.js server
   const app = express();
 
   app.use(compression());
-  app.use(base, sirv('./dist', { extensions: [] }));
+  app.use(base, sirv('./dist/client', { extensions: [] }));
 
+  /**
+   * some example from https://vike.dev/renderPage
+   */
+  app.get('*', async (req, res) => {
+    const pageContextInit = {
+      urlOriginal: req.originalUrl,
 
-  app.get("*", (req, res) => {
-   res.sendFile(path.join(clientPath, "index.html"));
+      headersOriginal: req.headers
+    };
+
+    /**
+     * Example getted from https://github.com/vikejs/vike/blob/main/examples/react-streaming/server/index.js
+     */
+    const pageContext = await renderPage(pageContextInit);
+    if (pageContext.errorWhileRendering) {
+      /**
+       * TODO:  Install error tracking here, see https://vike.dev/error-tracking
+       */
+    }
+    const { httpResponse } = pageContext;
+    httpResponse.headers.forEach(([name, value]) => res.setHeader(name, value));
+    res.status(httpResponse.statusCode);
+    httpResponse.pipe(res);
   });
 
   app.listen(port);

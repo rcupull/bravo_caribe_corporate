@@ -9,7 +9,7 @@ import { useGetAllProducts } from "@/api/products/useGetAllProducts";
 import { useEffect } from "react";
 import { useProductDetails } from "@/hooks/useProductDetails";
 
-const Index = () => {
+export const Page = () => {
   const { getAllProducts } = useGetAllProducts();
 
   const { productDetails } = useProductDetails();
@@ -69,5 +69,3 @@ const Index = () => {
     </div>
   );
 };
-
-export default Index;
