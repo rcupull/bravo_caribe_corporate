@@ -1,7 +1,7 @@
-import { MainLayout } from "@/components/main-layout";
+import { LayoutAuth } from "@/components/layout-auth";
 
 import { ChildrenProp } from "@/types/general";
 
 export let Layout = ({ children }: ChildrenProp) => {
-  return <MainLayout>{children}</MainLayout>;
+  return <LayoutAuth>{children}</LayoutAuth>;
 };
