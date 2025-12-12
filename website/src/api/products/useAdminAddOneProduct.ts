@@ -11,7 +11,7 @@ interface Args
     | "price"
     | "currency"
     | "images"
-    | "inStock"
+    | "stockAmount"
     | "categoryType"
     | "specs"
     | "featured"

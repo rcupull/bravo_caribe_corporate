@@ -79,6 +79,8 @@ export const TabProducts = () => {
                   rowData.images && rowData.images.length > 0
                     ? rowData.images[0]
                     : null;
+
+                const inStock = !!rowData.stockAmount;
                 return (
                   <TableRow key={rowData._id}>
                     <TableCell>
@@ -104,12 +106,14 @@ export const TabProducts = () => {
                     <TableCell>
                       <span
                         className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          rowData.inStock
+                          inStock
                             ? "bg-green-100 text-green-800"
                             : "bg-red-100 text-red-800"
                         }`}
                       >
-                        {rowData.inStock ? "En Stock" : "Agotado"}
+                        {inStock
+                          ? `${rowData.stockAmount} en stock`
+                          : "Agotado"}
                       </span>
                     </TableCell>
                     <TableCell className="text-right">

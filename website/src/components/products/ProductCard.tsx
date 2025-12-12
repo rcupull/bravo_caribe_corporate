@@ -12,7 +12,10 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  const { images, categoryType, productSlug, name, inStock, price } = product;
+  const { images, categoryType, productSlug, name, stockAmount, price } =
+    product;
+
+  const inStock = !!stockAmount;
 
   const currentCategory = getCurrentCategory(categoryType);
 

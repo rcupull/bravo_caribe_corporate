@@ -29,7 +29,7 @@ interface State
     | "currency"
     | "name"
     | "price"
-    | "inStock"
+    | "stockAmount"
     | "specs"
     | "featured"
   > {
@@ -67,7 +67,7 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
         name: "",
         currency: Currency.USD,
         price: 0,
-        inStock: true,
+        stockAmount: 0,
         categoryType: CategoryType.TIRE,
         image: product?.images?.[0],
         specs: {},
@@ -85,11 +85,7 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FieldInput label="Nombre del Producto" name="name" />
 
-              <div className="mt-6 flex items-center justify-around gap-4">
-                <FieldCheckbox label="En Stock" name="inStock" />
-
-                <FieldCheckbox label="Destacado" name="featured" />
-              </div>
+              <FieldInput type="number" label="En stock" name="stockAmount" />
 
               <FieldInput label="Precio" name="price" type="number" />
 
@@ -111,6 +107,8 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
                 renderValue={({ value }) => value}
                 optionToValue={({ value }) => value}
               />
+
+              <FieldCheckbox label="Destacado" name="featured" />
             </div>
 
             <FieldSelect
@@ -179,7 +177,7 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
                     name,
                     price,
                     image,
-                    inStock,
+                    stockAmount,
                     categoryType,
                     specs,
                     featured,
@@ -199,7 +197,7 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
                           price,
                           featured,
                           images: imageToUpload ? [imageToUpload] : [],
-                          inStock,
+                          stockAmount,
                           categoryType,
                           specs,
                         },
@@ -219,7 +217,7 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
                         price,
                         featured,
                         images: imageToUpload ? [imageToUpload] : [],
-                        inStock,
+                        stockAmount,
                         categoryType,
                         specs,
                       },

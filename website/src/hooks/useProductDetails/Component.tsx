@@ -21,8 +21,10 @@ interface ComponentProps {
 }
 
 const Component = ({ product }: ComponentProps) => {
-  const { specs, images, price, inStock, categoryType, name } = product;
+  const { specs, images, price, stockAmount, categoryType, name } = product;
   const { onClose } = useModal();
+
+  const inStock = !!stockAmount;
 
   const { onRequest } = useRequestProduct();
 

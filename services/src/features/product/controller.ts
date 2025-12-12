@@ -113,7 +113,7 @@ export class ProductController {
       bodyShape: (z) => ({
         name: z.string().nonempty(),
         hidden: z.boolean().optional(),
-        inStock: z.boolean().optional(),
+        stockAmount: z.number().optional(),
         featured: z.boolean().optional(),
         images: z.array(ImageShape).optional(),
         price: z.number().nonnegative(),
@@ -131,7 +131,7 @@ export class ProductController {
 
       const { body } = req;
 
-      const { name, hidden, images, price, currency, inStock, categoryType, specs, featured } =
+      const { name, hidden, images, price, currency, stockAmount, categoryType, specs, featured } =
         body;
 
       const out = await this.productServices.addOne({
@@ -140,7 +140,7 @@ export class ProductController {
         hidden,
         currency,
         images,
-        inStock,
+        stockAmount,
         price,
         featured,
         createdBy: user._id,
@@ -187,7 +187,7 @@ export class ProductController {
         images: z.array(ImageShape).nullish(),
         name: z.string().nullish(),
         price: z.number().nonnegative().nullish(),
-        inStock: z.boolean().nullish(),
+        stockAmount: z.number().nullish(),
         featured: z.boolean().nullish(),
         currency: z.enum(Currency).nullish(),
         hidden: z.boolean().optional(),
@@ -206,7 +206,7 @@ export class ProductController {
         price,
         currency,
         hidden,
-        inStock,
+        stockAmount,
         categoryType,
         specs,
         featured
@@ -219,7 +219,7 @@ export class ProductController {
         },
         update: {
           highlights,
-          inStock,
+          stockAmount,
           images,
           name,
           featured,

@@ -9,7 +9,7 @@ export interface Product extends BaseIdentity {
   price: number;
   currency: Currency;
   hidden?: boolean;
-  inStock?: boolean;
+  stockAmount?: number;
   featured?: boolean;
 
   categoryType?: CategoryType;
