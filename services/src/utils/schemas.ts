@@ -12,7 +12,7 @@ import { ObjectId } from 'mongodb';
 
 import mongoosePaginate from 'mongoose-paginate-v2';
 import aggregatePaginate from 'mongoose-aggregate-paginate-v2';
-import { AnyRecord } from '../types/general';
+import { AnyRecord, BaseIdentity } from '../types/general';
 import { compact, getFlattenUndefinedJson, isEmpty } from './general';
 
 export const createdAtSchemaDefinition: SchemaDefinition = {
@@ -146,4 +146,24 @@ export const getFilterQueryFactory = <
   };
 
   return out;
+};
+
+export const setFilterQueryWithDates = <T extends BaseIdentity = BaseIdentity>({
+  filterQuery,
+  dateFrom,
+  dateTo
+}: {
+  dateFrom?: string;
+  dateTo?: string;
+  filterQuery: FilterQuery<T>;
+}): void => {
+  if (dateFrom) {
+    //@ts-expect-error ts(2345)
+    set(filterQuery, 'createdAt.$gte', new Date(dateFrom));
+  }
+
+  if (dateTo) {
+    //@ts-expect-error ts(2345)
+    set(filterQuery, 'createdAt.$lte', new Date(dateTo));
+  }
 };
