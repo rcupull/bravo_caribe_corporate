@@ -28,14 +28,9 @@ export class CartRouter {
         this.cartController.delete_cart_products_productId
       );
 
-    this.router.route('/cart/request').post(
-      this.accessServices.middlewareGetUser,
-      this.accessServices.middlewareAccessControl({
-        isPurchaserOfThisShopping: true,
-        hasBrowserFingerprintOfThisShopping: true
-      }),
-      this.cartController.post_cart_request
-    );
+    this.router
+      .route('/cart/request')
+      .post(this.accessServices.middlewareIsLogged, this.cartController.post_cart_request);
   }
 
   public readonly router: Router = Router();

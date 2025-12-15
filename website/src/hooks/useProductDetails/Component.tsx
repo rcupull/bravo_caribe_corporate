@@ -13,8 +13,8 @@ import { Product } from "@/types/products";
 import { getCurrentCategory } from "@/utils/category";
 import { isNullOrUndefined } from "@/utils/general";
 import { ImageComponent } from "@/components/image-component";
-import { useRequestProduct } from "../useRequestProduct";
 import { useModal } from "@/features/modal/useModal";
+import { useCart } from "../useCart";
 
 interface ComponentProps {
   product: Product;
@@ -26,7 +26,7 @@ const Component = ({ product }: ComponentProps) => {
 
   const inStock = !!stockAmount;
 
-  const { onRequest } = useRequestProduct();
+  const { updateCart } = useCart();
 
   const currentCategory = getCurrentCategory(categoryType);
 
@@ -131,13 +131,13 @@ const Component = ({ product }: ComponentProps) => {
         <Button
           onClick={() => {
             onClose();
-            onRequest(product);
+            updateCart(product._id, 1);
           }}
           className="flex-1 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold"
           disabled={!inStock}
         >
           <ShoppingCart className="mr-2 h-4 w-4" />
-          Solicitar este producto
+          Agregar al carro
         </Button>
       </div>
     </div>

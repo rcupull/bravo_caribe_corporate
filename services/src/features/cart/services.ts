@@ -279,7 +279,7 @@ export class CartServices {
 
     await cartShopping.updateOne({
       $pull: {
-        posts: {
+        products: {
           'productData._id': product._id.toString()
         }
       }

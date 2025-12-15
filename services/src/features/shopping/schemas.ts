@@ -45,7 +45,7 @@ export const modelGetter = () => {
         ]
       },
       purchaserId: { type: Schema.Types.ObjectId, ref: 'User' },
-      browserFingerprint: { type: String, select: false },
+      browserFingerprint: { type: String },
       //
       code: { type: String, required: true, default: getShoppingCode },
       state: {

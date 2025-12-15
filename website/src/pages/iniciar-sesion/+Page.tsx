@@ -32,7 +32,8 @@ interface State {
 
 export const Page = () => {
   const { isAuthenticated } = useAuth();
-  const { pushRoute } = useRouter();
+  const { pushRoute, query } = useRouter();
+  const redirect = query.redirect as string | undefined;
 
   const { setData } = useAuth();
 
@@ -120,7 +121,12 @@ export const Page = () => {
                             });
 
                             toast.success("¡Bienvenido!");
-                            pushRoute(getHomeRoute());
+
+                            if (redirect) {
+                              pushRoute(redirect, {}, { timeout: 100 });
+                            } else {
+                              pushRoute(getHomeRoute());
+                            }
                           },
                           onAfterFailed: () => {
                             toast.error("Error al iniciar sesión");

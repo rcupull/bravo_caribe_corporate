@@ -1,8 +1,8 @@
 import { SliceApiPersistentState } from "./api";
 import { User } from "./auth";
-import { CartItem } from "./cart";
+import { Shopping } from "./shopping";
 
 export interface ReduxState {
   useAuth: SliceApiPersistentState<User>;
-  useCart: Array<CartItem>;
+  useCart: SliceApiPersistentState<Shopping>;
 }

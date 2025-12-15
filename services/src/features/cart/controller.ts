@@ -165,8 +165,6 @@ export class CartController {
   );
 
   post_cart_request = controllerFactory({}, async ({ req, res, next }) => {
-    const { params } = req;
-
     let shoppingCart = await this.cartServices.getCartShoppingFromRequest(req);
 
     if (!shoppingCart) {

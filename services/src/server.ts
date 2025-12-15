@@ -37,6 +37,7 @@ import { ShoppingRouter } from './features/shopping/routes';
 import { CartServices } from './features/cart/services';
 import { CartController } from './features/cart/controller';
 import { CartRouter } from './features/cart/routes';
+import { middlewareGetBrowserFingerprint } from './middlewares/middlewareGetBrowserFingerprint';
 
 export const app = express();
 const router = Router();
@@ -132,6 +133,8 @@ if (NODE_ENV === 'development' || NODE_ENV === 'test') {
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
+
+app.use(middlewareGetBrowserFingerprint);
 
 app.use(
   middlewareRateLimit({

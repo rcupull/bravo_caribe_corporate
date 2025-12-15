@@ -2,6 +2,10 @@ export const getContactRoute = () => {
   return "/contacto";
 };
 
+export const getPayRoute = () => {
+  return "/pagar";
+};
+
 export const getSignInRoute = () => {
   return "/iniciar-sesion";
 };

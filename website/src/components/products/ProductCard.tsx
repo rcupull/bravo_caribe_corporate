@@ -5,7 +5,7 @@ import { ShoppingCart, CheckCircle, XCircle, FileImage } from "lucide-react";
 import { Product } from "@/types/products";
 import { ImageComponent } from "../image-component";
 import { getCurrentCategory } from "@/utils/category";
-import { useRequestProduct } from "@/hooks/useRequestProduct";
+import { useCart } from "@/hooks/useCart";
 
 interface ProductCardProps {
   product: Product;
@@ -17,9 +17,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   const inStock = !!stockAmount;
 
-  const currentCategory = getCurrentCategory(categoryType);
+  const { updateCart } = useCart();
 
-  const { onRequest } = useRequestProduct();
+  const currentCategory = getCurrentCategory(categoryType);
 
   const image = images?.length ? images[0] : null;
 
@@ -70,13 +70,14 @@ const ProductCard = ({ product }: ProductCardProps) => {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            onRequest(product);
+
+            updateCart(product._id, 1);
           }}
           className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold"
           disabled={!inStock}
         >
           <ShoppingCart className="mr-2 h-4 w-4" />
-          Solicitar este producto
+          Agregar al carro
         </Button>
       </CardFooter>
     </Card>

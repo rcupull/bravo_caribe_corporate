@@ -11,11 +11,44 @@ import { ShoppingCart, Trash2, Plus, Minus, FileImage } from "lucide-react";
 import { ImageComponent } from "../image-component";
 import { useCart } from "@/hooks/useCart";
 import { Link } from "../link";
-import { getContactRoute } from "@/utils/routes";
+import { getContactRoute, getPayRoute } from "@/utils/routes";
+import { useModal } from "@/features/modal/useModal";
+import { ButtonClose } from "../button-close";
+import { useRouter } from "@/hooks/useRouter";
 
 const CartSheet = () => {
   const { items, updateCart, totalItems, totalPrice, removeFromCart } =
     useCart();
+
+  const { pushModal } = useModal();
+  const { pushRoute } = useRouter();
+
+  const handleRemoveFromCart = (productId: string) => {
+    pushModal({
+      useProps: () => {
+        const { onClose } = useModal();
+
+        return {
+          title: "Confirmar",
+          className: "!max-w-[30rem]",
+          content: (
+            <div>Seguro que desea eliminar este producto del carro?</div>
+          ),
+          closeButton: <ButtonClose />,
+          primaryBtn: (
+            <Button
+              onClick={() => {
+                removeFromCart(productId);
+                onClose();
+              }}
+            >
+              Eliminar
+            </Button>
+          ),
+        };
+      },
+    });
+  };
 
   return (
     <Sheet>
@@ -99,7 +132,9 @@ const CartSheet = () => {
                           variant="ghost"
                           size="icon"
                           className="h-6 w-6 ml-auto text-destructive"
-                          onClick={() => removeFromCart(productId)}
+                          onClick={() => {
+                            handleRemoveFromCart(productId);
+                          }}
                         >
                           <Trash2 className="h-3 w-3" />
                         </Button>
@@ -114,8 +149,13 @@ const CartSheet = () => {
                   <span>Total:</span>
                   <span className="text-accent">${totalPrice.toFixed(2)}</span>
                 </div>
-                <Button className="w-full bg-accent hover:bg-accent/90 text-accent-foreground">
-                  <Link to={getContactRoute()}>Solicitar Cotización</Link>
+                <Button
+                  className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
+                  onClick={() => {
+                    pushRoute(getPayRoute());
+                  }}
+                >
+                  Pagar
                 </Button>
               </div>
             </>
