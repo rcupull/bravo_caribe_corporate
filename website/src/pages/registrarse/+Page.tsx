@@ -133,7 +133,10 @@ export const Page = () => {
                         },
                         {
                           onAfterSuccess: () => {
-                            toast.success("¡Cuenta creada exitosamente!");
+                            toast.success(
+                              "¡Cuenta creada exitosamente!. Le enviamos un correo de validación a su buzón"
+                            );
+                            pushRoute(getHomeRoute(), {}, { timeout: 200 });
                           },
                           onAfterFailed: () => {
                             toast.error("Error al crear la cuenta");

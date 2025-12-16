@@ -8,7 +8,6 @@ export enum UserRole {
 export interface User extends BaseIdentity {
   name: string;
   email: string;
-  password: string;
   role: UserRole;
   validated: boolean;
   profileImage?: Image;

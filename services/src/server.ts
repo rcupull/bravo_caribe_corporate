@@ -31,6 +31,13 @@ import { BlogServices } from './features/blog/services';
 import { BlogDtosServices } from './features/blog-dtos/services';
 import { BlogController } from './features/blog/controller';
 import { BlogRouter } from './features/blog/routes';
+import { ShoppingServices } from './features/shopping/services';
+import { ShoppingController } from './features/shopping/controller';
+import { ShoppingRouter } from './features/shopping/routes';
+import { CartServices } from './features/cart/services';
+import { CartController } from './features/cart/controller';
+import { CartRouter } from './features/cart/routes';
+import { middlewareGetBrowserFingerprint } from './middlewares/middlewareGetBrowserFingerprint';
 
 export const app = express();
 const router = Router();
@@ -49,8 +56,10 @@ const authSessionServices = new AuthSessionServices();
 const userServices = new UserServices();
 const userDtosServices = new UserDtosServices(authSessionServices);
 const validationCodeServices = new ValidationCodeServices();
+const shoppingServices = new ShoppingServices();
+const cartServices = new CartServices(shoppingServices);
 const authServices = new AuthServices(authSessionServices, userServices, validationCodeServices);
-const accessServices = new AccessServices(authServices);
+const accessServices = new AccessServices(authServices, shoppingServices);
 const emailServices = new EmailServices();
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -60,6 +69,8 @@ const emailServices = new EmailServices();
 const productController = new ProductController(productServices, productDtosServices);
 const blogController = new BlogController(blogServices, blogDtosServices);
 const fileController = new FileController(fileServices);
+const shoppingController = new ShoppingController(shoppingServices);
+const cartController = new CartController(cartServices, shoppingServices, productServices);
 const authController = new AuthController(
   authServices,
   authSessionServices,
@@ -76,10 +87,12 @@ const userController = new UserController(userServices, userDtosServices);
 //////////////////////////////////////////////////////////////////////////////////////////
 
 const productRouter = new ProductRouter(productController, accessServices);
+const shoppingRouter = new ShoppingRouter(shoppingController, accessServices);
 const blogRouter = new BlogRouter(blogController, accessServices);
 const fileRouter = new FileRouter(fileController, accessServices);
 const authRouter = new AuthRouter(authController, accessServices);
 const userRouter = new UserRouter(userController, accessServices);
+const cartRouter = new CartRouter(cartController, accessServices);
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -91,7 +104,9 @@ router.use(
   authRouter.router,
   userRouter.router,
   fileRouter.router,
-  blogRouter.router
+  blogRouter.router,
+  shoppingRouter.router,
+  cartRouter.router
 );
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -118,6 +133,8 @@ if (NODE_ENV === 'development' || NODE_ENV === 'test') {
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
+
+app.use(middlewareGetBrowserFingerprint);
 
 app.use(
   middlewareRateLimit({

@@ -56,3 +56,7 @@ export const getBlogNotFoundResponse = ({ res }: { res: Response }) => {
 export const getSessionNotFoundResponse = ({ res }: { res: Response }) => {
   return get404Response({ res, json: { message: 'No existe esta sesión.' } });
 };
+
+export const getShoppingNotFoundResponse = ({ res }: { res: Response }) => {
+  return get404Response({ res, json: { message: 'No existe esta orden de compra.' } });
+};

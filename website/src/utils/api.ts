@@ -17,6 +17,10 @@ import {
 } from "./persistent-auth";
 import { PageContextServer } from "@/types/ssr";
 import { isSSR } from "./ssr";
+import {
+  browserFingerprintKey,
+  getBrowserFingerprintFromPersistent,
+} from "@/features/browser-fingerprint/utils";
 
 const S3_BUCKET_APP = (() => {
   if (process.env.NODE_ENV === "development") {
@@ -253,13 +257,44 @@ export const appendAuthorizationToken = (
   };
 };
 
+export const appendBrowserFingerprint = (
+  args: AxiosRequestConfig,
+  browserFingerprint: string | null
+): AxiosRequestConfig => {
+  return {
+    ...args,
+    headers: {
+      ...(browserFingerprint ? { browserFingerprint } : {}),
+      ...args.headers,
+    },
+  };
+};
+
+export const getBrowserFingerprint = async (
+  pageContext: PageContextServer
+): Promise<string | null> => {
+  if (isSSR()) {
+    const browserFingerprint = getCookieValueFromPageContext(
+      pageContext,
+      browserFingerprintKey
+    );
+    return browserFingerprint;
+  } else {
+    const browserFingerprint = await getBrowserFingerprintFromPersistent();
+    return browserFingerprint;
+  }
+};
+
 export const axiosFetch = async (
   args: AxiosRequestConfig,
   pageContext: PageContextServer
 ): AxiosPromise => {
   const accessToken = await getAccessToken(pageContext);
+  const browserFingerprint = await getBrowserFingerprint(pageContext);
 
   args = appendAuthorizationToken(args, accessToken);
+
+  args = appendBrowserFingerprint(args, browserFingerprint);
 
   return axiosClient(args);
 };

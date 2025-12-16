@@ -9,6 +9,7 @@ import { ModalService } from "../features/modal";
 import { usePageContext } from "../hooks/usePageContext";
 import "./index.css";
 import { withPersistentProvider } from "@/features/persistent/withPersistentProvider";
+import { BrowserFingerprint } from "@/features/browser-fingerprint";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ export let Wrapper = ({ children }: ChildrenProp) => {
     <ReduxProvider store={store}>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
+          <BrowserFingerprint />
           <ModalService>
             <Toaster />
             <Sonner />

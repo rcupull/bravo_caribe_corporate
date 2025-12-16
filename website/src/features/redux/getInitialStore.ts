@@ -4,6 +4,8 @@ import { ReduxState } from "@/types/redux";
 import { makerStore } from "./makeStore";
 import { useGetOwnUser } from "@/api/user/useGetOwnUser";
 import { PageContextServer } from "@/types/ssr";
+import { useGetCart } from "@/api/cart/useGetCart";
+import { Shopping } from "@/types/shopping";
 
 export const getInitialStore = async (args: {
   pageContext: PageContextServer;
@@ -27,6 +29,13 @@ export const getInitialStore = async (args: {
 
     initialReduxState.useAuth = getApiPersisteState<User>(user);
   }
+
+  const { data: shoppingCart } = await axiosFetch(
+    useGetCart.fetchFnCallArgsGetter(),
+    pageContext
+  );
+
+  initialReduxState.useCart = getApiPersisteState<Shopping>(shoppingCart);
 
   /**
    * //////////////////////////////////////////////////////////////////////////////
