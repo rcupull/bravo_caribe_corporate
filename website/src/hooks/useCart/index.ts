@@ -2,6 +2,7 @@ import { useCartRemoveProduct } from "@/api/cart/useCartRemoveProduct";
 import { useGetCart } from "@/api/cart/useGetCart";
 import { useUpdateAddCart } from "@/api/cart/useUpdateAddCart";
 import { useApiPersistent } from "@/features/redux/slices/useApiPersistent";
+import { getShoppingTotalPrice } from "@/utils/shopping";
 
 export const useCart = () => {
   const { getCart } = useGetCart();
@@ -48,13 +49,8 @@ export const useCart = () => {
       );
     },
     clearCart: () => {},
-    //
     items,
     totalItems: items.length,
-    totalPrice: items.reduce((acc, { productData, count }) => {
-      const { price } = productData;
-
-      return acc + count * price;
-    }, 0),
+    totalPrice: shoppingToMake ? getShoppingTotalPrice(shoppingToMake) : 0,
   };
 };

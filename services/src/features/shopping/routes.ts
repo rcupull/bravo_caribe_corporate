@@ -16,56 +16,24 @@ export class ShoppingRouter {
       .route('/own/shopping')
       .get(this.accessServices.middlewareIsLogged, this.shoppingController.get_own_shopping);
 
-    this.router.route('/own/shopping/:shoppingId').get(
-      this.accessServices.middlewareIsLogged,
-      this.accessServices.middlewareAccessControl({
-        isPurchaserOfThisShopping: true
-      }),
-      this.shoppingController.get_own_shopping_shoppingId
-    );
-
-    this.router.route('/shopping/:shoppingId/changeToApproved').post(
+    this.router.route('/admin/shopping/:shoppingId/change-state').post(
       this.accessServices.middlewareIsLogged,
       this.accessServices.middlewareAccessControl({
         isAdminWithAccess: [Access.FULL]
       }),
-      this.shoppingController.post_shopping_shoppingId_change_to_approved
-    );
-
-    this.router.route('/shopping/:shoppingId/changeToCancelled').post(
-      this.accessServices.middlewareIsLogged,
-      this.accessServices.middlewareAccessControl({
-        isPurchaserOfThisShopping: true
-      }),
-      this.shoppingController.post_shopping_shoppingId_change_to_cancelled
-    );
-
-    this.router.route('/shopping/:shoppingId/changeToReadyToDelivery').post(
-      this.accessServices.middlewareIsLogged,
-      this.accessServices.middlewareAccessControl({
-        isAdminWithAccess: [Access.FULL]
-      }),
-      this.shoppingController.post_shopping_shoppingId_change_to_ready_to_delivery
-    );
-
-    this.router.route('/shopping/:shoppingId/changeToRejected').post(
-      this.accessServices.middlewareIsLogged,
-      this.accessServices.middlewareAccessControl({
-        isAdminWithAccess: [Access.FULL]
-      }),
-      this.shoppingController.post_shopping_shoppingId_change_to_rejected
+      this.shoppingController.post_admin_shoppings_shoppingId_change_state
     );
 
     ///////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////
 
-    this.router.route('/shopping').get(
+    this.router.route('/admin/shoppings').get(
       this.accessServices.middlewareIsLogged,
       this.accessServices.middlewareAccessControl({
         isAdminWithAccess: [Access.FULL]
       }),
-      this.shoppingController.get_shopping
+      this.shoppingController.get_admin_shoppings
     );
   }
 

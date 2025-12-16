@@ -68,7 +68,7 @@ export class ShoppingController {
     }
   );
 
-  post_shopping_shoppingId_change_to_cancelled = controllerFactory(
+  post_admin_shoppings_shoppingId_change_state = controllerFactory(
     {
       paramsShape: () => ({
         shoppingId: MongoObjectIdSchema
@@ -105,125 +105,7 @@ export class ShoppingController {
     }
   );
 
-  post_shopping_shoppingId_change_to_approved = controllerFactory(
-    {
-      paramsShape: () => ({
-        shoppingId: MongoObjectIdSchema
-      })
-    },
-    async ({ req, res }) => {
-      const { params, user } = req;
-
-      if (!user) {
-        return getUserNotFoundResponse({ res });
-      }
-
-      const { shoppingId } = params;
-
-      ////////////////////////////////////////////////////////////////
-      /**
-       * Getting the shopping
-       */
-      ////////////////////////////////////////////////////////////////
-      let shopping = await this.shoppingServices.getOne({
-        query: {
-          _id: shoppingId,
-          state: getInArrayQuery([ShoppingState.REQUESTED])
-        }
-      });
-
-      if (shopping) {
-        shopping = this.shoppingServices.changeShoppingState(shopping, ShoppingState.APPROVED);
-
-        await shopping.save();
-      }
-
-      res.send({});
-    }
-  );
-
-  post_shopping_shoppingId_change_to_rejected = controllerFactory(
-    {
-      paramsShape: () => ({
-        shoppingId: MongoObjectIdSchema
-      })
-    },
-    async ({ req, res }) => {
-      const { params, user, body } = req;
-
-      if (!user) {
-        return getUserNotFoundResponse({ res });
-      }
-
-      const { shoppingId } = params;
-      const { reason } = body;
-      ////////////////////////////////////////////////////////////////
-      /**
-       * Getting the shopping
-       */
-      ////////////////////////////////////////////////////////////////
-      let shopping = await this.shoppingServices.getOne({
-        query: {
-          _id: shoppingId,
-          state: getInArrayQuery([
-            ShoppingState.REQUESTED,
-            ShoppingState.APPROVED,
-            ShoppingState.READY_TO_DELIVERY
-          ])
-        }
-      });
-
-      if (shopping) {
-        shopping = this.shoppingServices.changeShoppingState(shopping, ShoppingState.REJECTED);
-
-        await shopping.save();
-      }
-
-      res.send({});
-    }
-  );
-
-  post_shopping_shoppingId_change_to_ready_to_delivery = controllerFactory(
-    {
-      paramsShape: () => ({
-        shoppingId: MongoObjectIdSchema
-      })
-    },
-    async ({ req, res }) => {
-      const { params, user } = req;
-
-      if (!user) {
-        return getUserNotFoundResponse({ res });
-      }
-
-      const { shoppingId } = params;
-
-      ////////////////////////////////////////////////////////////////
-      /**
-       * Getting the shopping
-       */
-      ////////////////////////////////////////////////////////////////
-      let shopping = await this.shoppingServices.getOne({
-        query: {
-          _id: shoppingId,
-          state: getInArrayQuery([ShoppingState.APPROVED])
-        }
-      });
-
-      if (shopping) {
-        shopping = this.shoppingServices.changeShoppingState(
-          shopping,
-          ShoppingState.READY_TO_DELIVERY
-        );
-
-        await shopping.save();
-      }
-
-      res.send({});
-    }
-  );
-
-  get_shopping = controllerFactory(
+  get_admin_shoppings = controllerFactory(
     {
       withPagination: true,
       queryShape: (z) => ({

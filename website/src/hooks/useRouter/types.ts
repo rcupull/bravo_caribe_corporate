@@ -4,6 +4,7 @@ import { AnyRecord } from "@/types/general";
 export interface Params {
   code?: string;
   blogSlug?: string;
+  adminSection?: string;
 }
 
 export interface UseRouterReturn<Q extends Query = Query> {
