@@ -69,4 +69,28 @@ export class UserController {
       res.send(out);
     }
   );
+
+  admin_get_users = controllerFactory(
+    {
+      withPagination: true,
+      queryShape: (z) => ({
+        search: z.string().optional()
+      })
+    },
+    async ({ req, res }) => {
+      const { paginateOptions, query } = req;
+      const { search } = query;
+
+      const out = await this.userServices.getAllWithPagination({
+        paginateOptions,
+        query: {
+          search
+        }
+      });
+
+      out.data = await this.userDtosServices.getUsersDto(out.data);
+
+      res.send(out);
+    }
+  );
 }

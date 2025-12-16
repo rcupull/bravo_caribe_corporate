@@ -27,7 +27,12 @@ export const AdminTabs = () => {
     },
     {
       value: AdminSection.ORDERS,
-      label: "Ordenes",
+      label: "Órdenes",
+      svg: ShoppingBag,
+    },
+    {
+      value: AdminSection.USERS,
+      label: "Usuarios",
       svg: ShoppingBag,
     },
   ];

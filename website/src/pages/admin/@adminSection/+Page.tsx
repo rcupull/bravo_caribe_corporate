@@ -4,6 +4,7 @@ import { AdminSection } from "../types";
 import { TabBlogs } from "./components/tab-blog";
 import { TabShoppings } from "./components/tab-shoppings";
 import { AdminTabs } from "./components/admin-tabs";
+import { TabUsers } from "./components/tab-users";
 
 export const Page = () => {
   const { params } = useRouter();
@@ -21,6 +22,10 @@ export const Page = () => {
 
     if (adminSection === AdminSection.ORDERS) {
       return <TabShoppings />;
+    }
+
+    if (adminSection === AdminSection.USERS) {
+      return <TabUsers />;
     }
 
     return null;
