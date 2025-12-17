@@ -7,7 +7,7 @@ import express from 'express';
 import sirv from 'sirv';
 import { renderPage } from 'vike/server';
 
-const port = 8080;
+const port = 5173;
 const base = '/';
 
 async function startServer() {

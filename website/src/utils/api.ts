@@ -35,7 +35,7 @@ export const getEndpointUrl = () => {
     return "http://localhost:8081";
   }
 
-  return "http://bravo-api.eltrapichecubiche.com";
+  return "https://bravo-api.eltrapichecubiche.com";
 };
 
 export const getImageEndpoint = (src = "") => {

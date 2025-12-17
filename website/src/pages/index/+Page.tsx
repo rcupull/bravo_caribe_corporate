@@ -6,6 +6,7 @@ import ProductCard from "@/components/products/ProductCard";
 import { useGetAllProducts } from "@/api/products/useGetAllProducts";
 import { useEffect } from "react";
 import { useProductDetails } from "@/hooks/useProductDetails";
+import { YouTubeVideo } from "@/components/youtube-video";
 
 export const Page = () => {
   const { getAllProducts } = useGetAllProducts();
@@ -54,6 +55,14 @@ export const Page = () => {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-4 flex gap-8 h-72">
+          <YouTubeVideo videoId="gvZJelDAFrQ" className="w-full" />
+          <YouTubeVideo videoId="l0S4H1gLyPI" className="w-full" />
+          <YouTubeVideo videoId="lAvxpQbvBso" className="w-full" />
         </div>
       </section>
 

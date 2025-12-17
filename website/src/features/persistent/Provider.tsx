@@ -17,7 +17,7 @@ const getCookiesClient = () => {
     path: "/",
     secure: true,
     sameSite: "none",
-    domain: ".bravocaribe.com",
+    domain: ".bravo.eltrapichecubiche.com",
   });
 };
 
