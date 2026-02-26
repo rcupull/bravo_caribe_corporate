@@ -38,6 +38,9 @@ import { CartServices } from './features/cart/services';
 import { CartController } from './features/cart/controller';
 import { CartRouter } from './features/cart/routes';
 import { middlewareGetBrowserFingerprint } from './middlewares/middlewareGetBrowserFingerprint';
+import { ProductFieldServices } from './features/product-field/services';
+import { ProductFieldController } from './features/product-field/controller';
+import { ProductFieldRouter } from './features/product-field/routes';
 
 export const app = express();
 const router = Router();
@@ -61,6 +64,7 @@ const cartServices = new CartServices(shoppingServices);
 const authServices = new AuthServices(authSessionServices, userServices, validationCodeServices);
 const accessServices = new AccessServices(authServices, shoppingServices);
 const emailServices = new EmailServices();
+const productFieldServices = new ProductFieldServices();
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -81,6 +85,7 @@ const authController = new AuthController(
 );
 
 const userController = new UserController(userServices, userDtosServices);
+const productFieldController = new ProductFieldController(productFieldServices);
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -93,6 +98,7 @@ const fileRouter = new FileRouter(fileController, accessServices);
 const authRouter = new AuthRouter(authController, accessServices);
 const userRouter = new UserRouter(userController, accessServices);
 const cartRouter = new CartRouter(cartController, accessServices);
+const productFieldRouter = new ProductFieldRouter(productFieldController, accessServices);
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -106,7 +112,8 @@ router.use(
   fileRouter.router,
   blogRouter.router,
   shoppingRouter.router,
-  cartRouter.router
+  cartRouter.router,
+  productFieldRouter.router
 );
 
 //////////////////////////////////////////////////////////////////////////////////////////

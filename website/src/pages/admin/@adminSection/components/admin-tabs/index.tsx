@@ -35,6 +35,11 @@ export const AdminTabs = () => {
       label: "Usuarios",
       svg: ShoppingBag,
     },
+    {
+      value: AdminSection.PRODUCT_FIELDS,
+      label: "Campos de Producto",
+      svg: Package,
+    },
   ];
   return (
     <div className="flex gap-2">
