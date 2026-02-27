@@ -4,26 +4,26 @@ import { Edit, Trash2 } from "lucide-react";
 import { useModal } from "@/features/modal/useModal";
 import { ButtonClose } from "@/components/button-close";
 import { toast } from "sonner";
-import { useAddUpdateProductFieldModal } from "@/hooks/useAddUpdateProductFieldModal";
-import { ProductField } from "@/types/product-field";
-import { useRemoveOneProductField } from "@/api/product-fields/useRemoveOneProductField";
+import { useAddUpdateProductCategoryModal } from "@/hooks/useAddUpdateProductCategoryModal";
+import { ProductCategory } from "@/types/product-category";
+import { useRemoveOneProductCategory } from "@/api/product-categories/useRemoveOneProductCategory";
 
 interface RowActionsProps {
-  rowData: ProductField;
+  rowData: ProductCategory;
   onRefresh: () => void;
 }
 
 export const RowActions = ({ rowData, onRefresh }: RowActionsProps) => {
-  const { addUpdateProductFieldModal } = useAddUpdateProductFieldModal();
+  const { addUpdateProductCategoryModal } = useAddUpdateProductCategoryModal();
 
   const { pushModal } = useModal();
 
-  const { productFieldSlug } = rowData;
+  const { productCategorySlug } = rowData;
 
   const handleProductDelete = () => {
     pushModal({
       useProps: () => {
-        const { removeOneProductField } = useRemoveOneProductField();
+        const { removeOneProductCategory } = useRemoveOneProductCategory();
         const { onClose } = useModal();
         return {
           title: "Confirmar",
@@ -32,11 +32,11 @@ export const RowActions = ({ rowData, onRefresh }: RowActionsProps) => {
           primaryBtn: (
             <Button
               onClick={() => {
-                removeOneProductField.fetch(
-                  { productFieldSlug },
+                removeOneProductCategory.fetch(
+                  { productCategorySlug },
                   {
                     onAfterSuccess: () => {
-                      toast.success("Campo de producto eliminado exitosamente");
+                      toast.success("Categoría eliminada exitosamente");
 
                       onRefresh();
                       onClose();
@@ -59,7 +59,10 @@ export const RowActions = ({ rowData, onRefresh }: RowActionsProps) => {
         size="sm"
         variant="outline"
         onClick={() => {
-          addUpdateProductFieldModal.open({ onRefresh, productField: rowData });
+          addUpdateProductCategoryModal.open({
+            onRefresh,
+            productCategory: rowData,
+          });
         }}
       >
         <Edit className="h-4 w-4" />

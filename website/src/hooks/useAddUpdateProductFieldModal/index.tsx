@@ -1,4 +1,4 @@
-import { ProductField } from "@/types/category-field";
+import { ProductField } from "@/types/product-field";
 import { useModalPage } from "../useModalPage";
 import { Product } from "@/types/products";
 import { dynamic } from "@/utils/makeLazy";

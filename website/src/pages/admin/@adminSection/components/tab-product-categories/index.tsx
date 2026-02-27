@@ -12,14 +12,14 @@ import {
 import { Plus, RefreshCcw } from "lucide-react";
 
 import { RowActions } from "./RowActions";
-import { useGetAllProductFields } from "@/api/product-fields/useGetAllProductFields";
-import { useAddUpdateProductFieldModal } from "@/hooks/useAddUpdateProductFieldModal";
+import { useGetAllProductCategories } from "@/api/product-categories/useGetAllProductCategories";
+import { useAddUpdateProductCategoryModal } from "@/hooks/useAddUpdateProductCategoryModal";
 
-export const TabProductsFields = () => {
-  const { getAllProductFields } = useGetAllProductFields();
-  const { addUpdateProductFieldModal } = useAddUpdateProductFieldModal();
+export const TabProductsCategories = () => {
+  const { getAllProductCategories } = useGetAllProductCategories();
+  const { addUpdateProductCategoryModal } = useAddUpdateProductCategoryModal();
 
-  const onRefresh = () => getAllProductFields.fetch();
+  const onRefresh = () => getAllProductCategories.fetch();
 
   useEffect(() => {
     onRefresh();
@@ -28,19 +28,17 @@ export const TabProductsFields = () => {
   return (
     <>
       <div className="flex items-center justify-between mb-2">
-        <h2 className="text-2xl font-bold text-foreground">
-          Gestión de Campos de Producto
-        </h2>
+        <h2 className="text-2xl font-bold text-foreground">Categorías</h2>
 
         <div className="flex gap-2">
           <Button
             className="gap-2"
             onClick={() => {
-              addUpdateProductFieldModal.open({ onRefresh });
+              addUpdateProductCategoryModal.open({ onRefresh });
             }}
           >
             <Plus className="h-4 w-4" />
-            Nuevo Campo
+            Nueva Categoría
           </Button>
 
           <Button variant="outline" className="gap-2" onClick={onRefresh}>
@@ -54,29 +52,39 @@ export const TabProductsFields = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Label</TableHead>
-              <TableHead>field</TableHead>
-              <TableHead>Tipo</TableHead>
+              <TableHead>Nombre</TableHead>
+              <TableHead>Descripción</TableHead>
+              <TableHead>Campos</TableHead>
               <TableHead className="text-right">Acciones</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {getAllProductFields.data?.length === 0 ? (
+            {getAllProductCategories.data?.length === 0 ? (
               <TableRow>
                 <TableCell
                   colSpan={7}
                   className="text-center py-8 text-muted-foreground"
                 >
-                  No hay campos de products registrados
+                  No hay categorias registradas
                 </TableCell>
               </TableRow>
             ) : (
-              getAllProductFields.data?.map((rowData, index) => {
+              getAllProductCategories.data?.map((rowData, index) => {
                 return (
                   <TableRow key={index}>
-                    <TableCell>{rowData.label}</TableCell>
-                    <TableCell>{rowData.field}</TableCell>
-                    <TableCell>{rowData.type}</TableCell>
+                    <TableCell>{rowData.name}</TableCell>
+                    <TableCell className="max-w-md">
+                      {rowData.description}
+                    </TableCell>
+                    <TableCell>
+                      {rowData.productFields.map(({ label }, index) => {
+                        return (
+                          <div key={index} className="mx-2 text-nowrap">
+                            {`${index + 1} - ${label}`}
+                          </div>
+                        );
+                      })}
+                    </TableCell>
                     <TableCell className="text-right">
                       <RowActions rowData={rowData} onRefresh={onRefresh} />
                     </TableCell>

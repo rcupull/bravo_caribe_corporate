@@ -5,7 +5,7 @@ import { FieldInput } from "@/components/ui/field-input";
 import { FieldSelect } from "@/components/ui/field-select";
 import { useModal } from "@/features/modal/useModal";
 import { ButtonClose } from "@/components/button-close";
-import { ProductField, ProductFieldType } from "@/types/category-field";
+import { ProductField, ProductFieldType } from "@/types/product-field";
 import { useAddOneProductField } from "@/api/product-fields/useAddOneProductField";
 import { useUpdateOneProductField } from "@/api/product-fields/useUpdateOneProductField";
 
@@ -40,12 +40,17 @@ const Component = ({ productField, onRefresh }: ComponentProps) => {
               <>
                 <FieldInput label="Texto del Campo" name="field" />
 
-                <FieldSelect<{ value: ProductFieldType }>
+                <FieldSelect<{ value: ProductFieldType; label: string }>
                   name="type"
                   label="Tipo de dato"
                   items={[
                     {
                       value: ProductFieldType.string,
+                      label: "Texto",
+                    },
+                    {
+                      value: ProductFieldType.longString,
+                      label: "Texto largo",
                     },
                   ]}
                   renderOption={({ value }) => value}

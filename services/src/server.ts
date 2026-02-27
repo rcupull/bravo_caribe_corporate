@@ -41,6 +41,10 @@ import { middlewareGetBrowserFingerprint } from './middlewares/middlewareGetBrow
 import { ProductFieldServices } from './features/product-field/services';
 import { ProductFieldController } from './features/product-field/controller';
 import { ProductFieldRouter } from './features/product-field/routes';
+import { ProductCategoryServices } from './features/product-category/services';
+import { ProductCategoryController } from './features/product-category/controller';
+import { ProductCategoryRouter } from './features/product-category/routes';
+import { ProductCategoryDtosServices } from './features/product-category-dtos/services';
 
 export const app = express();
 const router = Router();
@@ -65,6 +69,8 @@ const authServices = new AuthServices(authSessionServices, userServices, validat
 const accessServices = new AccessServices(authServices, shoppingServices);
 const emailServices = new EmailServices();
 const productFieldServices = new ProductFieldServices();
+const productCategoryServices = new ProductCategoryServices();
+const productCategoryDtosServices = new ProductCategoryDtosServices(productFieldServices);
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -86,6 +92,10 @@ const authController = new AuthController(
 
 const userController = new UserController(userServices, userDtosServices);
 const productFieldController = new ProductFieldController(productFieldServices);
+const productCategoryController = new ProductCategoryController(
+  productCategoryServices,
+  productCategoryDtosServices
+);
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -99,6 +109,7 @@ const authRouter = new AuthRouter(authController, accessServices);
 const userRouter = new UserRouter(userController, accessServices);
 const cartRouter = new CartRouter(cartController, accessServices);
 const productFieldRouter = new ProductFieldRouter(productFieldController, accessServices);
+const productCategoryRouter = new ProductCategoryRouter(productCategoryController, accessServices);
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -113,7 +124,8 @@ router.use(
   blogRouter.router,
   shoppingRouter.router,
   cartRouter.router,
-  productFieldRouter.router
+  productFieldRouter.router,
+  productCategoryRouter.router
 );
 
 //////////////////////////////////////////////////////////////////////////////////////////

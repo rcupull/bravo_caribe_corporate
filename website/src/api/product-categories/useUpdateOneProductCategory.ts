@@ -2,26 +2,26 @@ import { axiosFetch, getEndpoint } from "@/utils/api";
 import { FetchResource } from "@/types/api";
 import { useQueryMutation } from "@/utils/useQueryMutation";
 import { usePageContext } from "@/hooks/usePageContext";
-import { ProductField } from "@/types/product-field";
+import { ProductCategory } from "@/types/product-category";
 
 interface Args {
-  productFieldSlug: string;
-  update: Pick<ProductField, "label">;
+  productCategorySlug: string;
+  update: Pick<ProductCategory, "description" | "name" | "productFieldIds">;
 }
 
-export const useUpdateOneProductField = (): {
-  updateOneProductField: FetchResource<Args>;
+export const useUpdateOneProductCategory = (): {
+  updateOneProductCategory: FetchResource<Args>;
 } => {
   const pageContext = usePageContext();
   return {
-    updateOneProductField: useQueryMutation<Args, void>({
-      fetch: async ({ productFieldSlug, update }) => {
+    updateOneProductCategory: useQueryMutation<Args, void>({
+      fetch: async ({ productCategorySlug, update }) => {
         const response = await axiosFetch(
           {
             method: "put",
             url: getEndpoint({
-              path: "/product-fields/:productFieldSlug",
-              urlParams: { productFieldSlug },
+              path: "/product-categories/:productCategorySlug",
+              urlParams: { productCategorySlug },
             }),
             data: update,
           },

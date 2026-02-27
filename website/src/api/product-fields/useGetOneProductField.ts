@@ -2,7 +2,7 @@ import { axiosFetch, getEndpoint } from "@/utils/api";
 import { FetchResource } from "@/types/api";
 import { useQueryMutation } from "@/utils/useQueryMutation";
 import { usePageContext } from "@/hooks/usePageContext";
-import { ProductField } from "@/types/category-field";
+import { ProductField } from "@/types/product-field";
 
 interface Args {
   productFieldSlug: string;

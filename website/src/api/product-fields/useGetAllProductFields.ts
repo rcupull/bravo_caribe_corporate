@@ -1,20 +1,29 @@
 import { axiosFetch, getEndpoint } from "@/utils/api";
-import { FetchResourceWithPagination } from "@/types/api";
+import { FetchResourceWithPagination, PaginationQuery } from "@/types/api";
 import { useQueryMutationWithPagination } from "@/utils/useQueryMutationWithPagination";
 import { usePageContext } from "@/hooks/usePageContext";
-import { ProductField } from "@/types/category-field";
+import { ProductField } from "@/types/product-field";
+import { defaultPaginationQuery } from "@/types/pagination";
+
+interface Args extends PaginationQuery {}
 
 export const useGetAllProductFields = (): {
-  getAllProductFields: FetchResourceWithPagination<void, ProductField>;
+  getAllProductFields: FetchResourceWithPagination<void | Args, ProductField>;
 } => {
   const pageContext = usePageContext();
   return {
-    getAllProductFields: useQueryMutationWithPagination<void, ProductField>({
-      fetch: async () => {
+    getAllProductFields: useQueryMutationWithPagination<
+      void | Args,
+      ProductField
+    >({
+      fetch: async (args = {}) => {
         const response = await axiosFetch(
           {
             method: "get",
-            url: getEndpoint({ path: "/product-fields" }),
+            url: getEndpoint({
+              path: "/product-fields",
+              query: { ...defaultPaginationQuery, ...args },
+            }),
           },
           pageContext,
         );
