@@ -4,22 +4,19 @@ import { Badge } from "@/components/ui/badge";
 import { ShoppingCart, CheckCircle, XCircle, FileImage } from "lucide-react";
 import { Product } from "@/types/products";
 import { ImageComponent } from "../image-component";
-import { getCurrentCategory } from "@/utils/category";
 import { useCart } from "@/hooks/useCart";
+import { cn } from "@/utils/general";
 
 interface ProductCardProps {
   product: Product;
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  const { images, categoryType, productSlug, name, stockAmount, price } =
-    product;
+  const { images, productCategories, name, stockAmount, price } = product;
 
   const inStock = !!stockAmount;
 
   const { updateCart } = useCart();
-
-  const currentCategory = getCurrentCategory(categoryType);
 
   const image = images?.length ? images[0] : null;
 
@@ -33,11 +30,21 @@ const ProductCard = ({ product }: ProductCardProps) => {
             <FileImage className="size-32 text-gray-300" />
           )}
         </div>
-        {currentCategory?.name && (
-          <Badge className="absolute top-3 left-3 bg-warning text-accent-foreground">
-            {currentCategory?.name}
-          </Badge>
-        )}
+        <div className="absolute top-3 left-3">
+          {productCategories?.map(({ name }, index) => {
+            return (
+              <Badge
+                key={index}
+                className={cn("bg-warning text-accent-foreground !block", {
+                  "mt-1": index !== 0,
+                })}
+              >
+                {name}
+              </Badge>
+            );
+          })}
+        </div>
+
         <Badge
           variant={inStock ? "default" : "secondary"}
           className={`absolute top-3 right-3 ${

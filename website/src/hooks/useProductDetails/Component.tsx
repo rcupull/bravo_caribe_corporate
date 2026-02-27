@@ -10,8 +10,7 @@ import {
   FileImage,
 } from "lucide-react";
 import { Product } from "@/types/products";
-import { getCurrentCategory } from "@/utils/category";
-import { isNullOrUndefined } from "@/utils/general";
+import { cn, isNullOrUndefined } from "@/utils/general";
 import { ImageComponent } from "@/components/image-component";
 import { useModal } from "@/features/modal/useModal";
 import { useCart } from "../useCart";
@@ -21,24 +20,34 @@ interface ComponentProps {
 }
 
 const Component = ({ product }: ComponentProps) => {
-  const { specs, images, price, stockAmount, categoryType, name } = product;
+  const {
+    productFieldsMeta,
+    images,
+    price,
+    stockAmount,
+    productCategories,
+    name,
+  } = product;
   const { onClose } = useModal();
 
   const inStock = !!stockAmount;
 
   const { updateCart } = useCart();
 
-  const currentCategory = getCurrentCategory(categoryType);
-
   const image = images && images.length > 0 ? images[0] : null;
 
   const generals = (
     <div>
-      {currentCategory && (
-        <Badge className="mb-4 bg-accent text-accent-foreground">
-          {currentCategory.name}
-        </Badge>
-      )}
+      {productCategories?.map(({ name }, index) => {
+        return (
+          <Badge
+            key={index}
+            className={cn("mb-4 bg-accent text-accent-foreground mx-1")}
+          >
+            {name}
+          </Badge>
+        );
+      })}
 
       {/* <p className="text-muted-foreground mb-6 leading-relaxed">
         {description}
@@ -89,23 +98,19 @@ const Component = ({ product }: ComponentProps) => {
     <div className="space-y-4 bg-secondary p-4 rounded-lg">
       <h4 className="font-semibold text-foreground">Especificaciones</h4>
 
-      {currentCategory && (
-        <div className="space-y-3 text-sm text-foreground/90">
-          {currentCategory.specsFields.map(({ label, field }) => {
-            const value = specs ? specs[field] : null;
-
-            if (isNullOrUndefined(value)) {
-              return null;
-            }
-            return (
-              <div className="flex justify-between border-b border-border/40 pb-1">
-                <span className="font-medium">{`${label}:`}</span>
-                <span>{value}</span>
-              </div>
-            );
-          })}
-        </div>
-      )}
+      <div className="space-y-3 text-sm text-foreground/90">
+        {productFieldsMeta?.map(({ label, value }) => {
+          if (isNullOrUndefined(value)) {
+            return null;
+          }
+          return (
+            <div className="flex justify-between border-b border-border/40 pb-1">
+              <span className="font-medium">{`${label}:`}</span>
+              <span>{value}</span>
+            </div>
+          );
+        })}
+      </div>
 
       {/* <p className="text-sm text-muted-foreground leading-relaxed mt-3">
         Excelente calidad y durabilidad. Diseñadas con tecnología de vanguardia

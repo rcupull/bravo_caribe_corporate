@@ -1,7 +1,7 @@
 import { ProductServices } from './services';
 import { ProductDtosServices } from '../product-dtos/services';
 import { controllerFactory } from '../../utils/controllers';
-import { ImageShape, QueryBooleanSchema } from '../../utils/zod-shapes';
+import { ImageShape, MongoObjectIdSchema, QueryBooleanSchema } from '../../utils/zod-shapes';
 import { getProductNotFoundResponse, getUserNotFoundResponse } from '../../utils/responses';
 import { Currency } from '../../types/general';
 import { CategoryType } from '../../types/category';
@@ -118,8 +118,8 @@ export class ProductController {
         images: z.array(ImageShape).optional(),
         price: z.number().nonnegative(),
         currency: z.enum(Currency),
-        categoryType: z.enum(CategoryType).nullish(),
-        specs: z.record(z.string(), z.any()).nullish()
+        productCategoryIds: z.array(MongoObjectIdSchema).nullish(),
+        productFieldsData: z.record(z.string(), z.any()).nullish()
       })
     },
     async ({ req, res }) => {
@@ -131,8 +131,17 @@ export class ProductController {
 
       const { body } = req;
 
-      const { name, hidden, images, price, currency, stockAmount, categoryType, specs, featured } =
-        body;
+      const {
+        name,
+        hidden,
+        images,
+        price,
+        currency,
+        stockAmount,
+        productCategoryIds,
+        productFieldsData,
+        featured
+      } = body;
 
       const out = await this.productServices.addOne({
         name,
@@ -144,8 +153,8 @@ export class ProductController {
         price,
         featured,
         createdBy: user._id,
-        categoryType,
-        specs
+        productCategoryIds,
+        productFieldsData
       });
 
       res.send(out);
@@ -191,8 +200,8 @@ export class ProductController {
         featured: z.boolean().nullish(),
         currency: z.enum(Currency).nullish(),
         hidden: z.boolean().optional(),
-        categoryType: z.enum(CategoryType).nullish(),
-        specs: z.record(z.string(), z.any()).nullish()
+        productCategoryIds: z.array(MongoObjectIdSchema).nullish(),
+        productFieldsData: z.record(z.string(), z.any()).nullish()
       })
     },
     async ({ req, res, next }) => {
@@ -207,8 +216,8 @@ export class ProductController {
         currency,
         hidden,
         stockAmount,
-        categoryType,
-        specs,
+        productCategoryIds,
+        productFieldsData,
         featured
       } = body;
 
@@ -227,8 +236,8 @@ export class ProductController {
           price,
           currency,
           hidden,
-          categoryType,
-          specs
+          productCategoryIds,
+          productFieldsData
         }
       });
 

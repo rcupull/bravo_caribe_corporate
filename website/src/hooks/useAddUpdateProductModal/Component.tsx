@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Formux } from "@/components/ui/formux";
 import { FieldInput } from "@/components/ui/field-input";
 import { FieldSelect } from "@/components/ui/field-select";
-import { categories } from "@/utils/category";
 import { FieldTextArea } from "@/components/ui/field-text-area";
 import { Product } from "@/types/products";
 import { useAdminAddOneProduct } from "@/api/products/useAdminAddOneProduct";
@@ -12,27 +11,30 @@ import { useAdminUpdateOneProduct } from "@/api/products/useAdminUpdateOneProduc
 import { useModal } from "@/features/modal/useModal";
 import { ButtonClose } from "@/components/button-close";
 import { FieldInputImages } from "@/components/ui/field-input-images";
-import { CategorySpecsType, CategoryType } from "@/types/category";
 import { useAdminAddProductImage } from "@/api/files/useAdminAddProductImage";
 import { Fragment } from "react/jsx-runtime";
 import { FieldCheckbox } from "@/components/ui/field-checkbox";
+import { FieldRadioGroup } from "@/components/ui/field-radio-group";
+import { ProductCategory } from "@/types/product-category";
+import { useGetAllProductCategories } from "@/api/product-categories/useGetAllProductCategories";
+import { useEffect, useState } from "react";
+import { ProductField, ProductFieldType } from "@/types/product-field";
 
 interface ComponentProps {
   product?: Product;
   onRefresh: () => void;
 }
 
-interface State
-  extends Pick<
-    Product,
-    | "categoryType"
-    | "currency"
-    | "name"
-    | "price"
-    | "stockAmount"
-    | "specs"
-    | "featured"
-  > {
+interface State extends Pick<
+  Product,
+  | "currency"
+  | "name"
+  | "price"
+  | "stockAmount"
+  | "productCategoryIds"
+  | "productFieldsData"
+  | "featured"
+> {
   image?: Image;
 }
 
@@ -40,6 +42,45 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
   const { adminAddOneProduct } = useAdminAddOneProduct();
   const { adminUpdateOneProduct } = useAdminUpdateOneProduct();
   const { adminAddProductImage } = useAdminAddProductImage();
+  const { getAllProductCategories } = useGetAllProductCategories();
+
+  const [allProductFields, setAllProductFields] = useState<Array<ProductField>>(
+    [],
+  );
+
+  const getAllProductFieldFromCategories = (
+    allCategories: Array<ProductCategory>,
+    categoryIds: Array<string>,
+  ) => {
+    return allCategories
+      .filter((pc) => categoryIds.includes(pc._id))
+      .map(({ productFields }) => productFields)
+      .flat()
+      .reduce<Array<ProductField>>((acc, field) => {
+        const exists = acc.some(({ _id }) => _id === field._id);
+        return exists ? acc : [...acc, field];
+      }, []);
+  };
+
+  useEffect(() => {
+    getAllProductCategories.fetch(
+      { pagination: false },
+      {
+        onAfterSuccess: ({ data }) => {
+          if (product?.productCategoryIds?.length) {
+            setAllProductFields(
+              getAllProductFieldFromCategories(
+                data,
+                product.productCategoryIds,
+              ),
+            );
+          }
+        },
+      },
+    );
+  }, []);
+
+  const allCategories = getAllProductCategories.data || [];
 
   const uploadImage = async (image: Image | ImageFile): Promise<Image> => {
     return new Promise((resolve, rejected) => {
@@ -54,7 +95,7 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
           onAfterFailed: () => {
             rejected();
           },
-        }
+        },
       );
     });
   };
@@ -68,18 +109,14 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
         currency: Currency.USD,
         price: 0,
         stockAmount: 0,
-        categoryType: CategoryType.TIRE,
+        productCategoryIds: [],
         image: product?.images?.[0],
-        specs: {},
+        productFieldsData: {},
         featured: false,
         ...(product || {}),
       }}
     >
       {({ value }) => {
-        const currentCategory = categories.find(
-          ({ type }) => value.categoryType === type
-        );
-
         return (
           <form className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -111,56 +148,62 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
               <FieldCheckbox label="Destacado" name="featured" />
             </div>
 
-            <FieldSelect
-              items={categories}
-              label="Categoría"
-              renderOption={({ name }) => name}
-              renderValue={({ name }) => name}
-              optionToValue={({ type }) => type}
-              name="categoryType"
+            <FieldRadioGroup<ProductCategory>
+              name="productCategoryIds"
+              multi
+              renderOption={({ checked, item }) => {
+                return (
+                  <FieldCheckbox
+                    noUseFormik
+                    value={checked}
+                    label={item.name}
+                  />
+                );
+              }}
+              optionToValue={({ _id }) => _id}
+              items={allCategories}
+              containerClassName="flex items-center gap-4"
+              onChange={(value: State["productCategoryIds"]) => {
+                if (value?.length) {
+                  setAllProductFields(
+                    getAllProductFieldFromCategories(allCategories, value),
+                  );
+                }
+              }}
             />
 
-            {currentCategory?.specsFields.length && (
+            {!!allProductFields.length && (
               <div className="bg-gray-200 rounded-md px-2 py-3">
                 <p className="mb-2">Detalles de las categorías</p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
-                  {currentCategory?.specsFields.map(
-                    ({ field, label, type }, index) => {
-                      const element = (() => {
-                        if (type === CategorySpecsType.string) {
-                          return (
-                            <FieldInput label={label} name={`specs.${field}`} />
-                          );
-                        }
+                  {allProductFields.map(({ label, field, type }, index) => {
+                    const element = (() => {
+                      if (type === ProductFieldType.string) {
+                        return (
+                          <FieldInput
+                            label={label}
+                            name={`productFieldsData.${field}`}
+                          />
+                        );
+                      }
 
-                        if (type === CategorySpecsType.longString) {
-                          return (
-                            <FieldTextArea
-                              label={label}
-                              name={`specs.${field}`}
-                              rows={10}
-                              className="col-span-1 sm:col-span-2"
-                            />
-                          );
-                        }
+                      if (type === ProductFieldType.longString) {
+                        return (
+                          <FieldTextArea
+                            label={label}
+                            name={`productFieldsData.${field}`}
+                            rows={10}
+                            className="col-span-1 sm:col-span-2"
+                          />
+                        );
+                      }
 
-                        if (type === CategorySpecsType.number) {
-                          return (
-                            <FieldInput
-                              type="number"
-                              label={label}
-                              name={`specs.${field}`}
-                            />
-                          );
-                        }
+                      return null;
+                    })();
 
-                        return null;
-                      })();
-
-                      return <Fragment key={index}>{element}</Fragment>;
-                    }
-                  )}
+                    return <Fragment key={index}>{element}</Fragment>;
+                  })}
                 </div>
               </div>
             )}
@@ -178,8 +221,8 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
                     price,
                     image,
                     stockAmount,
-                    categoryType,
-                    specs,
+                    productCategoryIds,
+                    productFieldsData,
                     featured,
                   } = value;
 
@@ -198,8 +241,8 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
                           featured,
                           images: imageToUpload ? [imageToUpload] : [],
                           stockAmount,
-                          categoryType,
-                          specs,
+                          productCategoryIds,
+                          productFieldsData,
                         },
                       },
                       {
@@ -207,7 +250,7 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
                           onRefresh();
                           onClose();
                         },
-                      }
+                      },
                     );
                   } else {
                     adminAddOneProduct.fetch(
@@ -218,15 +261,15 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
                         featured,
                         images: imageToUpload ? [imageToUpload] : [],
                         stockAmount,
-                        categoryType,
-                        specs,
+                        productCategoryIds,
+                        productFieldsData,
                       },
                       {
                         onAfterSuccess: () => {
                           onRefresh();
                           onClose();
                         },
-                      }
+                      },
                     );
                   }
                 }}

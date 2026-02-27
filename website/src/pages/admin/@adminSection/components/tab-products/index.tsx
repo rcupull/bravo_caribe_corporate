@@ -57,7 +57,7 @@ export const TabProducts = () => {
             <TableRow>
               <TableHead>Imagen</TableHead>
               <TableHead>Nombre</TableHead>
-              <TableHead>Categoría</TableHead>
+              <TableHead>Categorias</TableHead>
               <TableHead>Precio</TableHead>
               <TableHead>Stock</TableHead>
               <TableHead className="text-right">Acciones</TableHead>
@@ -101,7 +101,18 @@ export const TabProducts = () => {
                         </span>
                       )}
                     </TableCell>
-                    <TableCell>{rowData.categoryType}</TableCell>
+                    <TableCell>
+                      {rowData.productCategories?.map(({ name }, index) => {
+                        return (
+                          <p
+                            key={index}
+                            className="px-2 py-1 my-2 rounded-full text-md font-medium bg-blue-100 text-blue-800 text-center"
+                          >
+                            {name}
+                          </p>
+                        );
+                      })}
+                    </TableCell>
                     <TableCell>${rowData.price.toFixed(2)}</TableCell>
                     <TableCell>
                       <span

@@ -54,7 +54,6 @@ const router = Router();
 
 const fileServices = new FileServices();
 const productServices = new ProductServices();
-const productDtosServices = new ProductDtosServices();
 
 const blogServices = new BlogServices();
 const blogDtosServices = new BlogDtosServices();
@@ -71,6 +70,7 @@ const emailServices = new EmailServices();
 const productFieldServices = new ProductFieldServices();
 const productCategoryServices = new ProductCategoryServices();
 const productCategoryDtosServices = new ProductCategoryDtosServices(productFieldServices);
+const productDtosServices = new ProductDtosServices(productCategoryServices, productFieldServices);
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
