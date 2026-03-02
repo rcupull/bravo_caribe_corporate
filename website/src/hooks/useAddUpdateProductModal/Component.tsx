@@ -34,9 +34,8 @@ interface State extends Pick<
   | "productCategoryIds"
   | "productFieldsData"
   | "featured"
-> {
-  image?: Image;
-}
+  | "images"
+> {}
 
 const Component = ({ product, onRefresh }: ComponentProps) => {
   const { adminAddOneProduct } = useAdminAddOneProduct();
@@ -110,7 +109,7 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
         price: 0,
         stockAmount: 0,
         productCategoryIds: [],
-        image: product?.images?.[0],
+        images: [],
         productFieldsData: {},
         featured: false,
         ...(product || {}),
@@ -208,7 +207,7 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
               </div>
             )}
 
-            <FieldInputImages label="Imagen" name="image" />
+            <FieldInputImages multi label="Imagen" name="images" />
 
             <div className="flex gap-2 justify-end">
               <ButtonClose>Cancelar</ButtonClose>
@@ -219,15 +218,16 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
                     currency,
                     name,
                     price,
-                    image,
+                    images,
                     stockAmount,
                     productCategoryIds,
                     productFieldsData,
                     featured,
                   } = value;
 
-                  const imageToUpload = image
-                    ? await uploadImage(image)
+                  const promises = images?.map((image) => uploadImage(image));
+                  const imagesToUpload = promises
+                    ? await Promise.all(promises)
                     : undefined;
 
                   if (product) {
@@ -239,7 +239,7 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
                           name,
                           price,
                           featured,
-                          images: imageToUpload ? [imageToUpload] : [],
+                          images: imagesToUpload,
                           stockAmount,
                           productCategoryIds,
                           productFieldsData,
@@ -259,7 +259,7 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
                         name,
                         price,
                         featured,
-                        images: imageToUpload ? [imageToUpload] : [],
+                        images: imagesToUpload,
                         stockAmount,
                         productCategoryIds,
                         productFieldsData,

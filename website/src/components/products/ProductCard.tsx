@@ -3,9 +3,9 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ShoppingCart, CheckCircle, XCircle, FileImage } from "lucide-react";
 import { Product } from "@/types/products";
-import { ImageComponent } from "../image-component";
 import { useCart } from "@/hooks/useCart";
 import { cn, getWhatsAppLinkWithContactNumber } from "@/utils/general";
+import { ImagesSwitch } from "./ImagesSwitch";
 
 interface ProductCardProps {
   product: Product;
@@ -18,14 +18,12 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   const { updateCart } = useCart();
 
-  const image = images?.length ? images[0] : null;
-
   return (
     <Card className="group h-full flex flex-col hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-warning">
       <div className="relative overflow-hidden rounded-t-lg">
         <div className="flex items-center justify-center w-full h-56 bg-gray-200">
-          {image ? (
-            <ImageComponent image={image} className="h-56 object-cover" />
+          {!!images?.length ? (
+            <ImagesSwitch images={images} className="h-56 object-cover" />
           ) : (
             <FileImage className="size-32 text-gray-300" />
           )}
