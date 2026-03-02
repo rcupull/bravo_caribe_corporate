@@ -14,6 +14,7 @@ import { Plus, RefreshCcw } from "lucide-react";
 import { RowActions } from "./RowActions";
 import { useGetAllProductCategories } from "@/api/product-categories/useGetAllProductCategories";
 import { useAddUpdateProductCategoryModal } from "@/hooks/useAddUpdateProductCategoryModal";
+import { CategoryIcon } from "@/components/category-icon";
 
 export const TabProductsCategories = () => {
   const { getAllProductCategories } = useGetAllProductCategories();
@@ -52,6 +53,7 @@ export const TabProductsCategories = () => {
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead>Ícono</TableHead>
               <TableHead>Nombre</TableHead>
               <TableHead>Descripción</TableHead>
               <TableHead>Campos</TableHead>
@@ -72,6 +74,16 @@ export const TabProductsCategories = () => {
               getAllProductCategories.data?.map((rowData, index) => {
                 return (
                   <TableRow key={index}>
+                    <TableCell>
+                      {rowData.iconSvg ? (
+                        <CategoryIcon
+                          iconName={rowData.iconSvg}
+                          className="text-gray-400"
+                        />
+                      ) : (
+                        <span className="text-red-400">Sin ícono</span>
+                      )}
+                    </TableCell>
                     <TableCell>{rowData.name}</TableCell>
                     <TableCell className="max-w-md">
                       {rowData.description}

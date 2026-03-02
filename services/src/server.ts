@@ -76,7 +76,12 @@ const productDtosServices = new ProductDtosServices(productCategoryServices, pro
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
 
-const productController = new ProductController(productServices, productDtosServices);
+const productController = new ProductController(
+  productServices,
+  productDtosServices,
+  productCategoryServices
+);
+
 const blogController = new BlogController(blogServices, blogDtosServices);
 const fileController = new FileController(fileServices);
 const shoppingController = new ShoppingController(shoppingServices);

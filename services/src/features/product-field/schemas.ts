@@ -13,6 +13,7 @@ export const modelGetter = () => {
         required: true,
         unique: true
       },
+      description: { type: String },
       type: {
         type: String,
         enum: Object.values(ProductFieldType),

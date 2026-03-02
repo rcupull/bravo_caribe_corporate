@@ -5,7 +5,7 @@ import { ShoppingCart, CheckCircle, XCircle, FileImage } from "lucide-react";
 import { Product } from "@/types/products";
 import { ImageComponent } from "../image-component";
 import { useCart } from "@/hooks/useCart";
-import { cn } from "@/utils/general";
+import { cn, getWhatsAppLinkWithContactNumber } from "@/utils/general";
 
 interface ProductCardProps {
   product: Product;
@@ -73,19 +73,34 @@ const ProductCard = ({ product }: ProductCardProps) => {
       </CardContent>
 
       <CardFooter className="p-6 pt-0">
-        <Button
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-
-            updateCart(product._id, 1);
-          }}
-          className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold"
-          disabled={!inStock}
+        <a
+          href={
+            inStock
+              ? getWhatsAppLinkWithContactNumber(
+                  `Hola, estoy interesado en ${
+                    product.name
+                  }. ¿Podrian brindarme más información?`,
+                )
+              : undefined
+          }
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center"
         >
-          <ShoppingCart className="mr-2 h-4 w-4" />
-          Agregar al carro
-        </Button>
+          <Button
+            // onClick={(e) => {
+            //   e.preventDefault();
+            //   e.stopPropagation();
+
+            //   updateCart(product._id, 1);
+            // }}
+            className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold"
+            disabled={!inStock}
+          >
+            <ShoppingCart className="mr-2 h-4 w-4" />
+            Cotizar ahora
+          </Button>
+        </a>
       </CardFooter>
     </Card>
   );

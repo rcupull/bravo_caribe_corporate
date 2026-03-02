@@ -40,7 +40,7 @@ export const getImageSrc = (image: Image | ImageFile): string => {
 // };
 
 export const getImageRowData = async (
-  image: File | Image
+  image: File | Image,
 ): Promise<Image | ImageFile> => {
   if (image instanceof File) {
     return {

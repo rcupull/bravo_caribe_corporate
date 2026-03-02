@@ -6,7 +6,10 @@ import { GetAllProductCategoryArgs, ProductCategory } from '../../types/product-
 
 export class ProductCategoryServices extends ModelCrudTemplate<
   ProductCategory,
-  Pick<ProductCategory, 'description' | 'name' | 'productFieldIds' | 'productCategorySlug'>,
+  Pick<
+    ProductCategory,
+    'description' | 'name' | 'productFieldIds' | 'productCategorySlug' | 'iconSvg'
+  >,
   GetAllProductCategoryArgs
 > {
   constructor() {

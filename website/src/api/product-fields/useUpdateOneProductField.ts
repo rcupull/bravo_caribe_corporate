@@ -6,7 +6,7 @@ import { ProductField } from "@/types/product-field";
 
 interface Args {
   productFieldSlug: string;
-  update: Pick<ProductField, "label">;
+  update: Pick<ProductField, "label" | "description">;
 }
 
 export const useUpdateOneProductField = (): {

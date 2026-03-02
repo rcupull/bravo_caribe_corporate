@@ -6,7 +6,7 @@ import { getAllFilterQuery } from './utils';
 
 export class ProductFieldServices extends ModelCrudTemplate<
   ProductField,
-  Pick<ProductField, 'field' | 'label' | 'type' | 'productFieldSlug'>,
+  Pick<ProductField, 'field' | 'label' | 'type' | 'productFieldSlug' | 'description'>,
   GetAllProductFieldArgs
 > {
   constructor() {

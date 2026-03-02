@@ -6,7 +6,10 @@ import { ProductCategory } from "@/types/product-category";
 
 interface Args {
   productCategorySlug: string;
-  update: Pick<ProductCategory, "description" | "name" | "productFieldIds">;
+  update: Pick<
+    ProductCategory,
+    "description" | "name" | "productFieldIds" | "iconSvg"
+  >;
 }
 
 export const useUpdateOneProductCategory = (): {

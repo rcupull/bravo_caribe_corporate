@@ -9,6 +9,7 @@ export enum ProductFieldType {
 export interface ProductField extends BaseIdentity {
   field: string;
   type: ProductFieldType;
+  description?: string;
   productFieldSlug: string;
   label: string;
 }

@@ -35,18 +35,20 @@ export class ProductCategoryController {
       bodyShape: (z) => ({
         description: z.string().optional(),
         name: z.string().nonempty(),
+        iconSvg: z.string().nonempty().optional(),
         productFieldIds: z.array(MongoObjectIdSchema).optional()
       })
     },
     async ({ req, res }) => {
       const { body } = req;
 
-      const { description, name, productFieldIds, type } = body;
+      const { description, name, productFieldIds, iconSvg } = body;
 
       const out = await this.productCategoryServices.addOne({
         description,
         name,
         productFieldIds,
+        iconSvg,
         productCategorySlug: getProductCategorySlugFromName(name)
       });
 
@@ -86,6 +88,7 @@ export class ProductCategoryController {
       bodyShape: (z) => ({
         description: z.string().nullish(),
         name: z.string().nullish(),
+        iconSvg: z.string().nonempty().nullish(),
         productFieldIds: z.array(MongoObjectIdSchema).nullish()
       })
     },
@@ -93,7 +96,7 @@ export class ProductCategoryController {
       const { params, body } = req;
       const { productCategorySlug } = params;
 
-      const { description, name, productFieldIds } = body;
+      const { description, name, productFieldIds, iconSvg } = body;
 
       const out = await this.productCategoryServices.findOneAndUpdate({
         query: {
@@ -102,7 +105,8 @@ export class ProductCategoryController {
         update: {
           description,
           name,
-          productFieldIds
+          productFieldIds,
+          iconSvg
         }
       });
 

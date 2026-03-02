@@ -1,21 +1,24 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { categories } from "@/utils/category";
-import { CategoryType } from "@/types/category";
+import { useGetAllProductCategories } from "@/api/product-categories/useGetAllProductCategories";
+import { useEffect } from "react";
+import { useRouter } from "@/hooks/useRouter";
+import { FieldCheckbox } from "../ui/field-checkbox";
 
-interface ProductFiltersProps {
-  selectedCategory?: CategoryType | null;
-  onCategoryChange: (category: CategoryType | undefined) => void;
-  inStockOnly: boolean;
-  onInStockChange: (inStock: boolean) => void;
-}
+const ProductFilters = () => {
+  const { query, onChangeQuery } = useRouter();
 
-const ProductFilters = ({
-  selectedCategory,
-  onCategoryChange,
-  inStockOnly,
-  onInStockChange,
-}: ProductFiltersProps) => {
+  const categorySlugs = (query.categorias || []) as string[];
+  const inStockOnly = !!query.enStock;
+
+  const { getAllProductCategories } = useGetAllProductCategories();
+
+  useEffect(() => {
+    getAllProductCategories.fetch({ pagination: false });
+  }, []);
+
+  const productCategories = getAllProductCategories.data || [];
+
   return (
     <div className="bg-card rounded-lg p-6 border border-border">
       <h3 className="font-bold text-lg mb-4 text-foreground">Filtros</h3>
@@ -27,22 +30,38 @@ const ProductFilters = ({
         </h4>
         <div className="flex flex-wrap gap-2">
           <Badge
-            variant={selectedCategory === null ? "default" : "outline"}
+            variant={categorySlugs.length === 0 ? "default" : "outline"}
             className="cursor-pointer hover:bg-accent hover:text-accent-foreground transition-colors"
-            onClick={() => onCategoryChange(undefined)}
+            onClick={() => onChangeQuery({ categorias: [] })}
           >
             Todas
           </Badge>
-          {categories.map(({ type, name }, index) => (
-            <Badge
-              key={index}
-              variant={selectedCategory === type ? "default" : "outline"}
-              className="cursor-pointer hover:bg-accent hover:text-accent-foreground transition-colors"
-              onClick={() => onCategoryChange(type)}
-            >
-              {name}
-            </Badge>
-          ))}
+          {productCategories.map(({ name, productCategorySlug }, index) => {
+            const selected = categorySlugs.includes(productCategorySlug);
+
+            return (
+              <Badge
+                key={index}
+                variant={selected ? "default" : "outline"}
+                className="cursor-pointer hover:bg-accent hover:text-accent-foreground transition-colors"
+                onClick={() => {
+                  if (selected) {
+                    onChangeQuery({
+                      categorias: categorySlugs.filter(
+                        (slug) => slug !== productCategorySlug,
+                      ),
+                    });
+                  } else {
+                    onChangeQuery({
+                      categorias: [...categorySlugs, productCategorySlug],
+                    });
+                  }
+                }}
+              >
+                {name}
+              </Badge>
+            );
+          })}
         </div>
       </div>
 
@@ -51,28 +70,26 @@ const ProductFilters = ({
         <h4 className="font-semibold text-sm mb-3 text-foreground">
           Disponibilidad
         </h4>
-        <label className="flex items-center space-x-2 cursor-pointer">
-          <input
-            type="checkbox"
-            checked={inStockOnly}
-            onChange={(e) => onInStockChange(e.target.checked)}
-            className="w-4 h-4 rounded border-input accent-accent"
-          />
-          <span className="text-sm text-muted-foreground">
-            Solo productos disponibles
-          </span>
-        </label>
+        <FieldCheckbox
+          label="Solo productos disponibles"
+          type="checkbox"
+          noUseFormik
+          checked={!!inStockOnly}
+          onChange={(e) => onChangeQuery({ enStock: e.target.checked })}
+          className="w-4 h-4 rounded border-input accent-accent"
+        />
       </div>
 
-      {/* Clear Filters */}
-      {(selectedCategory !== null || inStockOnly) && (
+      {(!!categorySlugs.length || inStockOnly) && (
         <Button
           variant="outline"
           size="sm"
           className="w-full mt-6"
           onClick={() => {
-            onCategoryChange(undefined);
-            onInStockChange(false);
+            onChangeQuery({
+              categorias: [],
+              enStock: undefined,
+            });
           }}
         >
           Limpiar Filtros

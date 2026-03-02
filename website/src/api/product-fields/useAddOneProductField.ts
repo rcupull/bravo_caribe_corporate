@@ -4,7 +4,10 @@ import { useQueryMutation } from "@/utils/useQueryMutation";
 import { usePageContext } from "@/hooks/usePageContext";
 import { ProductField } from "@/types/product-field";
 
-interface Args extends Pick<ProductField, "field" | "label" | "type"> {}
+interface Args extends Pick<
+  ProductField,
+  "field" | "label" | "type" | "description"
+> {}
 
 export const useAddOneProductField = (): {
   addOneProductField: FetchResource<Args>;

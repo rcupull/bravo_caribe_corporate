@@ -1,12 +1,14 @@
 import { useGetOneProduct } from "@/api/products/useGetOneProduct";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { getWhatsAppLink } from "@/utils/general";
+import {
+  getWhatsAppLink,
+  getWhatsAppLinkWithContactNumber,
+} from "@/utils/general";
 import { MapOl } from "@/components/ui/map";
 import { MapPin, Clock, Phone, Mail, Send, FileImage } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { ImageComponent } from "@/components/image-component";
-import { categories } from "@/utils/category";
 import { useRouter } from "@/hooks/useRouter";
 
 const defaultHours = [
@@ -34,9 +36,9 @@ export const Page = () => {
 
   const product = getOneProduct.data;
 
-  const currentCategory = categories.find(
-    ({ type }) => product?.categoryType === type
-  );
+  // const currentCategory = categories.find(
+  //   ({ type }) => product?.categoryType === type
+  // );
 
   return (
     <>
@@ -77,7 +79,7 @@ export const Page = () => {
                           {product.price} {product.currency}
                         </p>
 
-                        {product.specs && (
+                        {/* {product.specs && (
                           <div className="text-sm text-muted-foreground">
                             {Object.keys(product.specs)
                               .slice(0, 3)
@@ -95,7 +97,7 @@ export const Page = () => {
                                 );
                               })}
                           </div>
-                        )}
+                        )} */}
                       </div>
                     </div>
 
@@ -111,11 +113,11 @@ export const Page = () => {
                       </a>
 
                       <a
-                        href={`${getWhatsAppLink(
-                          "5363672603"
-                        )}?text=Hola, estoy interesado en ${
-                          product.name
-                        }. ¿Podrian brindarme más información?`}
+                        href={getWhatsAppLinkWithContactNumber(
+                          `Hola, estoy interesado en ${
+                            product.name
+                          }. ¿Podrian brindarme más información?`,
+                        )}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -148,7 +150,7 @@ export const Page = () => {
 
                     <a
                       href={`${getWhatsAppLink(
-                        "5363672603"
+                        "5363672603",
                       )}?text = hola quiero pregunta por un producto`}
                       target="_blank"
                       rel="noopener noreferrer"

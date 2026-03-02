@@ -65,7 +65,7 @@ export const Header = () => {
               <Phone className="h-4 w-4 mr-2" />
               <span>+53 63672603</span>
             </a> */}
-            <CartSheet />
+            {/* <CartSheet /> */}
 
             {/* <Button variant={"outline"}>
               <Link to="/contacto">Contáctanos</Link>
@@ -90,12 +90,14 @@ export const Header = () => {
                 );
               }
 
-              return (
-                <Button variant="outline">
-                  <LogIn className="h-4 w-4" />
-                  <Link to={getSignInRoute()}>Iniciar sesión</Link>
-                </Button>
-              );
+              return null;
+
+              // return (
+              //   <Button variant="outline">
+              //     <LogIn className="h-4 w-4" />
+              //     <Link to={getSignInRoute()}>Iniciar sesión</Link>
+              //   </Button>
+              // );
             })()}
           </div>
 

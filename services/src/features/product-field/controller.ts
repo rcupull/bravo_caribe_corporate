@@ -31,18 +31,20 @@ export class ProductFieldController {
       bodyShape: (z) => ({
         field: z.string().nonempty(),
         label: z.string().nonempty(),
+        description: z.string().optional(),
         type: z.enum(ProductFieldType)
       })
     },
     async ({ req, res }) => {
       const { body } = req;
 
-      const { field, label, type } = body;
+      const { field, label, type, description } = body;
 
       const out = await this.productFields.addOne({
         field,
         label,
         type,
+        description,
         productFieldSlug: getProductFieldSlugFromField(field)
       });
 
@@ -80,21 +82,23 @@ export class ProductFieldController {
         productFieldSlug: z.string().nonempty()
       }),
       bodyShape: (z) => ({
-        label: z.string().nonempty()
+        label: z.string().nonempty().nullish(),
+        description: z.string().nullish()
       })
     },
     async ({ req, res }) => {
       const { params, body } = req;
       const { productFieldSlug } = params;
 
-      const { label } = body;
+      const { label, description } = body;
 
       const out = await this.productFields.findOneAndUpdate({
         query: {
           productFieldSlug
         },
         update: {
-          label
+          label,
+          description
         }
       });
 

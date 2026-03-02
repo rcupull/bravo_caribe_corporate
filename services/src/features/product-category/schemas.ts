@@ -10,6 +10,7 @@ export const modelGetter = () => {
       ...createdAtSchemaDefinition,
       description: { type: String },
       name: { type: String, required: true, unique: true },
+      iconSvg: { type: String },
       productFieldIds: [{ type: Schema.Types.ObjectId, ref: 'ProductField' }],
       productCategorySlug: { type: String, required: true, unique: true }
     });

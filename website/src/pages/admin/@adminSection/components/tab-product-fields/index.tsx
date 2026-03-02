@@ -19,7 +19,7 @@ export const TabProductsFields = () => {
   const { getAllProductFields } = useGetAllProductFields();
   const { addUpdateProductFieldModal } = useAddUpdateProductFieldModal();
 
-  const onRefresh = () => getAllProductFields.fetch();
+  const onRefresh = () => getAllProductFields.fetch({ pagination: false });
 
   useEffect(() => {
     onRefresh();
@@ -55,6 +55,7 @@ export const TabProductsFields = () => {
           <TableHeader>
             <TableRow>
               <TableHead>Label</TableHead>
+              <TableHead>Descripción</TableHead>
               <TableHead>field</TableHead>
               <TableHead>Tipo</TableHead>
               <TableHead className="text-right">Acciones</TableHead>
@@ -75,6 +76,7 @@ export const TabProductsFields = () => {
                 return (
                   <TableRow key={index}>
                     <TableCell>{rowData.label}</TableCell>
+                    <TableCell>{rowData.description}</TableCell>
                     <TableCell>{rowData.field}</TableCell>
                     <TableCell>{rowData.type}</TableCell>
                     <TableCell className="text-right">

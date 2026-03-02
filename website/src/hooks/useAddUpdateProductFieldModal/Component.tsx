@@ -8,13 +8,17 @@ import { ButtonClose } from "@/components/button-close";
 import { ProductField, ProductFieldType } from "@/types/product-field";
 import { useAddOneProductField } from "@/api/product-fields/useAddOneProductField";
 import { useUpdateOneProductField } from "@/api/product-fields/useUpdateOneProductField";
+import { FieldTextArea } from "@/components/ui/field-text-area";
 
 interface ComponentProps {
   productField?: ProductField;
   onRefresh: () => void;
 }
 
-interface State extends Pick<ProductField, "type" | "field" | "label"> {}
+interface State extends Pick<
+  ProductField,
+  "type" | "field" | "label" | "description"
+> {}
 
 const Component = ({ productField, onRefresh }: ComponentProps) => {
   const { addOneProductField } = useAddOneProductField();
@@ -35,6 +39,8 @@ const Component = ({ productField, onRefresh }: ComponentProps) => {
         return (
           <form className="space-y-4">
             <FieldInput label="Label" name="label" />
+
+            <FieldTextArea label="Descripción" name="description" />
 
             {!productField && (
               <>
@@ -65,13 +71,13 @@ const Component = ({ productField, onRefresh }: ComponentProps) => {
               <Button
                 type="button"
                 onClick={async () => {
-                  const { field, label, type } = value;
+                  const { field, label, type, description } = value;
 
                   if (productField) {
                     updateOneProductField.fetch(
                       {
                         productFieldSlug: productField.productFieldSlug,
-                        update: { label },
+                        update: { label, description },
                       },
                       {
                         onAfterSuccess: () => {
@@ -86,6 +92,7 @@ const Component = ({ productField, onRefresh }: ComponentProps) => {
                         field,
                         label,
                         type,
+                        description,
                       },
                       {
                         onAfterSuccess: () => {

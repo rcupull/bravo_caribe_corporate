@@ -87,7 +87,7 @@ export const TabProducts = () => {
                       {image ? (
                         <ImageComponent
                           image={image}
-                          className="w-16 object-cover rounded"
+                          className="w-24 object-cover rounded"
                         />
                       ) : (
                         <FileImage className="w-16 h-16 text-gray-300 object-cover rounded" />

@@ -1,16 +1,24 @@
 import { ProductServices } from './services';
 import { ProductDtosServices } from '../product-dtos/services';
 import { controllerFactory } from '../../utils/controllers';
-import { ImageShape, MongoObjectIdSchema, QueryBooleanSchema } from '../../utils/zod-shapes';
+import {
+  ArrayOrSingleSchema,
+  ImageShape,
+  MongoObjectIdSchema,
+  QueryBooleanSchema
+} from '../../utils/zod-shapes';
 import { getProductNotFoundResponse, getUserNotFoundResponse } from '../../utils/responses';
 import { Currency } from '../../types/general';
-import { CategoryType } from '../../types/category';
 import { GetAllProductArgs } from '../../types/products';
+import { ProductCategoryServices } from '../product-category/services';
+import { getInArrayQuery } from '../../utils/schemas';
+import { isArray } from '../../utils/general';
 
 export class ProductController {
   constructor(
     private readonly productServices: ProductServices,
-    private readonly productDtosServices: ProductDtosServices
+    private readonly productDtosServices: ProductDtosServices,
+    private readonly productCategoryServices: ProductCategoryServices
   ) {}
 
   get_products = controllerFactory(
@@ -19,17 +27,18 @@ export class ProductController {
       queryShape: (z) => ({
         search: z.string().nullish(),
         featured: QueryBooleanSchema.nullish(),
-        categoryType: z.enum(CategoryType).nullish()
+        categorySlugs: ArrayOrSingleSchema(z.string()).nullish(),
+        inStockOnly: QueryBooleanSchema.nullish()
       })
     },
     async ({ req, res }) => {
       const { query, paginateOptions } = req;
 
-      const { search, categoryType, featured } = query;
+      const { search, categorySlugs, inStockOnly, featured } = query;
 
       const out = await this.productServices.getAllWithPagination({
         paginateOptions,
-        query: (() => {
+        query: await (async () => {
           const out: GetAllProductArgs = {
             hidden: false
           };
@@ -42,8 +51,23 @@ export class ProductController {
             out.featured = true;
           }
 
-          if (categoryType) {
-            out.categoryType = categoryType;
+          if (inStockOnly) {
+            out.stockAmount = { $gt: 0 };
+          }
+
+          if (categorySlugs) {
+            const categories = await this.productCategoryServices.getAll({
+              query: {
+                productCategorySlug: getInArrayQuery(
+                  isArray(categorySlugs) ? categorySlugs : [categorySlugs]
+                )
+              },
+              projection: {
+                _id: 1
+              }
+            });
+
+            out.productCategoryIds = getInArrayQuery(categories.map((c) => c._id));
           }
 
           return out;

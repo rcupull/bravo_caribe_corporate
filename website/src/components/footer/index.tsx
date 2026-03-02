@@ -7,10 +7,18 @@ import {
   Twitter,
 } from "lucide-react";
 import logo from "@/assets/logo-v.png";
-import { categories } from "@/utils/category";
 import { Link } from "../link";
+import { useGetAllProductCategories } from "@/api/product-categories/useGetAllProductCategories";
+import { useEffect } from "react";
+import { fillBrowserRoute } from "@/hooks/useRouter";
 
 export const Footer = () => {
+  const { getAllProductCategories } = useGetAllProductCategories();
+
+  useEffect(() => {
+    getAllProductCategories.fetch({ pagination: false });
+  }, []);
+
   return (
     <footer className="bg-primary text-primary-foreground">
       <div className="container mx-auto px-4 py-12">
@@ -80,16 +88,21 @@ export const Footer = () => {
           <div>
             <h3 className="font-semibold text-lg mb-4">Categorías</h3>
             <ul className="space-y-2">
-              {categories.map(({ name, type }, index) => (
-                <li key={index}>
-                  <Link
-                    to={`/productos?categoryType=${type}`}
-                    className="text-lg text-primary-foreground/70 hover:text-accent transition-colors"
-                  >
-                    {name}
-                  </Link>
-                </li>
-              ))}
+              {getAllProductCategories.data?.map(
+                ({ name, productCategorySlug }, index) => (
+                  <li key={index}>
+                    <Link
+                      to={fillBrowserRoute({
+                        path: "/productos",
+                        query: { categorias: [productCategorySlug] },
+                      })}
+                      className="text-lg text-primary-foreground/70 hover:text-accent transition-colors"
+                    >
+                      {name}
+                    </Link>
+                  </li>
+                ),
+              )}
             </ul>
           </div>
 

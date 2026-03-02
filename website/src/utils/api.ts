@@ -39,12 +39,16 @@ export const getEndpointUrl = () => {
 };
 
 export const getImageEndpoint = (src = "") => {
+  if (process.env.NODE_ENV === "development") {
+    return `http://localhost:9000/${S3_BUCKET_APP}${src}`;
+  }
+
   return `https://s3-api.services.eltrapichecubiche.com/${S3_BUCKET_APP}${src}`;
 };
 
 export const injectUrlParams = (
   url: string,
-  urlParams: UrlParams = {}
+  urlParams: UrlParams = {},
 ): string => {
   let filledUrl = url;
 
@@ -147,7 +151,7 @@ const getNewAccessTokenValidatinProgress = (args: {
 
 export const getCookieValueFromPageContext = (
   pageContext: PageContextServer,
-  field: string
+  field: string,
 ): string | null => {
   const out = pageContext.headers.cookie
     ?.split(";")
@@ -158,7 +162,7 @@ export const getCookieValueFromPageContext = (
 };
 
 const getAuthData = async (
-  pageContext: PageContextServer
+  pageContext: PageContextServer,
 ): Promise<{
   accessToken: string | null;
   accessTokenUpdatedAt: string | null;
@@ -171,15 +175,15 @@ const getAuthData = async (
      */
     const accessToken = getCookieValueFromPageContext(
       pageContext,
-      "accessToken"
+      "accessToken",
     );
     const refreshToken = getCookieValueFromPageContext(
       pageContext,
-      "refreshToken"
+      "refreshToken",
     );
     const accessTokenUpdatedAt = getCookieValueFromPageContext(
       pageContext,
-      "accessTokenUpdatedAt"
+      "accessTokenUpdatedAt",
     );
     const steat = getCookieValueFromPageContext(pageContext, "steat");
 
@@ -206,7 +210,7 @@ const getAuthData = async (
 };
 
 export const getAccessToken = async (
-  pageContext: PageContextServer
+  pageContext: PageContextServer,
 ): Promise<string | null> => {
   const { accessToken, accessTokenUpdatedAt, refreshToken, steat } =
     await getAuthData(pageContext);
@@ -246,7 +250,7 @@ export const getAccessToken = async (
 
 export const appendAuthorizationToken = (
   args: AxiosRequestConfig,
-  accessToken: Nullable<string>
+  accessToken: Nullable<string>,
 ): AxiosRequestConfig => {
   return {
     ...args,
@@ -259,7 +263,7 @@ export const appendAuthorizationToken = (
 
 export const appendBrowserFingerprint = (
   args: AxiosRequestConfig,
-  browserFingerprint: string | null
+  browserFingerprint: string | null,
 ): AxiosRequestConfig => {
   return {
     ...args,
@@ -271,12 +275,12 @@ export const appendBrowserFingerprint = (
 };
 
 export const getBrowserFingerprint = async (
-  pageContext: PageContextServer
+  pageContext: PageContextServer,
 ): Promise<string | null> => {
   if (isSSR()) {
     const browserFingerprint = getCookieValueFromPageContext(
       pageContext,
-      browserFingerprintKey
+      browserFingerprintKey,
     );
     return browserFingerprint;
   } else {
@@ -287,7 +291,7 @@ export const getBrowserFingerprint = async (
 
 export const axiosFetch = async (
   args: AxiosRequestConfig,
-  pageContext: PageContextServer
+  pageContext: PageContextServer,
 ): AxiosPromise => {
   const accessToken = await getAccessToken(pageContext);
   const browserFingerprint = await getBrowserFingerprint(pageContext);
@@ -300,7 +304,7 @@ export const axiosFetch = async (
 };
 
 export const getApiPersisteState = <D extends AnyRecord = AnyRecord>(
-  data: D
+  data: D,
 ): SliceApiPersistentState<D> => ({
   data,
   isPending: false,

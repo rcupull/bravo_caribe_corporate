@@ -13,6 +13,11 @@ import { useEffect } from "react";
 import { FieldCheckbox } from "@/components/ui/field-checkbox";
 import { FieldRadioGroup } from "@/components/ui/field-radio-group";
 import { ProductField } from "@/types/product-field";
+import { FieldSelect } from "@/components/ui/field-select";
+import {
+  CategoryIcon,
+  categoryIconsAvaliables,
+} from "@/components/category-icon";
 
 interface ComponentProps {
   productCategory?: ProductCategory;
@@ -21,7 +26,7 @@ interface ComponentProps {
 
 interface State extends Pick<
   ProductCategory,
-  "description" | "name" | "productFieldIds"
+  "description" | "name" | "productFieldIds" | "iconSvg"
 > {}
 
 const Component = ({ productCategory, onRefresh }: ComponentProps) => {
@@ -40,6 +45,7 @@ const Component = ({ productCategory, onRefresh }: ComponentProps) => {
       value={{
         name: "",
         description: "",
+        iconSvg: undefined,
         productFieldIds: [],
         ...(productCategory || {}),
       }}
@@ -51,7 +57,29 @@ const Component = ({ productCategory, onRefresh }: ComponentProps) => {
 
             <FieldTextArea label="Descripción" name="description" />
 
+            <FieldSelect<{ iconName: string }>
+              name="iconSvg"
+              label="Icono"
+              items={Object.keys(categoryIconsAvaliables).map((iconName) => ({
+                iconName,
+              }))}
+              renderOption={({ iconName }) => (
+                <div className="flex gap-2">
+                  <CategoryIcon iconName={iconName} />
+                  {iconName}
+                </div>
+              )}
+              renderValue={({ iconName }) => (
+                <div className="flex gap-2">
+                  <CategoryIcon iconName={iconName} />
+                  {iconName}
+                </div>
+              )}
+              optionToValue={({ iconName }) => iconName}
+            />
+
             <FieldRadioGroup<ProductField>
+              label="Campos del producto"
               name="productFieldIds"
               multi
               renderOption={({ checked, item }) => {
@@ -65,7 +93,7 @@ const Component = ({ productCategory, onRefresh }: ComponentProps) => {
               }}
               optionToValue={({ _id }) => _id}
               items={getAllProductFields.data || []}
-              containerClassName="flex items-center flex-wrap gap-4"
+              containerClassName="grid grid-cols-2 gap-4"
             />
 
             <div className="flex gap-2 justify-end">
@@ -73,7 +101,7 @@ const Component = ({ productCategory, onRefresh }: ComponentProps) => {
               <Button
                 type="button"
                 onClick={async () => {
-                  const { description, name, productFieldIds } = value;
+                  const { description, name, productFieldIds, iconSvg } = value;
 
                   if (productCategory) {
                     const { productCategorySlug } = productCategory;
@@ -81,7 +109,7 @@ const Component = ({ productCategory, onRefresh }: ComponentProps) => {
                     updateOneProductCategory.fetch(
                       {
                         productCategorySlug,
-                        update: { description, name, productFieldIds },
+                        update: { description, name, productFieldIds, iconSvg },
                       },
                       {
                         onAfterSuccess: () => {
@@ -96,6 +124,7 @@ const Component = ({ productCategory, onRefresh }: ComponentProps) => {
                         description,
                         name,
                         productFieldIds,
+                        iconSvg,
                       },
                       {
                         onAfterSuccess: () => {

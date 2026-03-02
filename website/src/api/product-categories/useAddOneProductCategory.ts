@@ -6,7 +6,7 @@ import { ProductCategory } from "@/types/product-category";
 
 interface Args extends Pick<
   ProductCategory,
-  "description" | "name" | "productFieldIds"
+  "description" | "name" | "productFieldIds" | "iconSvg"
 > {}
 
 export const useAddOneProductCategory = (): {
