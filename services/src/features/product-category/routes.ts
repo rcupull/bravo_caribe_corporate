@@ -11,13 +11,7 @@ export class ProductCategoryRouter {
   ) {
     this.router
       .route('/product-categories')
-      .get(
-        this.accessServices.middlewareIsLogged,
-        this.accessServices.middlewareAccessControl({
-          isAdminWithAccess: [Access.FULL]
-        }),
-        this.productCategoryController.get_product_categories
-      )
+      .get(this.productCategoryController.get_product_categories)
       .post(
         this.accessServices.middlewareIsLogged,
         this.accessServices.middlewareAccessControl({

@@ -1,25 +1,16 @@
 import { createTransport } from 'nodemailer';
 import { logger } from '../logger';
-import {
-  EMAIL_PASSWORD,
-  EMAIL_SECURE,
-  EMAIL_SMTP_HOST,
-  EMAIL_SMTP_PORT,
-  EMAIL_USER
-} from '../../config';
+import { GMAIL_APP_PASS, GMAIL_USER } from '../../config';
 
 export class EmailServices {
   private transporter;
 
   constructor() {
     this.transporter = createTransport({
-      //@ts-expect-error ignore
-      host: EMAIL_SMTP_HOST,
-      port: EMAIL_SMTP_PORT,
-      secure: EMAIL_SECURE,
+      service: 'gmail',
       auth: {
-        user: EMAIL_USER,
-        pass: EMAIL_PASSWORD
+        user: GMAIL_USER,
+        pass: GMAIL_APP_PASS
       }
     });
   }
@@ -29,7 +20,7 @@ export class EmailServices {
 
     this.transporter.sendMail(
       {
-        from: `"No Responder" <${EMAIL_USER}>`,
+        from: `"No Responder" <${GMAIL_USER}>`,
         to,
         subject,
         text

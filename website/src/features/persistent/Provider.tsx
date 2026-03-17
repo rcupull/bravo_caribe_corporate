@@ -17,7 +17,7 @@ const getCookiesClient = () => {
     path: "/",
     secure: true,
     sameSite: "none",
-    domain: ".bravo.eltrapichecubiche.com",
+    domain: ".bravocaribe.com",
   });
 };
 
@@ -26,7 +26,7 @@ const cookies = getCookiesClient();
 export const Provider = ({ children }: ChildrenProp) => {
   const setPersistent: PersistentUtils["setPersistent"] = async (
     name,
-    value
+    value,
   ) => {
     cookies.set(name, value);
   };

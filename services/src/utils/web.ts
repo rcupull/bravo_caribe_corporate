@@ -17,5 +17,5 @@ export const getValidationCodeRoute = (code: string): string => {
 };
 
 export const getForgotPasswordCodeRoute = (code: string): string => {
-  return `${getAccountAppHostName()}/recuperar-contrasena/${code}`;
+  return `${getAccountAppHostName()}/recuperar-cuenta/${code}`;
 };

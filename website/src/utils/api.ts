@@ -35,7 +35,11 @@ export const getEndpointUrl = () => {
     return "http://localhost:8081";
   }
 
-  return "https://bravo-api.eltrapichecubiche.com";
+  if (isSSR()) {
+    return "http://srv-captain--services:8081";
+  }
+
+  return "https://services.bravocaribe.com";
 };
 
 export const getImageEndpoint = (src = "") => {

@@ -7,11 +7,8 @@ export const DB_URL = process.env.DB_URL || '';
 export const SECRET_ACCESS_TOKEN = process.env.SECRET_ACCESS_TOKEN || '';
 export const SECRET_REFRESH_TOKEN = process.env.SECRET_REFRESH_TOKEN || '';
 
-export const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD || '';
-export const EMAIL_SECURE = process.env.EMAIL_SECURE || '';
-export const EMAIL_SMTP_HOST = process.env.EMAIL_SMTP_HOST || '';
-export const EMAIL_SMTP_PORT = process.env.EMAIL_SMTP_PORT || '';
-export const EMAIL_USER = process.env.EMAIL_USER || '';
+export const GMAIL_USER = process.env.GMAIL_USER || '';
+export const GMAIL_APP_PASS = process.env.GMAIL_APP_PASS || '';
 
 export const CORS_WHITE_LIST = process.env.CORS_WHITE_LIST || '';
 export const RATE_LIMIT_DISABLED = process.env.RATE_LIMIT_DISABLED || '';
