@@ -1,16 +1,24 @@
 import { ProductServices } from './services';
 import { ProductDtosServices } from '../product-dtos/services';
 import { controllerFactory } from '../../utils/controllers';
-import { ImageShape, QueryBooleanSchema } from '../../utils/zod-shapes';
+import {
+  ArrayOrSingleSchema,
+  ImageShape,
+  MongoObjectIdSchema,
+  QueryBooleanSchema
+} from '../../utils/zod-shapes';
 import { getProductNotFoundResponse, getUserNotFoundResponse } from '../../utils/responses';
 import { Currency } from '../../types/general';
-import { CategoryType } from '../../types/category';
 import { GetAllProductArgs } from '../../types/products';
+import { ProductCategoryServices } from '../product-category/services';
+import { getInArrayQuery } from '../../utils/schemas';
+import { isArray } from '../../utils/general';
 
 export class ProductController {
   constructor(
     private readonly productServices: ProductServices,
-    private readonly productDtosServices: ProductDtosServices
+    private readonly productDtosServices: ProductDtosServices,
+    private readonly productCategoryServices: ProductCategoryServices
   ) {}
 
   get_products = controllerFactory(
@@ -19,17 +27,18 @@ export class ProductController {
       queryShape: (z) => ({
         search: z.string().nullish(),
         featured: QueryBooleanSchema.nullish(),
-        categoryType: z.enum(CategoryType).nullish()
+        categorySlugs: ArrayOrSingleSchema(z.string()).nullish(),
+        inStockOnly: QueryBooleanSchema.nullish()
       })
     },
     async ({ req, res }) => {
       const { query, paginateOptions } = req;
 
-      const { search, categoryType, featured } = query;
+      const { search, categorySlugs, inStockOnly, featured } = query;
 
       const out = await this.productServices.getAllWithPagination({
         paginateOptions,
-        query: (() => {
+        query: await (async () => {
           const out: GetAllProductArgs = {
             hidden: false
           };
@@ -42,8 +51,23 @@ export class ProductController {
             out.featured = true;
           }
 
-          if (categoryType) {
-            out.categoryType = categoryType;
+          if (inStockOnly) {
+            out.stockAmount = { $gt: 0 };
+          }
+
+          if (categorySlugs) {
+            const categories = await this.productCategoryServices.getAll({
+              query: {
+                productCategorySlug: getInArrayQuery(
+                  isArray(categorySlugs) ? categorySlugs : [categorySlugs]
+                )
+              },
+              projection: {
+                _id: 1
+              }
+            });
+
+            out.productCategoryIds = getInArrayQuery(categories.map((c) => c._id));
           }
 
           return out;
@@ -118,8 +142,8 @@ export class ProductController {
         images: z.array(ImageShape).optional(),
         price: z.number().nonnegative(),
         currency: z.enum(Currency),
-        categoryType: z.enum(CategoryType).nullish(),
-        specs: z.record(z.string(), z.any()).nullish()
+        productCategoryIds: z.array(MongoObjectIdSchema).nullish(),
+        productFieldsData: z.record(z.string(), z.any()).nullish()
       })
     },
     async ({ req, res }) => {
@@ -131,8 +155,17 @@ export class ProductController {
 
       const { body } = req;
 
-      const { name, hidden, images, price, currency, stockAmount, categoryType, specs, featured } =
-        body;
+      const {
+        name,
+        hidden,
+        images,
+        price,
+        currency,
+        stockAmount,
+        productCategoryIds,
+        productFieldsData,
+        featured
+      } = body;
 
       const out = await this.productServices.addOne({
         name,
@@ -144,8 +177,8 @@ export class ProductController {
         price,
         featured,
         createdBy: user._id,
-        categoryType,
-        specs
+        productCategoryIds,
+        productFieldsData
       });
 
       res.send(out);
@@ -191,8 +224,8 @@ export class ProductController {
         featured: z.boolean().nullish(),
         currency: z.enum(Currency).nullish(),
         hidden: z.boolean().optional(),
-        categoryType: z.enum(CategoryType).nullish(),
-        specs: z.record(z.string(), z.any()).nullish()
+        productCategoryIds: z.array(MongoObjectIdSchema).nullish(),
+        productFieldsData: z.record(z.string(), z.any()).nullish()
       })
     },
     async ({ req, res, next }) => {
@@ -207,8 +240,8 @@ export class ProductController {
         currency,
         hidden,
         stockAmount,
-        categoryType,
-        specs,
+        productCategoryIds,
+        productFieldsData,
         featured
       } = body;
 
@@ -227,8 +260,8 @@ export class ProductController {
           price,
           currency,
           hidden,
-          categoryType,
-          specs
+          productCategoryIds,
+          productFieldsData
         }
       });
 

@@ -1,5 +1,13 @@
-import { CategorySpecsFields, CategoryType } from "./category";
 import { BaseIdentity, Currency, Image } from "./general";
+import { ProductCategory } from "./product-category";
+import { ProductField } from "./product-field";
+
+interface ProductFieldValue extends Pick<
+  ProductField,
+  "label" | "field" | "type"
+> {
+  value: any;
+}
 
 export interface Product extends BaseIdentity {
   images?: Array<Image>;
@@ -12,6 +20,10 @@ export interface Product extends BaseIdentity {
   stockAmount?: number;
   featured?: boolean;
 
-  categoryType?: CategoryType;
-  specs?: Partial<Record<CategorySpecsFields, string>>;
+  productCategoryIds?: Array<string>;
+  productFieldsData?: Record<string, string>;
+
+  //hot
+  productCategories: Array<Pick<ProductCategory, "name">> | undefined;
+  productFieldsMeta: Array<ProductFieldValue> | undefined;
 }

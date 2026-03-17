@@ -2,6 +2,8 @@ import { UserServices } from './services';
 import { UserDtosServices } from '../user-dtos/services';
 import { controllerFactory } from '../../utils/controllers';
 import { getUserNotFoundResponse } from '../../utils/responses';
+import { MongoObjectIdSchema } from '../../utils/zod-shapes';
+import { UserRole } from '../../types/user';
 
 export class UserController {
   constructor(
@@ -70,7 +72,7 @@ export class UserController {
     }
   );
 
-  admin_get_users = controllerFactory(
+  get_users = controllerFactory(
     {
       withPagination: true,
       queryShape: (z) => ({
@@ -89,6 +91,40 @@ export class UserController {
       });
 
       out.data = await this.userDtosServices.getUsersDto(out.data);
+
+      res.send(out);
+    }
+  );
+
+  put_users_userId = controllerFactory(
+    {
+      paramsShape: () => ({
+        userId: MongoObjectIdSchema
+      }),
+      bodyShape: (z) => ({
+        role: z.enum(UserRole).nullish()
+      })
+    },
+    async ({ req, res }) => {
+      const { params, body } = req;
+
+      const { role } = body;
+      const { userId } = params;
+
+      const updatedUser = await this.userServices.findOneAndUpdate({
+        query: {
+          _id: userId
+        },
+        update: {
+          role
+        }
+      });
+
+      if (!updatedUser) {
+        return getUserNotFoundResponse({ res });
+      }
+
+      const [out] = await this.userDtosServices.getUsersDto([updatedUser]);
 
       res.send(out);
     }

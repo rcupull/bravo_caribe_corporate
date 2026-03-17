@@ -7,7 +7,7 @@
     "tsc": "tsc --noEmit -p ./tsconfig.json",
     "serve": "node ./build/index.js",
     "compress": "tar -cvf ./deploy.tar ./package.json ./package-lock.json ./tsconfig.json captain-definition ./build/*",
-    "caprover:deploy": "caprover deploy -t ./deploy.tar -h https://captain.eltrapichecubiche.com -a bravo-api",
+    "caprover:deploy": "caprover deploy -t ./deploy.tar -h https://captain.bravocaribe.com -a services",
     "deploy": "npm run build && npm run compress && npm run caprover:deploy"
   },
   "devDependencies": {

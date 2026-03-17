@@ -4,6 +4,7 @@ import path from "path";
 import vike from "vike/plugin";
 import { defineConfig } from "vite";
 import commonjs from "vite-plugin-commonjs";
+import mkcert from "vite-plugin-mkcert";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -11,14 +12,13 @@ export default defineConfig({
     host: "local.bravocaribe.com",
     port: 8080,
   },
-  plugins: [react(), commonjs(), vike()],
+  plugins: [react(), commonjs(), vike(), mkcert()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
       "~node_modules": path.resolve(__dirname, "./node_modules"),
     },
   },
-
   preview: {
     port: 8080,
     host: true,

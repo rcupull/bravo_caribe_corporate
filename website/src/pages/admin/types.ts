@@ -3,4 +3,6 @@ export const enum AdminSection {
   ORDERS = "ordenes",
   BLOG = "blog",
   USERS = "usuarios",
+  PRODUCT_FIELDS = "campos-producto",
+  PRODUCT_CATEGORIES = "categorias-producto",
 }

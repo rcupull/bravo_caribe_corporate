@@ -1,5 +1,4 @@
 import { useAuthForgotPasswordValidate } from "@/api/auth/useAuthForgotPasswordValidate";
-import { Link } from "@/components/link";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,14 +9,14 @@ import {
 } from "@/components/ui/card";
 import { FieldInputPassword } from "@/components/ui/field-input-password";
 import { Formux } from "@/components/ui/formux";
-import { HtmlTextContainer } from "@/components/ui/html-text-container";
 import { useRouter } from "@/hooks/useRouter";
 import { getRequiredLabel } from "@/utils/form";
+import { getFlattenJson } from "@/utils/general";
 import { getSignInRoute } from "@/utils/routes";
 import { UserCircle } from "lucide-react";
 
 export const Page = () => {
-  const { params } = useRouter();
+  const { params, pushRoute } = useRouter();
   const { code } = params;
 
   const { authForgotPasswordValidate } = useAuthForgotPasswordValidate();
@@ -34,19 +33,16 @@ export const Page = () => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <HtmlTextContainer>
-            <Link to={getSignInRoute()}>Iniciar sesión</Link>
-          </HtmlTextContainer>
           <Button
             stopPropagation
-            // onClick={() =>
-            //   // pushRoute(getSignInRoute(), getFlattenJson({ phone, email }), {
-            //   //   replace: true,
-            //   // })
-            // }
+            onClick={() =>
+              pushRoute(getSignInRoute(), getFlattenJson({ email }), {
+                replace: true,
+              })
+            }
             className="w-full"
           >
-            Iniciar sesión(TODO)
+            Iniciar sesión
           </Button>
         </CardContent>
       </Card>

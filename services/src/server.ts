@@ -38,6 +38,13 @@ import { CartServices } from './features/cart/services';
 import { CartController } from './features/cart/controller';
 import { CartRouter } from './features/cart/routes';
 import { middlewareGetBrowserFingerprint } from './middlewares/middlewareGetBrowserFingerprint';
+import { ProductFieldServices } from './features/product-field/services';
+import { ProductFieldController } from './features/product-field/controller';
+import { ProductFieldRouter } from './features/product-field/routes';
+import { ProductCategoryServices } from './features/product-category/services';
+import { ProductCategoryController } from './features/product-category/controller';
+import { ProductCategoryRouter } from './features/product-category/routes';
+import { ProductCategoryDtosServices } from './features/product-category-dtos/services';
 
 export const app = express();
 const router = Router();
@@ -47,7 +54,6 @@ const router = Router();
 
 const fileServices = new FileServices();
 const productServices = new ProductServices();
-const productDtosServices = new ProductDtosServices();
 
 const blogServices = new BlogServices();
 const blogDtosServices = new BlogDtosServices();
@@ -61,12 +67,21 @@ const cartServices = new CartServices(shoppingServices);
 const authServices = new AuthServices(authSessionServices, userServices, validationCodeServices);
 const accessServices = new AccessServices(authServices, shoppingServices);
 const emailServices = new EmailServices();
+const productFieldServices = new ProductFieldServices();
+const productCategoryServices = new ProductCategoryServices();
+const productCategoryDtosServices = new ProductCategoryDtosServices(productFieldServices);
+const productDtosServices = new ProductDtosServices(productCategoryServices, productFieldServices);
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
 
-const productController = new ProductController(productServices, productDtosServices);
+const productController = new ProductController(
+  productServices,
+  productDtosServices,
+  productCategoryServices
+);
+
 const blogController = new BlogController(blogServices, blogDtosServices);
 const fileController = new FileController(fileServices);
 const shoppingController = new ShoppingController(shoppingServices);
@@ -81,6 +96,11 @@ const authController = new AuthController(
 );
 
 const userController = new UserController(userServices, userDtosServices);
+const productFieldController = new ProductFieldController(productFieldServices);
+const productCategoryController = new ProductCategoryController(
+  productCategoryServices,
+  productCategoryDtosServices
+);
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -93,6 +113,8 @@ const fileRouter = new FileRouter(fileController, accessServices);
 const authRouter = new AuthRouter(authController, accessServices);
 const userRouter = new UserRouter(userController, accessServices);
 const cartRouter = new CartRouter(cartController, accessServices);
+const productFieldRouter = new ProductFieldRouter(productFieldController, accessServices);
+const productCategoryRouter = new ProductCategoryRouter(productCategoryController, accessServices);
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -106,7 +128,9 @@ router.use(
   fileRouter.router,
   blogRouter.router,
   shoppingRouter.router,
-  cartRouter.router
+  cartRouter.router,
+  productFieldRouter.router,
+  productCategoryRouter.router
 );
 
 //////////////////////////////////////////////////////////////////////////////////////////

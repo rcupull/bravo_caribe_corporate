@@ -19,9 +19,9 @@ import { HtmlTextContainer } from "@/components/ui/html-text-container";
 import { useRouter } from "@/hooks/useRouter";
 import { Link } from "@/components/link";
 import {
+  getAdminRoute,
   getHomeRoute,
   getRecoveryPasswordRoute,
-  getSignInRoute,
   getSignUpRoute,
 } from "@/utils/routes";
 
@@ -109,12 +109,12 @@ export const Page = () => {
                           password,
                         },
                         {
-                          onAfterSuccess: (response) => {
+                          onAfterSuccess: async (response) => {
                             const { accessToken, refreshToken, steat, user } =
                               response;
 
                             setData(user);
-                            setPersistentAuthData({
+                            await setPersistentAuthData({
                               accessToken,
                               refreshToken,
                               steat,
@@ -122,16 +122,16 @@ export const Page = () => {
 
                             toast.success("¡Bienvenido!");
 
-                            if (redirect) {
-                              pushRoute(redirect, {}, { timeout: 100 });
-                            } else {
-                              pushRoute(getHomeRoute());
-                            }
+                            pushRoute(
+                              redirect || getAdminRoute(),
+                              {},
+                              { timeout: 100 },
+                            );
                           },
                           onAfterFailed: () => {
                             toast.error("Error al iniciar sesión");
                           },
-                        }
+                        },
                       );
                     }}
                   >

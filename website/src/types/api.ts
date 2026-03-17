@@ -9,7 +9,7 @@ export interface ApiError {
 }
 
 export type OnAfterSuccess<Data = any> = (
-  reponse: Data
+  reponse: Data,
 ) => void | Promise<void>;
 
 export type OnAfterFailed = (error: ApiError) => void;
@@ -48,6 +48,12 @@ export interface Paginator {
   nextPage?: number;
 }
 
+export interface PaginationQuery {
+  page?: number;
+  limit?: number;
+  pagination?: boolean;
+}
+
 export interface PaginatedData<D extends AnyRecord = AnyRecord> {
   data: Array<D>;
   paginator: Paginator;
@@ -63,7 +69,7 @@ export type FetchResource<Args = void, Data = any> = UseMutationResult<
 
 export type FetchResourceWithPagination<
   Args = void,
-  Data extends AnyRecord = AnyRecord
+  Data extends AnyRecord = AnyRecord,
 > = UseMutationResult<
   PaginatedData<Data>["data"] | null,
   any,

@@ -5,6 +5,8 @@ import { TabBlogs } from "./components/tab-blog";
 import { TabShoppings } from "./components/tab-shoppings";
 import { AdminTabs } from "./components/admin-tabs";
 import { TabUsers } from "./components/tab-users";
+import { TabProductsFields } from "./components/tab-product-fields";
+import { TabProductsCategories } from "./components/tab-product-categories";
 
 export const Page = () => {
   const { params } = useRouter();
@@ -26,6 +28,14 @@ export const Page = () => {
 
     if (adminSection === AdminSection.USERS) {
       return <TabUsers />;
+    }
+
+    if (adminSection === AdminSection.PRODUCT_FIELDS) {
+      return <TabProductsFields />;
+    }
+
+    if (adminSection === AdminSection.PRODUCT_CATEGORIES) {
+      return <TabProductsCategories />;
     }
 
     return null;

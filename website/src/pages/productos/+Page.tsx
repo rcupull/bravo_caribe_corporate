@@ -13,32 +13,23 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { useGetAllProducts } from "@/api/products/useGetAllProducts";
-import { CategoryType } from "@/types/category";
 import { useProductDetails } from "@/hooks/useProductDetails";
 import { useRouter } from "@/hooks/useRouter";
-import { getBlogRoute, getProductRoute } from "@/utils/routes";
 
 export const Page = () => {
-  const [inStockOnly, setInStockOnly] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
 
   const { getAllProducts } = useGetAllProducts();
 
-  const { pushRoute, query } = useRouter();
-  const categoryType = query.categoryType as CategoryType | undefined;
+  const { query } = useRouter();
 
-  const pushCategoryType = (categoryType: CategoryType | undefined) => {
-    if (categoryType) {
-      pushRoute(getProductRoute(), { categoryType });
-    } else {
-      pushRoute(getProductRoute());
-    }
-  };
+  const categorySlugs = (query.categorias || []) as string[];
+  const inStockOnly = !!query.enStock;
 
   useEffect(() => {
-    getAllProducts.fetch({ categoryType });
-  }, [categoryType]);
+    getAllProducts.fetch({ categorySlugs, inStockOnly });
+  }, [JSON.stringify({ categorySlugs, inStockOnly })]);
 
   const { productDetails } = useProductDetails();
 
@@ -65,14 +56,7 @@ export const Page = () => {
           <div className="grid lg:grid-cols-4 gap-8">
             {/* Filters Sidebar */}
             <aside className="lg:col-span-1">
-              <ProductFilters
-                selectedCategory={categoryType}
-                onCategoryChange={(categoryType) => {
-                  pushCategoryType(categoryType);
-                }}
-                inStockOnly={inStockOnly}
-                onInStockChange={setInStockOnly}
-              />
+              <ProductFilters />
             </aside>
 
             {/* Products Grid */}
@@ -141,7 +125,7 @@ export const Page = () => {
                             {page}
                           </PaginationLink>
                         </PaginationItem>
-                      )
+                      ),
                     )}
                     <PaginationItem>
                       <PaginationNext

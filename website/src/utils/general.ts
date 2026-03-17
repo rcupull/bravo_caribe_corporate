@@ -5,7 +5,7 @@ import dlv from "dlv";
 import { dset } from "dset";
 
 export const isNullOrUndefined = (
-  value: unknown
+  value: unknown,
 ): value is null | undefined => {
   return value === null || value === undefined;
 };
@@ -32,7 +32,7 @@ export const isArray = (value: unknown): value is Array<any> => {
 };
 
 export const isNullOrUndefinedOrEmptyString = (
-  value: unknown
+  value: unknown,
 ): value is null | undefined | "" => {
   return isNullOrUndefined(value) || value === "";
 };
@@ -42,7 +42,7 @@ export const compact = <T = any>(value: Array<Nullable<T>>): Array<T> => {
 };
 
 export const isEmpty = <T = object>(
-  value: T | null | undefined
+  value: T | null | undefined,
 ): value is EmptyObjectOf<T> | null | undefined => {
   if (!value) return true;
 
@@ -55,7 +55,7 @@ export const isEmpty = <T = object>(
 };
 
 export const getFlattenJson = <T extends AnyRecord = AnyRecord>(
-  value: T
+  value: T,
 ): T => {
   /**
    * remove the undefined, null or empty string fields from JSON
@@ -63,25 +63,25 @@ export const getFlattenJson = <T extends AnyRecord = AnyRecord>(
   return Object.entries(value).reduce(
     (acc, [k, v]) =>
       isNullOrUndefinedOrEmptyString(v) ? acc : { ...acc, [k]: v },
-    {} as T
+    {} as T,
   );
 };
 
 export const getFlattenUndefinedJson = <T extends AnyRecord = AnyRecord>(
-  value: T
+  value: T,
 ): T => {
   /**
    * remove the undefined fields from JSON
    */
   return Object.entries(value).reduce(
     (acc, [k, v]) => (v === undefined ? acc : { ...acc, [k]: v }),
-    {} as T
+    {} as T,
   );
 };
 
 export const getFlattenArray = <T extends Array<any> = Array<any>>(
   value: T,
-  cbValid: (e: any) => boolean = Boolean
+  cbValid: (e: any) => boolean = Boolean,
 ): T => {
   return value.filter(cbValid) as T;
 };
@@ -99,7 +99,7 @@ export const cn = classnames;
 export const replaceAll = (
   value: string,
   match: string,
-  replace: string
+  replace: string,
 ): string => {
   return value.split(match).join(replace);
 };
@@ -111,7 +111,7 @@ export const deepJsonCopy = <T extends AnyRecord = AnyRecord>(json: T): T => {
 export const addRow = <T = any>(
   data: Array<T>,
   rowData: T,
-  position: "start" | "end" = "end"
+  position: "start" | "end" = "end",
 ): Array<T> => {
   const newData = [...data];
 
@@ -127,7 +127,7 @@ export const removeRow = <T = any>(data: Array<T>, index: number): Array<T> => {
 export const updateRow = <T = any>(
   data: Array<T>,
   rowData: T,
-  index: number
+  index: number,
 ): Array<T> => {
   const newData = [...data];
   newData[index] = rowData;
@@ -137,7 +137,7 @@ export const updateRow = <T = any>(
 export const relocateRow = <T = any>(
   data: Array<T>,
   fromIndex: number,
-  toIndex: number
+  toIndex: number,
 ): Array<T> => {
   const newData = deepJsonCopy(data);
 
@@ -159,7 +159,7 @@ export const isObject = (item: any) => {
 
 export const mergeDeep = <T extends AnyRecord = AnyRecord>(
   target: T,
-  source: Partial<T>
+  source: Partial<T>,
 ): T => {
   const output = Object.assign({}, target);
 
@@ -186,7 +186,7 @@ export const isEqual = (a: any, b: any): boolean => {
 };
 export const isEqualObj = (
   a: AnyRecord | undefined,
-  b: AnyRecord | undefined
+  b: AnyRecord | undefined,
 ): boolean => {
   if (!a || !b) return false;
 
@@ -221,13 +221,13 @@ export const isEqualObj = (
 
 export const addStringToUniqueArray = <T extends string = string>(
   array: Array<T>,
-  value: T
+  value: T,
 ): Array<T> => {
   return array.includes(value) ? array : addRow(array, value);
 };
 
 export const flatStringArrayToUniqueArray = <T extends string = string>(
-  array: Array<Array<T>>
+  array: Array<Array<T>>,
 ): Array<T> => {
   return array.reduce((acc, item) => {
     let out = acc;
@@ -241,7 +241,7 @@ export const flatStringArrayToUniqueArray = <T extends string = string>(
 
 export const removeStringFromArray = (
   array: Array<string>,
-  value: string
+  value: string,
 ): Array<string> => {
   const index = array.indexOf(value);
   return index < 0 ? array : removeRow(array, index);
@@ -265,7 +265,9 @@ export const copyToClipboard = (text: string): void => {
 };
 
 export const mergeRefs = <T extends any>(
-  refs: Array<React.MutableRefObject<T> | React.LegacyRef<T> | null | undefined>
+  refs: Array<
+    React.MutableRefObject<T> | React.LegacyRef<T> | null | undefined
+  >,
 ): React.RefCallback<T> => {
   return (value) => {
     refs.forEach((ref) => {
@@ -284,7 +286,7 @@ export const toCurrencyFormat = (amount: number, currency: string): string => {
 
 export const get = <T extends AnyRecord = AnyRecord>(
   obj: T,
-  path: Path<T>
+  path: Path<T>,
 ): any => {
   return dlv(obj, path);
 };
@@ -292,11 +294,15 @@ export const get = <T extends AnyRecord = AnyRecord>(
 export const set = <T extends AnyRecord = AnyRecord>(
   obj: T,
   path: Path<T>,
-  value: any
+  value: any,
 ): void => {
   dset(obj, path, value);
 };
 
 export const getWhatsAppLink = (phoneNumber: string) => {
   return `https://wa.me/${phoneNumber}`;
+};
+
+export const getWhatsAppLinkWithContactNumber = (text: string) => {
+  return `${getWhatsAppLink("5363672603")}?text=${text}`;
 };

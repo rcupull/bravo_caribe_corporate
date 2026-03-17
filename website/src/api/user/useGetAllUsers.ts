@@ -8,19 +8,19 @@ interface Args {
   search?: string;
 }
 
-export const useAdminGetAllUsers = (): {
-  adminGetAllUsers: FetchResourceWithPagination<Args, User>;
+export const useGetAllUsers = (): {
+  getAllUsers: FetchResourceWithPagination<Args, User>;
 } => {
   const pageContext = usePageContext();
   return {
-    adminGetAllUsers: useQueryMutationWithPagination<Args, User>({
+    getAllUsers: useQueryMutationWithPagination<Args, User>({
       fetch: async () => {
         const response = await axiosFetch(
           {
             method: "get",
-            url: getEndpoint({ path: "/admin/users" }),
+            url: getEndpoint({ path: "/users" }),
           },
-          pageContext
+          pageContext,
         );
         return response.data;
       },

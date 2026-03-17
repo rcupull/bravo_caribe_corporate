@@ -1,12 +1,10 @@
 import { axiosFetch, getEndpoint } from "@/utils/api";
 import { FetchResourceWithPagination } from "@/types/api";
 import { useQueryMutationWithPagination } from "@/utils/useQueryMutationWithPagination";
-import { CategoryType } from "@/types/category";
 import { Blog } from "@/types/blog";
 import { usePageContext } from "@/hooks/usePageContext";
 
 interface Args {
-  categoryType?: CategoryType;
   featured?: boolean;
 }
 
@@ -22,7 +20,7 @@ export const useGetAllBlogs = (): {
             method: "get",
             url: getEndpoint({ path: "/blogs", query: { ...args } }),
           },
-          pageContext
+          pageContext,
         );
         return response.data;
       },

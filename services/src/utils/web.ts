@@ -1,21 +1,9 @@
-import { NODE_ENV } from '../config';
-
-/**
- * TODO this code is incomplete
- */
-
-export const getAccountAppHostName = () => {
-  if (NODE_ENV === 'development') {
-    return `http://localhost:8080`;
-  }
-
-  return `https://www.bravocaribe.com`;
-};
+import { HOSTNAME } from '../config';
 
 export const getValidationCodeRoute = (code: string): string => {
-  return `${getAccountAppHostName()}/validar-cuenta/${code}`;
+  return `${HOSTNAME}/validar-cuenta/${code}`;
 };
 
 export const getForgotPasswordCodeRoute = (code: string): string => {
-  return `${getAccountAppHostName()}/recuperar-contrasena/${code}`;
+  return `${HOSTNAME}/recuperar-cuenta/${code}`;
 };

@@ -45,6 +45,14 @@ export const getUserNotFoundResponse = ({ res }: { res: Response }) => {
   return get404Response({ res, json: { message: 'No existe este usuario.' } });
 };
 
+export const getProductFieldNotFoundResponse = ({ res }: { res: Response }) => {
+  return get404Response({ res, json: { message: 'No existe este campo de categoría.' } });
+};
+
+export const getProductCategoryNotFoundResponse = ({ res }: { res: Response }) => {
+  return get404Response({ res, json: { message: 'No existe esta categoría.' } });
+};
+
 export const getProductNotFoundResponse = ({ res }: { res: Response }) => {
   return get404Response({ res, json: { message: 'No existe este producto.' } });
 };

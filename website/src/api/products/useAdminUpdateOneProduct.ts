@@ -13,8 +13,8 @@ interface Args {
     | "currency"
     | "images"
     | "stockAmount"
-    | "categoryType"
-    | "specs"
+    | "productCategoryIds"
+    | "productFieldsData"
     | "featured"
   >;
 }
@@ -35,7 +35,7 @@ export const useAdminUpdateOneProduct = (): {
             }),
             data: update,
           },
-          pageContext
+          pageContext,
         );
         return response.data;
       },

@@ -12,7 +12,7 @@ import {
 } from "./utils";
 import { FormFieldWrapper, FormFieldWrapperProps } from "../form-field-wrapper";
 import { useFormField } from "../formux/useFormField";
-import { compact, removeRow } from "@/utils/general";
+import { compact, isEqual, removeRow } from "@/utils/general";
 import { Image } from "@/types/general";
 import { getImageRowData } from "@/utils/image";
 import { ImageUp, Trash } from "lucide-react";
@@ -20,8 +20,7 @@ import { Button } from "../button";
 import { ImageComponent } from "@/components/image-component";
 
 export interface FieldInputImagesProps
-  extends React.InputHTMLAttributes<HTMLInputElement>,
-    FormFieldWrapperProps {
+  extends React.InputHTMLAttributes<HTMLInputElement>, FormFieldWrapperProps {
   multi?: boolean;
   max?: number;
 }
@@ -52,13 +51,18 @@ export const FieldInputImages = forwardRef<
   }, [previewIndex, stateToPreview]);
 
   useEffect(() => {
-    if (value !== state) {
-      const newState: State = multi ? value : [value];
+    if (!isEqual(value, state)) {
+      const newState: State = multi
+        ? Array.isArray(value)
+          ? value
+          : []
+        : [value];
+
       setState(newState);
       const newPreviewState = addOneEmptyPreview(newState);
       setStateToPreview(newPreviewState);
     }
-  }, [value, max]);
+  }, [value]);
 
   const handleChange = (newState: Array<ImageElement>) => {
     field.onClick();
@@ -94,7 +98,7 @@ export const FieldInputImages = forwardRef<
   };
 
   const handleAdd = async (
-    imagesArgs: Array<File | Image | null | undefined>
+    imagesArgs: Array<File | Image | null | undefined>,
   ) => {
     const images = compact(imagesArgs);
     if (!images.length) return;

@@ -3,41 +3,46 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ShoppingCart, CheckCircle, XCircle, FileImage } from "lucide-react";
 import { Product } from "@/types/products";
-import { ImageComponent } from "../image-component";
-import { getCurrentCategory } from "@/utils/category";
 import { useCart } from "@/hooks/useCart";
+import { cn, getWhatsAppLinkWithContactNumber } from "@/utils/general";
+import { ImagesSwitch } from "./ImagesSwitch";
 
 interface ProductCardProps {
   product: Product;
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  const { images, categoryType, productSlug, name, stockAmount, price } =
-    product;
+  const { images, productCategories, name, stockAmount, price } = product;
 
   const inStock = !!stockAmount;
 
   const { updateCart } = useCart();
 
-  const currentCategory = getCurrentCategory(categoryType);
-
-  const image = images?.length ? images[0] : null;
-
   return (
     <Card className="group h-full flex flex-col hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-warning">
       <div className="relative overflow-hidden rounded-t-lg">
         <div className="flex items-center justify-center w-full h-56 bg-gray-200">
-          {image ? (
-            <ImageComponent image={image} className="h-56 object-cover" />
+          {!!images?.length ? (
+            <ImagesSwitch images={images} className="h-56 object-cover" />
           ) : (
             <FileImage className="size-32 text-gray-300" />
           )}
         </div>
-        {currentCategory?.name && (
-          <Badge className="absolute top-3 left-3 bg-warning text-accent-foreground">
-            {currentCategory?.name}
-          </Badge>
-        )}
+        <div className="absolute top-3 left-3">
+          {productCategories?.map(({ name }, index) => {
+            return (
+              <Badge
+                key={index}
+                className={cn("bg-warning text-accent-foreground !block", {
+                  "mt-1": index !== 0,
+                })}
+              >
+                {name}
+              </Badge>
+            );
+          })}
+        </div>
+
         <Badge
           variant={inStock ? "default" : "secondary"}
           className={`absolute top-3 right-3 ${
@@ -66,19 +71,34 @@ const ProductCard = ({ product }: ProductCardProps) => {
       </CardContent>
 
       <CardFooter className="p-6 pt-0">
-        <Button
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-
-            updateCart(product._id, 1);
-          }}
-          className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold"
-          disabled={!inStock}
+        <a
+          href={
+            inStock
+              ? getWhatsAppLinkWithContactNumber(
+                  `Hola, estoy interesado en ${
+                    product.name
+                  }. ¿Podrian brindarme más información?`,
+                )
+              : undefined
+          }
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center"
         >
-          <ShoppingCart className="mr-2 h-4 w-4" />
-          Agregar al carro
-        </Button>
+          <Button
+            // onClick={(e) => {
+            //   e.preventDefault();
+            //   e.stopPropagation();
+
+            //   updateCart(product._id, 1);
+            // }}
+            className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold"
+            disabled={!inStock}
+          >
+            <ShoppingCart className="mr-2 h-4 w-4" />
+            Cotizar ahora
+          </Button>
+        </a>
       </CardFooter>
     </Card>
   );

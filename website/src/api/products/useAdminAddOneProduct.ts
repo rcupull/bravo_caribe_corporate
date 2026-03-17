@@ -4,18 +4,17 @@ import { Product } from "@/types/products";
 import { useQueryMutation } from "@/utils/useQueryMutation";
 import { usePageContext } from "@/hooks/usePageContext";
 
-interface Args
-  extends Pick<
-    Product,
-    | "name"
-    | "price"
-    | "currency"
-    | "images"
-    | "stockAmount"
-    | "categoryType"
-    | "specs"
-    | "featured"
-  > {}
+interface Args extends Pick<
+  Product,
+  | "name"
+  | "price"
+  | "currency"
+  | "images"
+  | "stockAmount"
+  | "productCategoryIds"
+  | "productFieldsData"
+  | "featured"
+> {}
 
 export const useAdminAddOneProduct = (): {
   adminAddOneProduct: FetchResource<Args>;
@@ -30,7 +29,7 @@ export const useAdminAddOneProduct = (): {
             url: getEndpoint({ path: "/admin/products" }),
             data,
           },
-          pageContext
+          pageContext,
         );
         return response.data;
       },

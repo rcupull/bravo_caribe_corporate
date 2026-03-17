@@ -18,21 +18,6 @@ export const Page = () => {
 
   const featuredBlog = getAllBlogs.data?.find((p) => p.featured);
 
-  // const categories = [
-  //   "Todos",
-  //   ...Array.from(new Set(posts.map((p) => p.category))),
-  // ];
-
-  // const filteredPosts =
-  //   selectedCategory === "Todos"
-  //     ? posts
-  //     : posts.filter((p) => p.category === selectedCategory);
-
-  // const featuredPost = posts.find((p) => p.featured);
-  // const regularPosts = filteredPosts.filter(
-  //   (p) => !p.featured || selectedCategory !== "Todos"
-  // );
-
   return (
     <>
       {/* Hero Section */}
@@ -92,7 +77,7 @@ export const Page = () => {
                             year: "numeric",
                             month: "long",
                             day: "numeric",
-                          }
+                          },
                         )}
                       </div>
                     </div>
@@ -100,7 +85,7 @@ export const Page = () => {
                       className="w-fit gap-2"
                       onClick={() => {
                         pushRoute(
-                          getBlogRoute({ blogSlug: featuredBlog.blogSlug })
+                          getBlogRoute({ blogSlug: featuredBlog.blogSlug }),
                         );
                       }}
                     >
@@ -114,27 +99,6 @@ export const Page = () => {
           </div>
         </section>
       )}
-
-      {/* Category Filter */}
-      {/* <section className="py-8 bg-secondary/30">
-          <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <div className="flex flex-wrap gap-3">
-                {categories.map((category) => (
-                  <Button
-                    key={category}
-                    variant={
-                      selectedCategory === category ? "default" : "outline"
-                    }
-                    onClick={() => setSelectedCategory(category)}
-                  >
-                    {category}
-                  </Button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section> */}
 
       {/* Blog Posts Grid */}
       <section className="py-16 bg-background">
@@ -180,7 +144,7 @@ export const Page = () => {
                               year: "numeric",
                               month: "short",
                               day: "numeric",
-                            }
+                            },
                           )}
                         </div>
                       </div>

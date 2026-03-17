@@ -2,11 +2,11 @@ import { axiosFetch, getEndpoint } from "@/utils/api";
 import { FetchResourceWithPagination } from "@/types/api";
 import { Product } from "@/types/products";
 import { useQueryMutationWithPagination } from "@/utils/useQueryMutationWithPagination";
-import { CategoryType } from "@/types/category";
 import { usePageContext } from "@/hooks/usePageContext";
 
 interface Args {
-  categoryType?: CategoryType;
+  categorySlugs?: Array<string>;
+  inStockOnly?: boolean;
   featured?: boolean;
 }
 
@@ -22,7 +22,7 @@ export const useGetAllProducts = (): {
             method: "get",
             url: getEndpoint({ path: "/products", query: { ...args } }),
           },
-          pageContext
+          pageContext,
         );
         return response.data;
       },
