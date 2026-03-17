@@ -109,12 +109,12 @@ export const Page = () => {
                           password,
                         },
                         {
-                          onAfterSuccess: (response) => {
+                          onAfterSuccess: async (response) => {
                             const { accessToken, refreshToken, steat, user } =
                               response;
 
                             setData(user);
-                            setPersistentAuthData({
+                            await setPersistentAuthData({
                               accessToken,
                               refreshToken,
                               steat,

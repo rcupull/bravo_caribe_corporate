@@ -12,13 +12,14 @@ import {
 import { FileImage, RefreshCcw } from "lucide-react";
 
 import { ImageComponent } from "@/components/image-component";
-import { useAdminGetAllUsers } from "@/api/user/useAdminGetAllUsers";
+import { useGetAllUsers } from "@/api/user/useGetAllUsers";
 import { UserRole } from "@/types/auth";
+import { RoleBadge } from "./RoleBadge";
 
 export const TabUsers = () => {
-  const { adminGetAllUsers } = useAdminGetAllUsers();
+  const { getAllUsers } = useGetAllUsers();
 
-  const onRefresh = () => adminGetAllUsers.fetch({});
+  const onRefresh = () => getAllUsers.fetch({});
 
   useEffect(() => {
     onRefresh();
@@ -50,7 +51,7 @@ export const TabUsers = () => {
           </TableHeader>
 
           <TableBody>
-            {adminGetAllUsers.data?.length === 0 ? (
+            {getAllUsers.data?.length === 0 ? (
               <TableRow>
                 <TableCell
                   colSpan={5}
@@ -60,7 +61,7 @@ export const TabUsers = () => {
                 </TableCell>
               </TableRow>
             ) : (
-              adminGetAllUsers.data?.map((user) => {
+              getAllUsers.data?.map((user) => {
                 const {
                   _id,
                   validated,
@@ -97,15 +98,7 @@ export const TabUsers = () => {
 
                     {/* Rol */}
                     <TableCell>
-                      <span
-                        className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          role === UserRole.ADMIN
-                            ? "bg-yellow-100 text-yellow-800"
-                            : "bg-blue-100 text-blue-800"
-                        }`}
-                      >
-                        {role}
-                      </span>
+                      <RoleBadge rowData={user} onRefresh={onRefresh} />
                     </TableCell>
 
                     {/* Estado de validación */}

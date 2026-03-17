@@ -181,6 +181,7 @@ const getAuthData = async (
       pageContext,
       "accessToken",
     );
+
     const refreshToken = getCookieValueFromPageContext(
       pageContext,
       "refreshToken",

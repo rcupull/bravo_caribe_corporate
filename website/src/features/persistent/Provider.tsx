@@ -8,7 +8,7 @@ const getCookiesClient = () => {
   if (process.env.NODE_ENV === "development") {
     return new Cookies(null, {
       path: "/",
-      domain: ".bravocaribe.com",
+      domain: "local.bravocaribe.com",
       sameSite: "lax",
     });
   }

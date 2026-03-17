@@ -12,7 +12,7 @@ export const resetPersistentAuthData = () => {
   removePersistent("steat");
 };
 
-export const setPersistentAuthData = ({
+export const setPersistentAuthData = async ({
   accessToken,
   refreshToken,
   steat,
@@ -23,19 +23,17 @@ export const setPersistentAuthData = ({
 }) => {
   const { setPersistent } = persistentBackdoor;
 
-  const { saveLS } = localStorageUtils();
-
   if (accessToken) {
-    setPersistent("accessToken", accessToken);
-    setPersistent("accessTokenUpdatedAt", new Date().toISOString());
+    await setPersistent("accessToken", accessToken);
+    await setPersistent("accessTokenUpdatedAt", new Date().toISOString());
   }
 
   if (refreshToken) {
-    setPersistent("refreshToken", refreshToken);
+    await setPersistent("refreshToken", refreshToken);
   }
 
   if (steat) {
-    setPersistent("steat", steat);
+    await setPersistent("steat", steat);
   }
 };
 

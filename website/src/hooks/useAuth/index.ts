@@ -9,6 +9,7 @@ export const useAuth = () => {
   const { data, setData, resetData } = useApiPersistent("useAuth", getOwnUser);
 
   return {
+    user: data,
     isAuthenticated: !!data,
     isAdmin: data?.role === UserRole.ADMIN,
     setData,
