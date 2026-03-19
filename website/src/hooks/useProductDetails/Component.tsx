@@ -10,10 +10,14 @@ import {
   FileImage,
 } from "lucide-react";
 import { Product } from "@/types/products";
-import { cn, isNullOrUndefined } from "@/utils/general";
-import { ImageComponent } from "@/components/image-component";
+import {
+  cn,
+  getWhatsAppLinkWithContactNumber,
+  isNullOrUndefinedOrEmptyString,
+} from "@/utils/general";
 import { useModal } from "@/features/modal/useModal";
 import { useCart } from "../useCart";
+import { ImagesSwitch } from "@/components/products/ImagesSwitch";
 
 interface ComponentProps {
   product: Product;
@@ -100,7 +104,7 @@ const Component = ({ product }: ComponentProps) => {
 
       <div className="space-y-3 text-sm text-foreground/90">
         {productFieldsMeta?.map(({ label, value }) => {
-          if (isNullOrUndefined(value)) {
+          if (isNullOrUndefinedOrEmptyString(value)) {
             return null;
           }
           return (
@@ -132,32 +136,44 @@ const Component = ({ product }: ComponentProps) => {
         </p>
       )}
 
-      <div className="flex gap-3">
-        <Button
-          onClick={() => {
-            onClose();
-            updateCart(product._id, 1);
-          }}
-          className="flex-1 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold"
-          disabled={!inStock}
-        >
-          <ShoppingCart className="mr-2 h-4 w-4" />
-          Agregar al carro
-        </Button>
-      </div>
+      <a
+        href={
+          inStock
+            ? getWhatsAppLinkWithContactNumber(
+                `Hola, estoy interesado en ${
+                  product.name
+                }. ¿Podrian brindarme más información?`,
+              )
+            : undefined
+        }
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center"
+      >
+        <div className="flex gap-3">
+          <Button
+            // onClick={() => {
+            //   onClose();
+            //   updateCart(product._id, 1);
+            // }}
+            className="flex-1 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold"
+            disabled={!inStock}
+          >
+            <ShoppingCart className="mr-2 h-4 w-4" />
+            Cotizar ahora
+          </Button>
+        </div>
+      </a>
     </div>
   );
 
   const imageElement = (
     <div className="relative col-span-1 md:col-span-2">
       <div className="flex items-center justify-center">
-        {image ? (
-          <ImageComponent
-            image={image}
-            className="h-80 object-cover rounded-lg"
-          />
+        {!!images?.length ? (
+          <ImagesSwitch images={images} className="h-56 object-cover" />
         ) : (
-          <FileImage className="size-32 text-gray-300 " />
+          <FileImage className="size-32 text-gray-300" />
         )}
       </div>
       <Badge

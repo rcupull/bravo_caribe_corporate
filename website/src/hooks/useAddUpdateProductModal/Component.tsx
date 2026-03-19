@@ -19,6 +19,7 @@ import { ProductCategory } from "@/types/product-category";
 import { useGetAllProductCategories } from "@/api/product-categories/useGetAllProductCategories";
 import { useEffect, useState } from "react";
 import { ProductField, ProductFieldType } from "@/types/product-field";
+import { Divider } from "@/components/divider";
 
 interface ComponentProps {
   product?: Product;
@@ -34,6 +35,7 @@ interface State extends Pick<
   | "productCategoryIds"
   | "productFieldsData"
   | "featured"
+  | "hidden"
   | "images"
 > {}
 
@@ -112,6 +114,7 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
         images: [],
         productFieldsData: {},
         featured: false,
+        hidden: false,
         ...(product || {}),
       }}
     >
@@ -145,7 +148,11 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
               />
 
               <FieldCheckbox label="Destacado" name="featured" />
+
+              <FieldCheckbox label="Oculto" name="hidden" />
             </div>
+
+            <Divider />
 
             <FieldRadioGroup<ProductCategory>
               name="productCategoryIds"
@@ -207,12 +214,18 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
               </div>
             )}
 
+            <Divider />
+
             <FieldInputImages multi label="Imagen" name="images" />
 
             <div className="flex gap-2 justify-end">
               <ButtonClose>Cancelar</ButtonClose>
               <Button
                 type="button"
+                isLoading={
+                  adminUpdateOneProduct.isPending ||
+                  adminAddOneProduct.isPending
+                }
                 onClick={async () => {
                   const {
                     currency,
@@ -223,6 +236,7 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
                     productCategoryIds,
                     productFieldsData,
                     featured,
+                    hidden,
                   } = value;
 
                   const promises = images?.map((image) => uploadImage(image));
@@ -243,6 +257,7 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
                           stockAmount,
                           productCategoryIds,
                           productFieldsData,
+                          hidden,
                         },
                       },
                       {
@@ -263,6 +278,7 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
                         stockAmount,
                         productCategoryIds,
                         productFieldsData,
+                        hidden,
                       },
                       {
                         onAfterSuccess: () => {

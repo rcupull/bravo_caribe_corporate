@@ -100,6 +100,11 @@ export const TabProducts = () => {
                           Destacado
                         </span>
                       )}
+                      {rowData.hidden && (
+                        <span className="px-2 py-1 ml-6 rounded-full text-xs font-medium bg-stone-100 text-stone-800">
+                          Oculto
+                        </span>
+                      )}
                     </TableCell>
                     <TableCell>
                       {rowData.productCategories?.map(({ name }, index) => {

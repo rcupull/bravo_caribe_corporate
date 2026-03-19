@@ -16,6 +16,7 @@ interface Args {
     | "productCategoryIds"
     | "productFieldsData"
     | "featured"
+    | "hidden"
   >;
 }
 

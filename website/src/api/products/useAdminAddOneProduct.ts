@@ -14,6 +14,7 @@ interface Args extends Pick<
   | "productCategoryIds"
   | "productFieldsData"
   | "featured"
+  | "hidden"
 > {}
 
 export const useAdminAddOneProduct = (): {
