@@ -27,7 +27,7 @@ const S3_BUCKET_APP = (() => {
     return `bravo-caribe-local`;
   }
 
-  return "bravo-caribe-prod";
+  return "bravo-caribe-production";
 })();
 
 export const getEndpointUrl = () => {
@@ -47,7 +47,7 @@ export const getImageEndpoint = (src = "") => {
     return `http://localhost:9000/${S3_BUCKET_APP}${src}`;
   }
 
-  return `https://s3-api.services.eltrapichecubiche.com/${S3_BUCKET_APP}${src}`;
+  return `https://s3-api.bravocaribe.com/${S3_BUCKET_APP}${src}`;
 };
 
 export const injectUrlParams = (
