@@ -23,6 +23,7 @@ export const modelGetter = () => {
       offerAmount: { type: Number },
       offerPrice: { type: Number },
 
+      name: { type: String },
       productSlug: { type: String, required: true, unique: true },
       //
       price: { type: Number, required: true },

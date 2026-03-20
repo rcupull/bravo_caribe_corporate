@@ -71,13 +71,13 @@ const ProductCard = ({ product }: ProductCardProps) => {
           {name}
         </h3>
 
-        {price && (
+        {!!price && (
           <p className="text-2xl font-bold text-warning mt-4">
             ${price.toFixed(2)}
           </p>
         )}
 
-        {offerAmount && offerPrice && (
+        {!!offerAmount && !!offerPrice && (
           <p className="text-md text-gray-500 font-semibold mt-1 rounded-2xl px-2 w-fit border-2 border-warning">
             ${offerPrice.toFixed(2)} a partir de {offerAmount}u
           </p>

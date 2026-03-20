@@ -4,6 +4,7 @@ import { combineMiddleware } from './general';
 import { middlewarePagination } from '../middlewares/middlewarePagination';
 import { z } from 'zod';
 import { get400Response, get500Response } from './responses';
+import { logger } from '../features/logger';
 
 type Req = Request<AnyRecord, any, any, AnyRecord>;
 type Res = Response<any>;
@@ -76,6 +77,8 @@ export const controllerFactory = (
 
       await callback({ req, res, next });
     } catch (error) {
+      logger.error(JSON.stringify(error, null, 2));
+
       get500Response({
         res,
         json: { error: `Error: ${serviceTag}` }

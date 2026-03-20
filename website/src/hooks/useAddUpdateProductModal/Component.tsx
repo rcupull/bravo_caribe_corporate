@@ -20,6 +20,7 @@ import { useGetAllProductCategories } from "@/api/product-categories/useGetAllPr
 import { useEffect, useState } from "react";
 import { ProductField, ProductFieldType } from "@/types/product-field";
 import { Divider } from "@/components/divider";
+import { isNullOrUndefined } from "@/utils/general";
 
 interface ComponentProps {
   product?: Product;
@@ -132,7 +133,7 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
         ...(product || {}),
       }}
     >
-      {({ value }) => {
+      {({ value, setValue }) => {
         return (
           <form className="space-y-4">
             {renderDivider("Básicos")}
@@ -169,8 +170,9 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
             </div>
 
             {renderDivider("Oferta")}
+            {/* <Button label="Eliminar Offerta"/> */}
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-4">
               <FieldInput
                 label="Mínimo de la oferta"
                 name="offerAmount"
@@ -182,6 +184,24 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
                 name="offerPrice"
                 type="number"
               />
+
+              <Button
+                type="button"
+                disabled={
+                  isNullOrUndefined(value.offerAmount) &&
+                  isNullOrUndefined(value.offerPrice)
+                }
+                className="mt-auto ml-auto w-fit"
+                onClick={() => {
+                  setValue((state) => ({
+                    ...state,
+                    offerAmount: undefined,
+                    offerPrice: undefined,
+                  }));
+                }}
+              >
+                Eliminar Oferta
+              </Button>
             </div>
 
             {renderDivider("Detalles")}
@@ -256,7 +276,8 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
                 type="button"
                 isLoading={
                   adminUpdateOneProduct.isPending ||
-                  adminAddOneProduct.isPending
+                  adminAddOneProduct.isPending ||
+                  adminAddProductImage.isPending
                 }
                 onClick={async () => {
                   const {

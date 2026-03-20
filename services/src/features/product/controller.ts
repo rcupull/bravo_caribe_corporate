@@ -7,7 +7,11 @@ import {
   MongoObjectIdSchema,
   QueryBooleanSchema
 } from '../../utils/zod-shapes';
-import { getProductNotFoundResponse, getUserNotFoundResponse } from '../../utils/responses';
+import {
+  get400Response,
+  getProductNotFoundResponse,
+  getUserNotFoundResponse
+} from '../../utils/responses';
 import { Currency } from '../../types/general';
 import { GetAllProductArgs } from '../../types/products';
 import { ProductCategoryServices } from '../product-category/services';
@@ -193,6 +197,17 @@ export class ProductController {
         offerPrice
       } = body;
 
+      const exists = await this.productServices.exists({
+        query: { productSlug: this.productServices.getProductSlugFromName(name) }
+      });
+
+      if (exists) {
+        return get400Response({
+          json: { message: 'Ya existe un producto con ese nombre' },
+          res
+        });
+      }
+
       const out = await this.productServices.addOne({
         name,
         productSlug: this.productServices.getProductSlugFromName(name),
@@ -276,6 +291,24 @@ export class ProductController {
         offerAmount,
         offerPrice
       } = body;
+
+      if (name) {
+        const exists = await this.productServices.exists({
+          query: {
+            $and: [
+              { productSlug: { $ne: productSlug } },
+              { productSlug: { $eq: this.productServices.getProductSlugFromName(name) } }
+            ]
+          }
+        });
+
+        if (exists) {
+          return get400Response({
+            json: { message: 'Ya existe un producto con ese nombre' },
+            res
+          });
+        }
+      }
 
       const out = await this.productServices.findOneAndUpdate({
         query: {
