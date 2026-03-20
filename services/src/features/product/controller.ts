@@ -111,19 +111,41 @@ export class ProductController {
     {
       withPagination: true,
       queryShape: (z) => ({
-        search: z.string().nullish()
+        search: z.string().nullish(),
+        categorySlugs: ArrayOrSingleSchema(z.string()).nullish()
       })
     },
     async ({ req, res }) => {
       const { query, paginateOptions } = req;
 
-      const { search } = query;
+      const { search, categorySlugs } = query;
 
       const out = await this.productServices.getAllWithPagination({
         paginateOptions,
-        query: {
-          search
-        }
+        query: await (async () => {
+          const out: GetAllProductArgs = {};
+
+          if (search) {
+            out.search = search;
+          }
+
+          if (categorySlugs) {
+            const categories = await this.productCategoryServices.getAll({
+              query: {
+                productCategorySlug: getInArrayQuery(
+                  isArray(categorySlugs) ? categorySlugs : [categorySlugs]
+                )
+              },
+              projection: {
+                _id: 1
+              }
+            });
+
+            out.productCategoryIds = getInArrayQuery(categories.map((c) => c._id));
+          }
+
+          return out;
+        })()
       });
 
       out.data = await this.productDtosServices.getProductsAdminDto(out.data);
@@ -143,7 +165,9 @@ export class ProductController {
         price: z.number().nonnegative(),
         currency: z.enum(Currency),
         productCategoryIds: z.array(MongoObjectIdSchema).nullish(),
-        productFieldsData: z.record(z.string(), z.any()).nullish()
+        productFieldsData: z.record(z.string(), z.any()).nullish(),
+        offerAmount: z.number().nonnegative().nullish(),
+        offerPrice: z.number().nonnegative().nullish()
       })
     },
     async ({ req, res }) => {
@@ -164,7 +188,9 @@ export class ProductController {
         stockAmount,
         productCategoryIds,
         productFieldsData,
-        featured
+        featured,
+        offerAmount,
+        offerPrice
       } = body;
 
       const out = await this.productServices.addOne({
@@ -178,7 +204,9 @@ export class ProductController {
         featured,
         createdBy: user._id,
         productCategoryIds,
-        productFieldsData
+        productFieldsData,
+        offerAmount,
+        offerPrice
       });
 
       res.send(out);
@@ -225,6 +253,8 @@ export class ProductController {
         currency: z.enum(Currency).nullish(),
         hidden: z.boolean().optional(),
         productCategoryIds: z.array(MongoObjectIdSchema).nullish(),
+        offerAmount: z.number().nonnegative().nullish(),
+        offerPrice: z.number().nonnegative().nullish(),
         productFieldsData: z.record(z.string(), z.any()).nullish()
       })
     },
@@ -242,7 +272,9 @@ export class ProductController {
         stockAmount,
         productCategoryIds,
         productFieldsData,
-        featured
+        featured,
+        offerAmount,
+        offerPrice
       } = body;
 
       const out = await this.productServices.findOneAndUpdate({
@@ -261,7 +293,9 @@ export class ProductController {
           currency,
           hidden,
           productCategoryIds,
-          productFieldsData
+          productFieldsData,
+          offerAmount,
+          offerPrice
         }
       });
 

@@ -15,16 +15,26 @@ import { useAdminGetAllProducts } from "@/api/products/useAdminGetAllProducts";
 import { RowActions } from "./RowActions";
 import { useAddUpdateProductModal } from "@/hooks/useAddUpdateProductModal";
 import { ImageComponent } from "@/components/image-component";
+import { useRouter } from "@/hooks/useRouter";
+import { Filters } from "./Filters";
+import { PaginatorComponent } from "@/components/paginator-component";
 
 export const TabProducts = () => {
   const { adminGetAllProducts } = useAdminGetAllProducts();
   const { addUpdateProductModal } = useAddUpdateProductModal();
+  const { query, onChangeQuery } = useRouter();
 
-  const onRefresh = () => adminGetAllProducts.fetch();
+  const search = query.search as string | undefined;
+  const categorySlugs = query.categorySlugs as Array<string> | undefined;
+  const page = query.page as number | undefined;
+
+  const onRefresh = () => {
+    adminGetAllProducts.fetch({ categorySlugs, search, page });
+  };
 
   useEffect(() => {
     onRefresh();
-  }, []);
+  }, [categorySlugs?.length, search, page]);
 
   return (
     <>
@@ -50,6 +60,8 @@ export const TabProducts = () => {
           </Button>
         </div>
       </div>
+
+      <Filters />
 
       <div className="bg-card rounded-lg shadow-lg overflow-hidden">
         <Table>
@@ -100,6 +112,11 @@ export const TabProducts = () => {
                           Destacado
                         </span>
                       )}
+                      {rowData.hidden && (
+                        <span className="px-2 py-1 ml-6 rounded-full text-xs font-medium bg-stone-100 text-stone-800">
+                          Oculto
+                        </span>
+                      )}
                     </TableCell>
                     <TableCell>
                       {rowData.productCategories?.map(({ name }, index) => {
@@ -136,6 +153,11 @@ export const TabProducts = () => {
             )}
           </TableBody>
         </Table>
+
+        <PaginatorComponent
+          paginator={adminGetAllProducts.paginator}
+          onChangePage={(page) => onChangeQuery({ page })}
+        />
       </div>
     </>
   );

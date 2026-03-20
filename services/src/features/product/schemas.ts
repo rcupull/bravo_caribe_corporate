@@ -20,7 +20,9 @@ export const modelGetter = () => {
           }
         ]
       },
-      name: { type: String, required: true },
+      offerAmount: { type: Number },
+      offerPrice: { type: Number },
+
       productSlug: { type: String, required: true, unique: true },
       //
       price: { type: Number, required: true },

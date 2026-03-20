@@ -129,4 +129,25 @@ export class UserController {
       res.send(out);
     }
   );
+
+  delete_users_userId = controllerFactory(
+    {
+      paramsShape: () => ({
+        userId: MongoObjectIdSchema
+      })
+    },
+    async ({ req, res }) => {
+      const { params } = req;
+
+      const { userId } = params;
+
+      await this.userServices.deleteOne({
+        query: {
+          _id: userId
+        }
+      });
+
+      res.send();
+    }
+  );
 }

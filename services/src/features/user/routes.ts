@@ -23,13 +23,22 @@ export class UserRouter {
       this.userController.get_users
     );
 
-    this.router.route('/users/:userId').put(
-      this.accessServices.middlewareIsLogged,
-      this.accessServices.middlewareAccessControl({
-        isAdminWithAccess: [Access.FULL]
-      }),
-      this.userController.put_users_userId
-    );
+    this.router
+      .route('/users/:userId')
+      .put(
+        this.accessServices.middlewareIsLogged,
+        this.accessServices.middlewareAccessControl({
+          isAdminWithAccess: [Access.FULL]
+        }),
+        this.userController.put_users_userId
+      )
+      .delete(
+        this.accessServices.middlewareIsLogged,
+        this.accessServices.middlewareAccessControl({
+          isAdminWithAccess: [Access.FULL]
+        }),
+        this.userController.delete_users_userId
+      );
   }
 
   public readonly router: Router = Router();

@@ -19,6 +19,7 @@ import { ProductCategory } from "@/types/product-category";
 import { useGetAllProductCategories } from "@/api/product-categories/useGetAllProductCategories";
 import { useEffect, useState } from "react";
 import { ProductField, ProductFieldType } from "@/types/product-field";
+import { Divider } from "@/components/divider";
 
 interface ComponentProps {
   product?: Product;
@@ -34,7 +35,10 @@ interface State extends Pick<
   | "productCategoryIds"
   | "productFieldsData"
   | "featured"
+  | "hidden"
   | "images"
+  | "offerAmount"
+  | "offerPrice"
 > {}
 
 const Component = ({ product, onRefresh }: ComponentProps) => {
@@ -99,6 +103,16 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
     });
   };
 
+  const renderDivider = (text: string) => {
+    return (
+      <div className="flex items-center gap-2">
+        <Divider narrow />
+        <span className="text-xl shrink-0 font-semibold">{text}</span>
+        <Divider narrow />
+      </div>
+    );
+  };
+
   const { onClose } = useModal();
 
   return (
@@ -107,17 +121,22 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
         name: "",
         currency: Currency.USD,
         price: 0,
+        offerAmount: undefined,
+        offerPrice: undefined,
         stockAmount: 0,
         productCategoryIds: [],
         images: [],
         productFieldsData: {},
         featured: false,
+        hidden: false,
         ...(product || {}),
       }}
     >
       {({ value }) => {
         return (
           <form className="space-y-4">
+            {renderDivider("Básicos")}
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FieldInput label="Nombre del Producto" name="name" />
 
@@ -145,7 +164,27 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
               />
 
               <FieldCheckbox label="Destacado" name="featured" />
+
+              <FieldCheckbox label="Oculto" name="hidden" />
             </div>
+
+            {renderDivider("Oferta")}
+
+            <div className="grid grid-cols-2 gap-4">
+              <FieldInput
+                label="Mínimo de la oferta"
+                name="offerAmount"
+                type="number"
+              />
+
+              <FieldInput
+                label="Precio de la oferta"
+                name="offerPrice"
+                type="number"
+              />
+            </div>
+
+            {renderDivider("Detalles")}
 
             <FieldRadioGroup<ProductCategory>
               name="productCategoryIds"
@@ -207,12 +246,18 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
               </div>
             )}
 
-            <FieldInputImages multi label="Imagen" name="images" />
+            {renderDivider("Imágenes")}
+
+            <FieldInputImages multi name="images" />
 
             <div className="flex gap-2 justify-end">
               <ButtonClose>Cancelar</ButtonClose>
               <Button
                 type="button"
+                isLoading={
+                  adminUpdateOneProduct.isPending ||
+                  adminAddOneProduct.isPending
+                }
                 onClick={async () => {
                   const {
                     currency,
@@ -223,6 +268,9 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
                     productCategoryIds,
                     productFieldsData,
                     featured,
+                    hidden,
+                    offerAmount,
+                    offerPrice,
                   } = value;
 
                   const promises = images?.map((image) => uploadImage(image));
@@ -243,6 +291,9 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
                           stockAmount,
                           productCategoryIds,
                           productFieldsData,
+                          hidden,
+                          offerAmount,
+                          offerPrice,
                         },
                       },
                       {
@@ -263,6 +314,9 @@ const Component = ({ product, onRefresh }: ComponentProps) => {
                         stockAmount,
                         productCategoryIds,
                         productFieldsData,
+                        hidden,
+                        offerAmount,
+                        offerPrice,
                       },
                       {
                         onAfterSuccess: () => {

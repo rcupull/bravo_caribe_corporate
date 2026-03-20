@@ -93,13 +93,13 @@ export const Page = () => {
               <form className="space-y-4">
                 <FieldInput
                   label={getRequiredLabel("Nombre")}
-                  placeholder="tu@correo.com"
+                  placeholder="Pedro Pérez"
                   name="name"
                 />
 
                 <FieldInput
                   label={getRequiredLabel("Correo Electrónico")}
-                  placeholder="tu@correo.com"
+                  placeholder="pedro@correo.com"
                   name="email"
                 />
 
@@ -134,14 +134,14 @@ export const Page = () => {
                         {
                           onAfterSuccess: () => {
                             toast.success(
-                              "¡Cuenta creada exitosamente!. Le enviamos un correo de validación a su buzón"
+                              "¡Cuenta creada exitosamente!. Le enviamos un correo de validación a su buzón",
                             );
                             pushRoute(getHomeRoute(), {}, { timeout: 200 });
                           },
                           onAfterFailed: () => {
                             toast.error("Error al crear la cuenta");
                           },
-                        }
+                        },
                       );
                     }}
                   >

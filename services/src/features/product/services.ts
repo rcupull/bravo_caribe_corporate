@@ -19,6 +19,8 @@ export class ProductServices extends ModelCrudTemplate<
     | 'featured'
     | 'productCategoryIds'
     | 'productFieldsData'
+    | 'offerAmount'
+    | 'offerPrice'
   >,
   GetAllProductArgs
 > {
