@@ -18,6 +18,9 @@ export interface Product extends BaseIdentity {
   stockAmount?: number;
   featured?: boolean;
 
+  offerAmount?: number;
+  offerPrice?: number;
+
   productCategoryIds?: Array<Schema.Types.ObjectId>;
   productFieldsData?: Record<string, string>;
 }

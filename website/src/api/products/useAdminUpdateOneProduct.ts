@@ -17,6 +17,8 @@ interface Args {
     | "productFieldsData"
     | "featured"
     | "hidden"
+    | "offerAmount"
+    | "offerPrice"
   >;
 }
 

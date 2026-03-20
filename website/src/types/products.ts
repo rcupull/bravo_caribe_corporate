@@ -22,7 +22,8 @@ export interface Product extends BaseIdentity {
 
   productCategoryIds?: Array<string>;
   productFieldsData?: Record<string, string>;
-
+  offerAmount?: number;
+  offerPrice?: number;
   //hot
   productCategories: Array<Pick<ProductCategory, "name">> | undefined;
   productFieldsMeta: Array<ProductFieldValue> | undefined;

@@ -15,6 +15,7 @@ import { ImageComponent } from "@/components/image-component";
 import { useGetAllUsers } from "@/api/user/useGetAllUsers";
 import { UserRole } from "@/types/auth";
 import { RoleBadge } from "./RoleBadge";
+import { RowActions } from "./RowActions";
 
 export const TabUsers = () => {
   const { getAllUsers } = useGetAllUsers();
@@ -47,6 +48,7 @@ export const TabUsers = () => {
               <TableHead>Rol</TableHead>
               <TableHead>Estado</TableHead>
               <TableHead>Registro</TableHead>
+              <TableHead>Acciones</TableHead>
             </TableRow>
           </TableHeader>
 
@@ -117,6 +119,10 @@ export const TabUsers = () => {
                     {/* Fecha */}
                     <TableCell className="text-sm text-muted-foreground">
                       {new Date(createdAt).toLocaleDateString()}
+                    </TableCell>
+
+                    <TableCell className="text-sm text-muted-foreground">
+                      <RowActions rowData={user} onRefresh={onRefresh} />
                     </TableCell>
                   </TableRow>
                 );

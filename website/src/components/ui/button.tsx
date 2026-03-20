@@ -5,7 +5,7 @@ import { cn } from "@/utils/general";
 import { FormuxDataContainer } from "./formux-data-container";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -30,11 +30,12 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
+  },
 );
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   isLoading?: boolean;
   formuxSubmit?: boolean;
@@ -57,7 +58,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       preventDefault,
       ...props
     },
-    ref
+    ref,
   ) => {
     if (formuxSubmit) {
       return (
@@ -69,7 +70,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
               <button
                 className={cn(
                   "relative",
-                  buttonVariants({ variant, size, className })
+                  buttonVariants({ variant, size, className }),
                 )}
                 ref={ref}
                 type="button"
@@ -171,7 +172,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         </>
       </button>
     );
-  }
+  },
 );
 Button.displayName = "Button";
 
