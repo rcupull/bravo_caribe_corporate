@@ -5,8 +5,8 @@ import { useAddUpdateBlogModal } from "@/hooks/useAddUpdateBlogModal";
 import { useModal } from "@/features/modal/useModal";
 import { ButtonClose } from "@/components/button-close";
 import { useAdminRemoveOneBlog } from "@/api/blogs/useAdminRemoveOneBlog";
-import { toast } from "sonner";
 import { Blog } from "@/types/blog";
+import { useToast } from "@/hooks/use-toast";
 
 interface RowActionsProps {
   rowData: Blog;
@@ -18,6 +18,7 @@ export const RowActions = ({ rowData, onRefresh }: RowActionsProps) => {
   const { pushModal } = useModal();
 
   const { blogSlug } = rowData;
+  const { toast } = useToast();
 
   const handleBlogDelete = () => {
     pushModal({
@@ -35,12 +36,15 @@ export const RowActions = ({ rowData, onRefresh }: RowActionsProps) => {
                   { blogSlug },
                   {
                     onAfterSuccess: () => {
-                      toast.success("Blog eliminado exitosamente");
+                      toast({
+                        title: "Blog eliminado exitosamente",
+                        variant: "success",
+                      });
 
                       onRefresh();
                       onClose();
                     },
-                  }
+                  },
                 );
               }}
             >

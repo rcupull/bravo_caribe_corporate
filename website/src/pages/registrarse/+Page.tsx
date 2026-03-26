@@ -6,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { toast } from "sonner";
 import { UserPlus } from "lucide-react";
 import { useAuthSignUp } from "@/api/auth/useAuthSignUp";
 import { useAuth } from "@/hooks/useAuth";
@@ -18,6 +17,7 @@ import { FieldInput } from "@/components/ui/field-input";
 import { useRouter } from "@/hooks/useRouter";
 import { Link } from "@/components/link";
 import { getHomeRoute, getSignInRoute } from "@/utils/routes";
+import { useToast } from "@/hooks/use-toast";
 
 interface State {
   name: string;
@@ -31,6 +31,8 @@ export const Page = () => {
   const { isAuthenticated } = useAuth();
 
   const { authSignUp } = useAuthSignUp();
+
+  const { toast } = useToast();
 
   // Redirect if already authenticated
   if (isAuthenticated) {
@@ -133,13 +135,13 @@ export const Page = () => {
                         },
                         {
                           onAfterSuccess: () => {
-                            toast.success(
-                              "¡Cuenta creada exitosamente!. Le enviamos un correo de validación a su buzón",
-                            );
+                            toast({
+                              title:
+                                "¡Cuenta creada exitosamente!. Le enviamos un correo de validación a su buzón",
+                              variant: "success",
+                            });
+
                             pushRoute(getHomeRoute(), {}, { timeout: 200 });
-                          },
-                          onAfterFailed: () => {
-                            toast.error("Error al crear la cuenta");
                           },
                         },
                       );

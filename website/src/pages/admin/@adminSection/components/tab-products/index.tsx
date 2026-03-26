@@ -67,7 +67,7 @@ export const TabProducts = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Imagen</TableHead>
+              <TableHead>Imagenes</TableHead>
               <TableHead>Nombre</TableHead>
               <TableHead>Categorias</TableHead>
               <TableHead>Precio</TableHead>
@@ -96,11 +96,18 @@ export const TabProducts = () => {
                 return (
                   <TableRow key={rowData._id}>
                     <TableCell>
-                      {image ? (
-                        <ImageComponent
-                          image={image}
-                          className="w-24 object-cover rounded"
-                        />
+                      {rowData.images?.length ? (
+                        <div className="grid grid-cols-2 gap-1">
+                          {rowData.images?.map((image, index) => {
+                            return (
+                              <ImageComponent
+                                key={index}
+                                image={image}
+                                className="h-24 object-cover rounded mx-auto"
+                              />
+                            );
+                          })}
+                        </div>
                       ) : (
                         <FileImage className="w-16 h-16 text-gray-300 object-cover rounded" />
                       )}

@@ -3,10 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Edit, Trash2 } from "lucide-react";
 import { useModal } from "@/features/modal/useModal";
 import { ButtonClose } from "@/components/button-close";
-import { toast } from "sonner";
 import { useAddUpdateProductFieldModal } from "@/hooks/useAddUpdateProductFieldModal";
 import { ProductField } from "@/types/product-field";
 import { useRemoveOneProductField } from "@/api/product-fields/useRemoveOneProductField";
+import { useToast } from "@/hooks/use-toast";
 
 interface RowActionsProps {
   rowData: ProductField;
@@ -17,6 +17,7 @@ export const RowActions = ({ rowData, onRefresh }: RowActionsProps) => {
   const { addUpdateProductFieldModal } = useAddUpdateProductFieldModal();
 
   const { pushModal } = useModal();
+  const { toast } = useToast();
 
   const { productFieldSlug } = rowData;
 
@@ -36,7 +37,10 @@ export const RowActions = ({ rowData, onRefresh }: RowActionsProps) => {
                   { productFieldSlug },
                   {
                     onAfterSuccess: () => {
-                      toast.success("Campo de producto eliminado exitosamente");
+                      toast({
+                        title: "Campo de producto eliminado exitosamente",
+                        variant: "success",
+                      });
 
                       onRefresh();
                       onClose();

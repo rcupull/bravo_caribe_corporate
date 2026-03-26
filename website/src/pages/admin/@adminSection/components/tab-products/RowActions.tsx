@@ -6,7 +6,7 @@ import { useAddUpdateProductModal } from "@/hooks/useAddUpdateProductModal";
 import { useModal } from "@/features/modal/useModal";
 import { ButtonClose } from "@/components/button-close";
 import { useAdminRemoveOneProduct } from "@/api/products/useAdminRemoveOneProduct";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 
 interface RowActionsProps {
   rowData: Product;
@@ -16,6 +16,7 @@ interface RowActionsProps {
 export const RowActions = ({ rowData, onRefresh }: RowActionsProps) => {
   const { addUpdateProductModal } = useAddUpdateProductModal();
   const { pushModal } = useModal();
+  const { toast } = useToast();
 
   const { productSlug } = rowData;
 
@@ -35,12 +36,15 @@ export const RowActions = ({ rowData, onRefresh }: RowActionsProps) => {
                   { productSlug },
                   {
                     onAfterSuccess: () => {
-                      toast.success("Producto eliminado exitosamente");
+                      toast({
+                        title: "Producto eliminado exitosamente",
+                        variant: "success",
+                      });
 
                       onRefresh();
                       onClose();
                     },
-                  }
+                  },
                 );
               }}
             >

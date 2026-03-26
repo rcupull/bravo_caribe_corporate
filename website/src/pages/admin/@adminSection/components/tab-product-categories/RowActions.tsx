@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { useAddUpdateProductCategoryModal } from "@/hooks/useAddUpdateProductCategoryModal";
 import { ProductCategory } from "@/types/product-category";
 import { useRemoveOneProductCategory } from "@/api/product-categories/useRemoveOneProductCategory";
+import { useToast } from "@/hooks/use-toast";
 
 interface RowActionsProps {
   rowData: ProductCategory;
@@ -17,6 +18,7 @@ export const RowActions = ({ rowData, onRefresh }: RowActionsProps) => {
   const { addUpdateProductCategoryModal } = useAddUpdateProductCategoryModal();
 
   const { pushModal } = useModal();
+  const { toast } = useToast();
 
   const { productCategorySlug } = rowData;
 
@@ -36,7 +38,10 @@ export const RowActions = ({ rowData, onRefresh }: RowActionsProps) => {
                   { productCategorySlug },
                   {
                     onAfterSuccess: () => {
-                      toast.success("Categoría eliminada exitosamente");
+                      toast({
+                        title: "Categoría eliminada exitosamente",
+                        variant: "success",
+                      });
 
                       onRefresh();
                       onClose();

@@ -1,14 +1,18 @@
 import { useAuthSignIn } from "@/api/auth/useAuthSignIn";
 import { useAuthValidate } from "@/api/auth/useAuthValidate";
 import { Spinner } from "@/components/spinner";
+import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "@/hooks/useRouter";
 import { wait } from "@/utils/general";
+import { setPersistentAuthData } from "@/utils/persistent-auth";
 import { getHomeRoute, getSignInRoute } from "@/utils/routes";
 import { useEffect, useState } from "react";
 
 export const Page = () => {
   const { params, pushRoute } = useRouter();
+
+  const { toast } = useToast();
 
   const [status, setStatus] = useState<
     "validating" | "success" | "redirect" | "error"
@@ -18,6 +22,7 @@ export const Page = () => {
   const { authSignIn } = useAuthSignIn();
 
   const { authValidate } = useAuthValidate();
+  const { setData } = useAuth();
 
   const { code } = params;
 
@@ -33,12 +38,26 @@ export const Page = () => {
           authSignIn.fetch(
             { email, password: code },
             {
-              onAfterSuccess: async () => {
+              onAfterSuccess: async (response) => {
                 setStatus("redirect");
-                await wait(1000);
-                pushRoute(getHomeRoute());
+
+                const { accessToken, refreshToken, steat, user } = response;
+
+                setData(user);
+                await setPersistentAuthData({
+                  accessToken,
+                  refreshToken,
+                  steat,
+                });
+
+                toast({
+                  title: "¡Bienvenido!",
+                  variant: "success",
+                });
+
+                pushRoute(getHomeRoute(), {}, { timeout: 100 });
               },
-            }
+            },
           );
         },
         onAfterFailed: async () => {
@@ -47,7 +66,7 @@ export const Page = () => {
 
           pushRoute(isAuthenticated ? getHomeRoute() : getSignInRoute());
         },
-      }
+      },
     );
   };
 

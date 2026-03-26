@@ -3,10 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { useModal } from "@/features/modal/useModal";
 import { ButtonClose } from "@/components/button-close";
-import { toast } from "sonner";
 import { User } from "@/types/auth";
 import { useRemoveOneUser } from "@/api/user/useRemoveOneUser";
 import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
 
 interface RowActionsProps {
   rowData: User;
@@ -15,6 +15,8 @@ interface RowActionsProps {
 
 export const RowActions = ({ rowData, onRefresh }: RowActionsProps) => {
   const { pushModal } = useModal();
+
+  const { toast } = useToast();
 
   const { user } = useAuth();
 
@@ -34,7 +36,10 @@ export const RowActions = ({ rowData, onRefresh }: RowActionsProps) => {
                   { userId: rowData._id },
                   {
                     onAfterSuccess: () => {
-                      toast.success("Usuario eliminado exitosamente");
+                      toast({
+                        title: "Usuario eliminado exitosamente",
+                        variant: "success",
+                      });
 
                       onRefresh();
                       onClose();

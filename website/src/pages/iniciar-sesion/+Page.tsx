@@ -6,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { toast } from "sonner";
 import { LogIn } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useAuthSignIn } from "@/api/auth/useAuthSignIn";
@@ -24,6 +23,7 @@ import {
   getRecoveryPasswordRoute,
   getSignUpRoute,
 } from "@/utils/routes";
+import { useToast } from "@/hooks/use-toast";
 
 interface State {
   email: string;
@@ -34,6 +34,8 @@ export const Page = () => {
   const { isAuthenticated } = useAuth();
   const { pushRoute, query } = useRouter();
   const redirect = query.redirect as string | undefined;
+
+  const { toast } = useToast();
 
   const { setData } = useAuth();
 
@@ -120,16 +122,16 @@ export const Page = () => {
                               steat,
                             });
 
-                            toast.success("¡Bienvenido!");
+                            toast({
+                              title: "¡Bienvenido!",
+                              variant: "success",
+                            });
 
                             pushRoute(
                               redirect || getAdminRoute(),
                               {},
                               { timeout: 100 },
                             );
-                          },
-                          onAfterFailed: () => {
-                            toast.error("Error al iniciar sesión");
                           },
                         },
                       );
