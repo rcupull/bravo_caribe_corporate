@@ -25,11 +25,11 @@ export const AdminTabs = () => {
       label: "Blogs",
       svg: FileText,
     },
-    {
-      value: AdminSection.ORDERS,
-      label: "Órdenes",
-      svg: ShoppingBag,
-    },
+    // {
+    //   value: AdminSection.ORDERS,
+    //   label: "Órdenes",
+    //   svg: ShoppingBag,
+    // },
     {
       value: AdminSection.USERS,
       label: "Usuarios",
