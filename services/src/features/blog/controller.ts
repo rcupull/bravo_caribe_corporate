@@ -172,8 +172,8 @@ export class BlogController {
       }),
       bodyShape: (z) => ({
         title: z.string().nonempty().nullish(),
-        description: z.string().nonempty().nullish(),
-        message: z.string().nonempty().nullish(),
+        description: z.string().nullish(),
+        message: z.string().nullish(),
         author: z.string().nullish(),
         hidden: z.boolean().nullish(),
         coverImage: ImageShape.nullish(),

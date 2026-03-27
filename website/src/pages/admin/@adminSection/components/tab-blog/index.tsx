@@ -55,6 +55,7 @@ export const TabBlogs = () => {
             <TableRow>
               <TableHead>Cover</TableHead>
               <TableHead>Título</TableHead>
+              <TableHead>Autor</TableHead>
               <TableHead>Oculto</TableHead>
               <TableHead className="text-right">Acciones</TableHead>
             </TableRow>
@@ -92,6 +93,9 @@ export const TabBlogs = () => {
                           Destacado
                         </span>
                       )}
+                    </TableCell>
+                    <TableCell className="font-medium">
+                      {rowData.author}
                     </TableCell>
                     <TableCell>
                       <span
