@@ -29,9 +29,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
   return (
     <Card className="group h-full flex flex-col hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-warning">
       <div className="relative overflow-hidden rounded-t-lg">
-        <div className="flex items-center justify-center w-full h-56 bg-gray-200">
+        <div className="flex items-center justify-center w-full h-56 bg-white">
           {!!images?.length ? (
-            <ImagesSwitch images={images} className="h-56 object-cover" />
+            <ImagesSwitch images={images} className="w-full object-cover" />
           ) : (
             <FileImage className="size-32 text-gray-300" />
           )}
