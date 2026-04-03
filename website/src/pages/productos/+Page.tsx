@@ -15,21 +15,31 @@ import {
 import { useGetAllProducts } from "@/api/products/useGetAllProducts";
 import { useProductDetails } from "@/hooks/useProductDetails";
 import { useRouter } from "@/hooks/useRouter";
+import { useDebouncer } from "@/hooks/useDebouncer";
+import { isNumber, isString } from "@/utils/general";
 
 export const Page = () => {
-  const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
 
   const { getAllProducts } = useGetAllProducts();
 
-  const { query } = useRouter();
+  const { query, onChangeQuery } = useRouter();
 
   const categorySlugs = (query.categorias || []) as string[];
+  const page = isNumber(query.page) ? Number(query.page) : 1;
+  const search = isString(query.search) ? query.search : "";
+
   const inStockOnly = !!query.enStock;
 
+  const debouncer = useDebouncer();
+
   useEffect(() => {
-    getAllProducts.fetch({ categorySlugs, inStockOnly });
-  }, [JSON.stringify({ categorySlugs, inStockOnly })]);
+    getAllProducts.fetch({ categorySlugs, inStockOnly, page, search });
+  }, [JSON.stringify({ categorySlugs, inStockOnly, page, search })]);
+
+  useEffect(() => {
+    setSearchQuery(search);
+  }, [search]);
 
   const { productDetails } = useProductDetails();
 
@@ -70,8 +80,15 @@ export const Page = () => {
                     placeholder="Buscar productos por nombre o descripción..."
                     value={searchQuery}
                     onChange={(e) => {
-                      setSearchQuery(e.target.value);
-                      setCurrentPage(1);
+                      const newSearch = e.target.value;
+                      setSearchQuery(newSearch);
+
+                      debouncer(() => {
+                        onChangeQuery({
+                          search: newSearch,
+                          page: 1,
+                        });
+                      }, 1000);
                     }}
                     className="pl-10"
                   />
@@ -104,36 +121,38 @@ export const Page = () => {
                   <PaginationContent>
                     <PaginationItem>
                       <PaginationPrevious
-                        onClick={() =>
-                          setCurrentPage((p) => Math.max(1, p - 1))
-                        }
+                        onClick={() => {
+                          onChangeQuery({ page: Math.max(1, page - 1) });
+                        }}
                         className={
-                          currentPage === 1
+                          page === 1
                             ? "pointer-events-none opacity-50"
                             : "cursor-pointer"
                         }
                       />
                     </PaginationItem>
                     {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                      (page) => (
-                        <PaginationItem key={page}>
+                      (p) => (
+                        <PaginationItem key={p}>
                           <PaginationLink
-                            onClick={() => setCurrentPage(page)}
-                            isActive={currentPage === page}
+                            onClick={() => onChangeQuery({ page: p })}
+                            isActive={page === p}
                             className="cursor-pointer"
                           >
-                            {page}
+                            {p}
                           </PaginationLink>
                         </PaginationItem>
                       ),
                     )}
                     <PaginationItem>
                       <PaginationNext
-                        onClick={() =>
-                          setCurrentPage((p) => Math.min(totalPages, p + 1))
-                        }
+                        onClick={() => {
+                          onChangeQuery({
+                            page: Math.min(totalPages, page + 1),
+                          });
+                        }}
                         className={
-                          currentPage === totalPages
+                          page === totalPages
                             ? "pointer-events-none opacity-50"
                             : "cursor-pointer"
                         }

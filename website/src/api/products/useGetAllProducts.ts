@@ -8,6 +8,8 @@ interface Args {
   categorySlugs?: Array<string>;
   inStockOnly?: boolean;
   featured?: boolean;
+  page?: number;
+  search?: string;
 }
 
 export const useGetAllProducts = (): {
