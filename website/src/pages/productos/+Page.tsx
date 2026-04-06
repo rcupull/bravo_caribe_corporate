@@ -17,6 +17,7 @@ import { useProductDetails } from "@/hooks/useProductDetails";
 import { useRouter } from "@/hooks/useRouter";
 import { useDebouncer } from "@/hooks/useDebouncer";
 import { isNumber, isString } from "@/utils/general";
+import { PaginatorComponent } from "@/components/paginator-component";
 
 export const Page = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -115,52 +116,10 @@ export const Page = () => {
                 ))}
               </div>
 
-              {/* Pagination */}
-              {totalPages > 1 && (
-                <Pagination>
-                  <PaginationContent>
-                    <PaginationItem>
-                      <PaginationPrevious
-                        onClick={() => {
-                          onChangeQuery({ page: Math.max(1, page - 1) });
-                        }}
-                        className={
-                          page === 1
-                            ? "pointer-events-none opacity-50"
-                            : "cursor-pointer"
-                        }
-                      />
-                    </PaginationItem>
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                      (p) => (
-                        <PaginationItem key={p}>
-                          <PaginationLink
-                            onClick={() => onChangeQuery({ page: p })}
-                            isActive={page === p}
-                            className="cursor-pointer"
-                          >
-                            {p}
-                          </PaginationLink>
-                        </PaginationItem>
-                      ),
-                    )}
-                    <PaginationItem>
-                      <PaginationNext
-                        onClick={() => {
-                          onChangeQuery({
-                            page: Math.min(totalPages, page + 1),
-                          });
-                        }}
-                        className={
-                          page === totalPages
-                            ? "pointer-events-none opacity-50"
-                            : "cursor-pointer"
-                        }
-                      />
-                    </PaginationItem>
-                  </PaginationContent>
-                </Pagination>
-              )}
+              <PaginatorComponent
+                paginator={getAllProducts.paginator}
+                onChangePage={(page) => onChangeQuery({ page })}
+              />
             </div>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export interface Paginator {
   dataCount: number;
@@ -35,7 +36,13 @@ export const PaginatorComponent = ({
     paginator.dataCount,
   );
 
-  const getPages = () => {
+  const isMobile = useIsMobile();
+
+  const getPagesMobile = () => {
+    return [page];
+  };
+
+  const getPagesDesktop = () => {
     const pages: number[] = [];
     const maxVisible = 5;
 
@@ -53,17 +60,17 @@ export const PaginatorComponent = ({
     return pages;
   };
 
-  const pages = getPages();
+  const pages = isMobile ? getPagesMobile() : getPagesDesktop();
 
   return (
-    <div className="flex items-center justify-between px-4 py-3 border-t">
-      <div className="text-sm text-muted-foreground">
+    <div className="flex items-center justify-between px-2 sm:px-4 py-3 border-t">
+      <div className="hidden sm:block text-sm text-muted-foreground">
         Mostrando del <span className="font-medium">{startItem}</span> al{" "}
         <span className="font-medium">{endItem}</span> de{" "}
         <span className="font-medium">{paginator.dataCount}</span>
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1 sm:gap-2">
         <Button
           variant="outline"
           size="sm"
